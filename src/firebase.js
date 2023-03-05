@@ -14,7 +14,7 @@ const firebaseConfig = {
   storageBucket: "fricapsule.appspot.com",
   messagingSenderId: "247271689152",
   appId: "1:247271689152:web:25ef71545c190006ea5625",
-  measurementId: "G-6H9EJ6KX9N"
+  measurementId: "G-6H9EJ6KX9N",
 };
 
 // Initialize Firebase

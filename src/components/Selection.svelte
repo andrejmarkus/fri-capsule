@@ -6,17 +6,18 @@
     function animateButton(e) {
         anime({
             targets: e.target,
-            scale: [0.9, 1],
-            duration: 300,
+            scale: [0.9, 1.1, 1],
+            duration: 500,
             easing: "linear"
         })
     }
 </script>
 
-<div class="aCirc w-[28rem] flex flex-col items-center justify-center mx-6">
-    <div class="mt-3 mb-6 bg-gradient-to-b from-zinc-400 to-zinc-500 border-8 border-zinc-900 p-8 rounded-[50%] drop-shadow-lg">
-        <a href="/{data[1]}">
-            <button on:mouseenter={animateButton}><img class="w-72 h-72 drop-shadow-lg" src="/{data[2]}.png" alt="{data[2]}"></button>
-        </a>
-    </div>
+<div class="aCirc flex flex-col items-center justify-center mx-0 sm:mx-20 font-oswald font-bold">
+    <a href="/app">
+        <button on:mouseenter={animateButton}>
+            <p class="text-zinc-800 text-2xl sm:text-6xl drop-shadow-[0.1rem_0.1rem_0.2rem_rgba(0,0,0,0.5)] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10">{data[0]}</p>
+            <img class="opacity-30 h-52 w-52 sm:h-96 sm:w-96" src="/{data[2]}.png" alt="{data[2]}">
+        </button>
+    </a>
 </div>

@@ -2,12 +2,14 @@
     import Selection from "./Selection.svelte";
     import IoIosArrowDropleftCircle from 'svelte-icons/io/IoIosArrowDropleftCircle.svelte';
     import IoIosArrowDroprightCircle from 'svelte-icons/io/IoIosArrowDroprightCircle.svelte';
+    import IoIosArrowDropdownCircle from 'svelte-icons/io/IoIosArrowDropdownCircle.svelte';
+    import IoIosArrowDropupCircle from 'svelte-icons/io/IoIosArrowDropupCircle.svelte';
 
     import anime from "animejs/lib/anime.es";
 
     export let subjects = [
-        ["Pricipy IKS", "piks", "net"],
-        ["Ekonomicke a pravne aspekty podnikania", "eapap", "eco"]
+        ["Princípy IKS", "piks", "net"],
+        ["Ekonomické a právne aspekty podnikania", "eapap", "eco"]
     ];
 
     let index = 0;
@@ -61,12 +63,10 @@
     }
 </script>
 
-<div class="w-3/5 py-3 bg-gradient-to-br from-zinc-200 bg-slate-300 text-zinc-900 rounded-md drop-shadow-lg flex flex-col items-center gap-4 font-poppins">
-    <p class="font-bold text-4xl drop-shadow-md">{subjects[index][0]}</p>
-    <hr class="w-1/3 border-zinc-300 border-t-[0.2rem] rounded-md">
-    <div class="flex justify-center items-center">
-        <button class="w-24 text-zinc-700" on:click={previous} on:mouseenter={animateButton}><IoIosArrowDropleftCircle /></button>
+<div class="w-11/12 sm:w-4/5 h-1/2 sm:h-2/5 py-3 bg-gradient-to-b from-slate-200 to-slate-300 text-zinc-800 rounded-2xl drop-shadow-lg flex flex-col items-center justify-center gap-4 font-poppins">
+    <div class="h-full w-full flex flex-col sm:flex-row sm:justify-center justify-between items-center">
+        <button class="w-20 sm:w-36 text-zinc-800" on:click={previous} on:mouseenter={animateButton}><IoIosArrowDropleftCircle /></button>
         <Selection data={subjects[index]} />
-        <button class="w-24 text-zinc-700" on:click={next} on:mouseenter={animateButton}><IoIosArrowDroprightCircle /></button>
+        <button class="w-20 sm:w-36 text-zinc-800" on:click={next} on:mouseenter={animateButton}><IoIosArrowDroprightCircle /></button>
     </div>
 </div>
