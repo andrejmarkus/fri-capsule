@@ -2,14 +2,13 @@
     import Selection from "./Selection.svelte";
     import IoIosArrowDropleftCircle from 'svelte-icons/io/IoIosArrowDropleftCircle.svelte';
     import IoIosArrowDroprightCircle from 'svelte-icons/io/IoIosArrowDroprightCircle.svelte';
-    import IoIosArrowDropdownCircle from 'svelte-icons/io/IoIosArrowDropdownCircle.svelte';
-    import IoIosArrowDropupCircle from 'svelte-icons/io/IoIosArrowDropupCircle.svelte';
 
     import anime from "animejs/lib/anime.es";
 
     export let subjects = [
-        ["Princípy IKS", "piks", "net"],
-        ["Ekonomické a právne aspekty podnikania", "eapap", "eco"]
+        ["Princípy IKS", "piks"],
+        ["Ekonomické a právne aspekty podnikania", "eapap"],
+        ["Základy ekonomickej teórie", "zet"]
     ];
 
     let index = 0;

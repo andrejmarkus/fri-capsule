@@ -17128,8 +17128,8 @@ var init__2 = __esm({
     init_shims();
     index2 = 1;
     component2 = async () => (await Promise.resolve().then(() => (init_error_svelte(), error_svelte_exports))).default;
-    file2 = "_app/immutable/entry/error.svelte.11ec1bf1.js";
-    imports2 = ["_app/immutable/entry/error.svelte.11ec1bf1.js", "_app/immutable/chunks/index.6c4db1c2.js", "_app/immutable/chunks/singletons.f5adca1f.js"];
+    file2 = "_app/immutable/entry/error.svelte.9023b506.js";
+    imports2 = ["_app/immutable/entry/error.svelte.9023b506.js", "_app/immutable/chunks/index.6c4db1c2.js", "_app/immutable/chunks/singletons.aa655171.js"];
     stylesheets2 = [];
     fonts2 = [];
   }
@@ -58408,9 +58408,9 @@ var init__4 = __esm({
     init_page();
     index4 = 3;
     component4 = async () => (await Promise.resolve().then(() => (init_page_svelte2(), page_svelte_exports2))).default;
-    file4 = "_app/immutable/entry/_slug_-page.svelte.fc20e760.js";
+    file4 = "_app/immutable/entry/_slug_-page.svelte.deb11cda.js";
     universal_id = "src/routes/[slug]/+page.js";
-    imports4 = ["_app/immutable/entry/_slug_-page.svelte.fc20e760.js", "_app/immutable/chunks/index.6c4db1c2.js", "_app/immutable/chunks/IconBase.7dff7797.js", "_app/immutable/entry/_slug_-page.js.caa4f42e.js", "_app/immutable/chunks/_page.79f100f5.js"];
+    imports4 = ["_app/immutable/entry/_slug_-page.svelte.deb11cda.js", "_app/immutable/chunks/index.6c4db1c2.js", "_app/immutable/chunks/IconBase.7dff7797.js", "_app/immutable/entry/_slug_-page.js.caa4f42e.js", "_app/immutable/chunks/_page.79f100f5.js"];
     stylesheets4 = ["_app/immutable/assets/IconBase.6bf551a2.css"];
     fonts4 = [];
   }
@@ -58580,7 +58580,7 @@ var options = {
 		<div class="error">
 			<span class="status">` + status + '</span>\n			<div class="message">\n				<h1>' + message + "</h1>\n			</div>\n		</div>\n	</body>\n</html>\n"
   },
-  version_hash: "9cmdy"
+  version_hash: "i2nhh6"
 };
 function get_hooks() {
   return {};
@@ -61821,7 +61821,7 @@ var manifest = {
   assets: /* @__PURE__ */ new Set(["capsule.png", "eco.png", "logo.png", "net.png"]),
   mimeTypes: { ".png": "image/png" },
   _: {
-    client: { "start": { "file": "_app/immutable/entry/start.c572c41d.js", "imports": ["_app/immutable/entry/start.c572c41d.js", "_app/immutable/chunks/index.6c4db1c2.js", "_app/immutable/chunks/singletons.f5adca1f.js"], "stylesheets": [], "fonts": [] }, "app": { "file": "_app/immutable/entry/app.221965df.js", "imports": ["_app/immutable/entry/app.221965df.js", "_app/immutable/chunks/index.6c4db1c2.js"], "stylesheets": [], "fonts": [] } },
+    client: { "start": { "file": "_app/immutable/entry/start.dc15f51d.js", "imports": ["_app/immutable/entry/start.dc15f51d.js", "_app/immutable/chunks/index.6c4db1c2.js", "_app/immutable/chunks/singletons.aa655171.js"], "stylesheets": [], "fonts": [] }, "app": { "file": "_app/immutable/entry/app.145f5f31.js", "imports": ["_app/immutable/entry/app.145f5f31.js", "_app/immutable/chunks/index.6c4db1c2.js"], "stylesheets": [], "fonts": [] } },
     nodes: [
       () => Promise.resolve().then(() => (init__(), __exports)),
       () => Promise.resolve().then(() => (init__2(), __exports2)),
