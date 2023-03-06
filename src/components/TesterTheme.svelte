@@ -11,15 +11,20 @@
     let questionsGuessed = 0;
 
     function onClick() {
-        isClicked = !isClicked;
+        if(isClicked) {
+            isClicked = false;
+        } else {
+            isClicked = true;
+            questionsGuessed = 0;
+        }
     }
 </script>
 
 <div class="w-full flex flex-col">
-    <div class="flex justify-between bg-slate-200 py-2 px-4 my-2 rounded-md">
-        <p >{name}</p>
+    <div class="flex justify-between bg-slate-200 to-slate-300 py-2 px-4 my-2 rounded-md drop-shadow-sm">
+        <p class="font-bold">{name}</p>
         <div class="flex items-center">
-            <p class="text-sm mx-2">{questionsGuessed}/{questionsCount}</p>
+            <p class="text-sm mx-4 font-bold">{questionsGuessed}/{questionsCount}</p>
             <button class="w-6" on:click={onClick}>
                 {#if !isClicked}
                     <IoIosArrowDown />
@@ -34,6 +39,7 @@
             {#each questions as q}
                 <TesterQuestion name={q.question} answers={q.answers} bind:questionsGuessed={questionsGuessed}/>
             {/each}
+            <p class="text-xl text-center py-5 font-bold">Tvoje skóre: {questionsGuessed}/{questionsCount}</p>
         </div>
     {/if}
 </div>

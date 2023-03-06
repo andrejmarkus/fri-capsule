@@ -63,7 +63,7 @@
     }
 </script>
 
-<div class="w-11/12 sm:w-4/5 h-1/2 sm:h-2/5 py-3 bg-gradient-to-b from-slate-200 to-slate-300 text-zinc-800 rounded-2xl drop-shadow-lg flex flex-col items-center justify-center gap-4 font-poppins">
+<div class="p-6 bg-gradient-to-b from-slate-200 to-slate-300 text-zinc-800 rounded-2xl drop-shadow-lg flex flex-col items-center justify-center gap-4 font-poppins">
     <div class="h-full w-full flex flex-col sm:flex-row sm:justify-center justify-between items-center">
         <button class="w-20 sm:w-36 text-zinc-800" on:click={previous} on:mouseenter={animateButton}><IoIosArrowDropleftCircle /></button>
         <Selection data={subjects[index]} />

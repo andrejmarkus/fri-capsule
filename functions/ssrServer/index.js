@@ -17065,9 +17065,9 @@ var init__ = __esm({
     init_shims();
     index = 0;
     component = async () => (await Promise.resolve().then(() => (init_layout_svelte(), layout_svelte_exports))).default;
-    file = "_app/immutable/entry/_layout.svelte.b4fd1834.js";
-    imports = ["_app/immutable/entry/_layout.svelte.b4fd1834.js", "_app/immutable/chunks/index.6c4db1c2.js"];
-    stylesheets = ["_app/immutable/assets/_layout.6872d480.css"];
+    file = "_app/immutable/entry/_layout.svelte.67330d97.js";
+    imports = ["_app/immutable/entry/_layout.svelte.67330d97.js", "_app/immutable/chunks/index.6c4db1c2.js"];
+    stylesheets = ["_app/immutable/assets/_layout.0610a30f.css"];
     fonts = [];
   }
 });
@@ -17128,8 +17128,8 @@ var init__2 = __esm({
     init_shims();
     index2 = 1;
     component2 = async () => (await Promise.resolve().then(() => (init_error_svelte(), error_svelte_exports))).default;
-    file2 = "_app/immutable/entry/error.svelte.bba1c2cb.js";
-    imports2 = ["_app/immutable/entry/error.svelte.bba1c2cb.js", "_app/immutable/chunks/index.6c4db1c2.js", "_app/immutable/chunks/singletons.c8198656.js"];
+    file2 = "_app/immutable/entry/error.svelte.fad26536.js";
+    imports2 = ["_app/immutable/entry/error.svelte.fad26536.js", "_app/immutable/chunks/index.6c4db1c2.js", "_app/immutable/chunks/singletons.4774bcc1.js"];
     stylesheets2 = [];
     fonts2 = [];
   }
@@ -18578,8 +18578,8 @@ var init_page_svelte = __esm({
       let { data } = $$props;
       if ($$props.data === void 0 && $$bindings.data && data !== void 0)
         $$bindings.data(data);
-      return `<div class="${"aCirc flex flex-col items-center justify-center mx-0 sm:mx-20 font-oswald font-bold"}"><a href="${"/app"}"><button><p class="${"text-zinc-800 text-2xl sm:text-6xl drop-shadow-[0.1rem_0.1rem_0.2rem_rgba(0,0,0,0.5)] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10"}">${escape(data[0])}</p>
-            <img class="${"opacity-30 h-52 w-52 sm:h-96 sm:w-96"}" src="${"/" + escape(data[2], true) + ".png"}"${add_attribute("alt", data[2], 0)}></button></a></div>`;
+      return `<div class="${"aCirc flex flex-col items-center justify-center mx-0 sm:mx-20 font-oswald font-bold"}"><a href="${"/app"}"><button><p class="${"text-zinc-800 text-2xl lg:text-6xl sm:text-4xl w-full drop-shadow-[0.15rem_0.15rem_0.15rem_rgba(0,0,0,0.5)] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10"}">${escape(data[0])}</p>
+            <img class="${"opacity-30 h-52 w-52 sm:h-72 sm:w-72 lg:h-96 lg:w-96"}" src="${"/" + escape(data[2], true) + ".png"}"${add_attribute("alt", data[2], 0)}></button></a></div>`;
     });
     IoIosArrowDropleftCircle = create_ssr_component(($$result, $$props, $$bindings, slots) => {
       return `${validate_component(IconBase, "IconBase").$$render($$result, Object.assign({}, { viewBox: "0 0 512 512" }, $$props), {}, {
@@ -18603,13 +18603,13 @@ var init_page_svelte = __esm({
       let index5 = 0;
       if ($$props.subjects === void 0 && $$bindings.subjects && subjects !== void 0)
         $$bindings.subjects(subjects);
-      return `<div class="${"w-11/12 sm:w-4/5 h-1/2 sm:h-2/5 py-3 bg-gradient-to-b from-slate-200 to-slate-300 text-zinc-800 rounded-2xl drop-shadow-lg flex flex-col items-center justify-center gap-4 font-poppins"}"><div class="${"h-full w-full flex flex-col sm:flex-row sm:justify-center justify-between items-center"}"><button class="${"w-20 sm:w-36 text-zinc-800"}">${validate_component(IoIosArrowDropleftCircle, "IoIosArrowDropleftCircle").$$render($$result, {}, {}, {})}</button>
+      return `<div class="${"p-6 bg-gradient-to-b from-slate-200 to-slate-300 text-zinc-800 rounded-2xl drop-shadow-lg flex flex-col items-center justify-center gap-4 font-poppins"}"><div class="${"h-full w-full flex flex-col sm:flex-row sm:justify-center justify-between items-center"}"><button class="${"w-20 sm:w-36 text-zinc-800"}">${validate_component(IoIosArrowDropleftCircle, "IoIosArrowDropleftCircle").$$render($$result, {}, {}, {})}</button>
         ${validate_component(Selection, "Selection").$$render($$result, { data: subjects[index5] }, {}, {})}
         <button class="${"w-20 sm:w-36 text-zinc-800"}">${validate_component(IoIosArrowDroprightCircle, "IoIosArrowDroprightCircle").$$render($$result, {}, {}, {})}</button></div></div>`;
     });
     Page = create_ssr_component(($$result, $$props, $$bindings, slots) => {
       return `${validate_component(Navigation, "Navigation").$$render($$result, {}, {}, {})}
-<section class="${"h-screen bg-gradient-to-b from-green-600 via-emerald-600 to-emerald-600"}"><div class="${"h-full max-w-screen-xl mx-auto flex flex-col justify-center items-center"}"><p class="${"mb-16 text-slate-200 drop-shadow-lg font-oswald font-bold text-4xl sm:text-8xl"}">VYBER SI PREDMET</p>
+<section class="${"h-screen bg-gradient-to-b from-green-600 via-emerald-600 to-emerald-600"}"><div class="${"h-full md:max-w-screen-xl sm:max-w-screen-md mx-auto flex flex-col justify-center items-center"}"><p class="${"mb-8 text-slate-200 drop-shadow-lg font-oswald font-bold text-4xl sm:text-7xl lg:text-8xl text-center"}">VYBER SI PREDMET</p>
         ${validate_component(SelectionBox, "SelectionBox").$$render($$result, {}, {}, {})}</div></section>`;
     });
   }
@@ -18631,8 +18631,8 @@ var init__3 = __esm({
     init_shims();
     index3 = 2;
     component3 = async () => (await Promise.resolve().then(() => (init_page_svelte(), page_svelte_exports))).default;
-    file3 = "_app/immutable/entry/_page.svelte.d6ecea81.js";
-    imports3 = ["_app/immutable/entry/_page.svelte.d6ecea81.js", "_app/immutable/chunks/index.6c4db1c2.js", "_app/immutable/chunks/IconBase.7dff7797.js"];
+    file3 = "_app/immutable/entry/_page.svelte.1262888b.js";
+    imports3 = ["_app/immutable/entry/_page.svelte.1262888b.js", "_app/immutable/chunks/index.6c4db1c2.js", "_app/immutable/chunks/IconBase.7dff7797.js"];
     stylesheets3 = ["_app/immutable/assets/IconBase.6bf551a2.css"];
     fonts3 = [];
   }
@@ -58309,7 +58309,7 @@ var init_page_svelte2 = __esm({
     getAnalytics(app);
     db = getFirestore(app);
     TesterBox = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-      return `<div class="${"px-5 py-3 bg-white rounded-md font-poppins"}">${slots.default ? slots.default({}) : ``}</div>`;
+      return `<div class="${"px-5 py-3 mx-3 xl:mx-0 bg-gradient-to-b from-white to-slate-50 rounded-md drop-shadow-lg"}">${slots.default ? slots.default({}) : ``}</div>`;
     });
     IoIosArrowDown = create_ssr_component(($$result, $$props, $$bindings, slots) => {
       return `${validate_component(IconBase, "IconBase").$$render($$result, Object.assign({}, { viewBox: "0 0 512 512" }, $$props), {}, {
@@ -58331,8 +58331,8 @@ var init_page_svelte2 = __esm({
       let $$rendered;
       do {
         $$settled = true;
-        $$rendered = `<div class="${"w-full flex flex-col"}"><div class="${"flex justify-between bg-slate-200 py-2 px-4 my-2 rounded-md"}"><p>${escape(name6)}</p>
-        <div class="${"flex items-center"}"><p class="${"text-sm mx-2"}">${escape(questionsGuessed)}/${escape(questionsCount)}</p>
+        $$rendered = `<div class="${"w-full flex flex-col"}"><div class="${"flex justify-between bg-slate-200 to-slate-300 py-2 px-4 my-2 rounded-md drop-shadow-sm"}"><p class="${"font-bold"}">${escape(name6)}</p>
+        <div class="${"flex items-center"}"><p class="${"text-sm mx-4 font-bold"}">${escape(questionsGuessed)}/${escape(questionsCount)}</p>
             <button class="${"w-6"}">${`${validate_component(IoIosArrowDown, "IoIosArrowDown").$$render($$result, {}, {}, {})}`}</button></div></div>
     ${``}</div>`;
       } while (!$$settled);
@@ -58349,7 +58349,7 @@ var init_page_svelte2 = __esm({
         return res;
       }
       return `${validate_component(Navigation, "Navigation").$$render($$result, {}, {}, {})}
-<section class="${"min-h-screen bg-gradient-to-b from-green-600 via-emerald-600 to-emerald-600 flex flex-col text-zinc-800"}"><div class="${"mt-16 h-full max-w-screen-xl w-full px-2 sm:px-0 mx-auto"}">${function(__value) {
+<section class="${"min-h-screen bg-gradient-to-b from-green-600 via-emerald-600 to-emerald-600 flex flex-col text-zinc-800 font-noto-sans"}"><div class="${"mt-16 h-full max-w-screen-xl w-full px-2 sm:px-0 mx-auto"}">${function(__value) {
         if (is_promise(__value)) {
           __value.then(null, noop);
           return ``;
@@ -58386,8 +58386,8 @@ var init__4 = __esm({
     init_shims();
     index4 = 3;
     component4 = async () => (await Promise.resolve().then(() => (init_page_svelte2(), page_svelte_exports2))).default;
-    file4 = "_app/immutable/entry/app-page.svelte.3262b300.js";
-    imports4 = ["_app/immutable/entry/app-page.svelte.3262b300.js", "_app/immutable/chunks/index.6c4db1c2.js", "_app/immutable/chunks/IconBase.7dff7797.js"];
+    file4 = "_app/immutable/entry/app-page.svelte.e90b9131.js";
+    imports4 = ["_app/immutable/entry/app-page.svelte.e90b9131.js", "_app/immutable/chunks/index.6c4db1c2.js", "_app/immutable/chunks/IconBase.7dff7797.js"];
     stylesheets4 = ["_app/immutable/assets/IconBase.6bf551a2.css"];
     fonts4 = [];
   }
@@ -58509,7 +58509,7 @@ var options = {
   root: Root,
   service_worker: false,
   templates: {
-    app: ({ head, body, assets: assets2, nonce, env }) => '<!DOCTYPE html>\n<html lang="en">\n	<head>\n		<meta charset="utf-8" />\n		<link rel="icon" href="' + assets2 + '/capsule.png" />\n		<title>FRI Capsule | AIO tester</title>\n		<meta name="viewport" content="width=device-width" />\n		' + head + '\n	</head>\n	<body data-sveltekit-preload-data="hover">\n		<div style="display: contents">' + body + "</div>\n	</body>\n</html>\n",
+    app: ({ head, body, assets: assets2, nonce, env }) => '<!DOCTYPE html>\n<html lang="en">\n	<head>\n		<meta charset="utf-8" />\n		<link rel="icon" href="' + assets2 + '/capsule.png" />\n		<title>FRI Capsule | AIO tester</title>\n		<meta name="viewport" content="width=device-width" />\n		<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4289147550494217" crossorigin="anonymous"></script>\n		' + head + '\n	</head>\n	<body data-sveltekit-preload-data="hover">\n		<div style="display: contents">' + body + "</div>\n	</body>\n</html>\n",
     error: ({ status, message }) => '<!DOCTYPE html>\n<html lang="en">\n	<head>\n		<meta charset="utf-8" />\n		<title>' + message + `</title>
 
 		<style>
@@ -58557,7 +58557,7 @@ var options = {
 		<div class="error">
 			<span class="status">` + status + '</span>\n			<div class="message">\n				<h1>' + message + "</h1>\n			</div>\n		</div>\n	</body>\n</html>\n"
   },
-  version_hash: "1njfod0"
+  version_hash: "7g1wgv"
 };
 function get_hooks() {
   return {};
@@ -61798,7 +61798,7 @@ var manifest = {
   assets: /* @__PURE__ */ new Set(["capsule.png", "eco.png", "logo.png", "net.png"]),
   mimeTypes: { ".png": "image/png" },
   _: {
-    client: { "start": { "file": "_app/immutable/entry/start.b6f07a5a.js", "imports": ["_app/immutable/entry/start.b6f07a5a.js", "_app/immutable/chunks/index.6c4db1c2.js", "_app/immutable/chunks/singletons.c8198656.js"], "stylesheets": [], "fonts": [] }, "app": { "file": "_app/immutable/entry/app.021c51b3.js", "imports": ["_app/immutable/entry/app.021c51b3.js", "_app/immutable/chunks/index.6c4db1c2.js"], "stylesheets": [], "fonts": [] } },
+    client: { "start": { "file": "_app/immutable/entry/start.2945b759.js", "imports": ["_app/immutable/entry/start.2945b759.js", "_app/immutable/chunks/index.6c4db1c2.js", "_app/immutable/chunks/singletons.4774bcc1.js"], "stylesheets": [], "fonts": [] }, "app": { "file": "_app/immutable/entry/app.e58e5ed6.js", "imports": ["_app/immutable/entry/app.e58e5ed6.js", "_app/immutable/chunks/index.6c4db1c2.js"], "stylesheets": [], "fonts": [] } },
     nodes: [
       () => Promise.resolve().then(() => (init__(), __exports)),
       () => Promise.resolve().then(() => (init__2(), __exports2)),
