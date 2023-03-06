@@ -17128,8 +17128,8 @@ var init__2 = __esm({
     init_shims();
     index2 = 1;
     component2 = async () => (await Promise.resolve().then(() => (init_error_svelte(), error_svelte_exports))).default;
-    file2 = "_app/immutable/entry/error.svelte.fad26536.js";
-    imports2 = ["_app/immutable/entry/error.svelte.fad26536.js", "_app/immutable/chunks/index.6c4db1c2.js", "_app/immutable/chunks/singletons.4774bcc1.js"];
+    file2 = "_app/immutable/entry/error.svelte.11ec1bf1.js";
+    imports2 = ["_app/immutable/entry/error.svelte.11ec1bf1.js", "_app/immutable/chunks/index.6c4db1c2.js", "_app/immutable/chunks/singletons.f5adca1f.js"];
     stylesheets2 = [];
     fonts2 = [];
   }
@@ -18578,7 +18578,7 @@ var init_page_svelte = __esm({
       let { data } = $$props;
       if ($$props.data === void 0 && $$bindings.data && data !== void 0)
         $$bindings.data(data);
-      return `<div class="${"aCirc flex flex-col items-center justify-center mx-0 sm:mx-20 font-oswald font-bold"}"><a href="${"/app"}"><button><p class="${"text-zinc-800 text-2xl lg:text-6xl sm:text-4xl w-full drop-shadow-[0.15rem_0.15rem_0.15rem_rgba(0,0,0,0.5)] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10"}">${escape(data[0])}</p>
+      return `<div class="${"aCirc flex flex-col items-center justify-center mx-0 sm:mx-20 font-oswald font-bold"}"><a href="${"/" + escape(data[1], true)}"><button><p class="${"text-zinc-800 text-2xl lg:text-6xl sm:text-4xl w-full drop-shadow-[0.15rem_0.15rem_0.15rem_rgba(0,0,0,0.5)] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10"}">${escape(data[0])}</p>
             <img class="${"opacity-30 h-52 w-52 sm:h-72 sm:w-72 lg:h-96 lg:w-96"}" src="${"/" + escape(data[2], true) + ".png"}"${add_attribute("alt", data[2], 0)}></button></a></div>`;
     });
     IoIosArrowDropleftCircle = create_ssr_component(($$result, $$props, $$bindings, slots) => {
@@ -18631,10 +18631,26 @@ var init__3 = __esm({
     init_shims();
     index3 = 2;
     component3 = async () => (await Promise.resolve().then(() => (init_page_svelte(), page_svelte_exports))).default;
-    file3 = "_app/immutable/entry/_page.svelte.1262888b.js";
-    imports3 = ["_app/immutable/entry/_page.svelte.1262888b.js", "_app/immutable/chunks/index.6c4db1c2.js", "_app/immutable/chunks/IconBase.7dff7797.js"];
+    file3 = "_app/immutable/entry/_page.svelte.ff89d2d9.js";
+    imports3 = ["_app/immutable/entry/_page.svelte.ff89d2d9.js", "_app/immutable/chunks/index.6c4db1c2.js", "_app/immutable/chunks/IconBase.7dff7797.js"];
     stylesheets3 = ["_app/immutable/assets/IconBase.6bf551a2.css"];
     fonts3 = [];
+  }
+});
+
+// .svelte-kit/output/server/entries/pages/_slug_/_page.js
+var page_exports = {};
+__export(page_exports, {
+  load: () => load
+});
+function load({ params }) {
+  return {
+    title: params.slug
+  };
+}
+var init_page = __esm({
+  ".svelte-kit/output/server/entries/pages/_slug_/_page.js"() {
+    init_shims();
   }
 });
 
@@ -28674,14 +28690,14 @@ var require_root = __commonJS({
     Root2.prototype.fetch = util.fetch;
     function SYNC() {
     }
-    Root2.prototype.load = function load(filename, options2, callback) {
+    Root2.prototype.load = function load2(filename, options2, callback) {
       if (typeof options2 === "function") {
         callback = options2;
         options2 = void 0;
       }
       var self2 = this;
       if (!callback)
-        return util.asPromise(load, self2, filename, options2);
+        return util.asPromise(load2, self2, filename, options2);
       var sync = callback === SYNC;
       function finish(err, root) {
         if (!callback)
@@ -29277,7 +29293,7 @@ var require_index_light = __commonJS({
     init_shims();
     var protobuf = module2.exports = require_index_minimal();
     protobuf.build = "light";
-    function load(filename, root, callback) {
+    function load2(filename, root, callback) {
       if (typeof root === "function") {
         callback = root;
         root = new protobuf.Root();
@@ -29285,7 +29301,7 @@ var require_index_light = __commonJS({
         root = new protobuf.Root();
       return root.load(filename, callback);
     }
-    protobuf.load = load;
+    protobuf.load = load2;
     function loadSync(filename, root) {
       if (!root)
         root = new protobuf.Root();
@@ -33215,12 +33231,12 @@ var require_src2 = __commonJS({
       root.resolveAll();
       return createPackageDefinition(root, options2);
     }
-    function load(filename, options2) {
+    function load2(filename, options2) {
       return (0, util_1.loadProtosWithOptions)(filename, options2).then((loadedRoot) => {
         return createPackageDefinition(loadedRoot, options2);
       });
     }
-    exports2.load = load;
+    exports2.load = load2;
     function loadSync(filename, options2) {
       const loadedRoot = (0, util_1.loadProtosWithOptionsSync)(filename, options2);
       return createPackageDefinition(loadedRoot, options2);
@@ -41260,14 +41276,14 @@ var require_root2 = __commonJS({
     Root2.prototype.fetch = util.fetch;
     function SYNC() {
     }
-    Root2.prototype.load = function load(filename, options2, callback) {
+    Root2.prototype.load = function load2(filename, options2, callback) {
       if (typeof options2 === "function") {
         callback = options2;
         options2 = void 0;
       }
       var self2 = this;
       if (!callback)
-        return util.asPromise(load, self2, filename, options2);
+        return util.asPromise(load2, self2, filename, options2);
       var sync = callback === SYNC;
       function finish(err, root) {
         if (!callback)
@@ -41849,7 +41865,7 @@ var require_index_light2 = __commonJS({
     init_shims();
     var protobuf = module2.exports = require_index_minimal2();
     protobuf.build = "light";
-    function load(filename, root, callback) {
+    function load2(filename, root, callback) {
       if (typeof root === "function") {
         callback = root;
         root = new protobuf.Root();
@@ -41857,7 +41873,7 @@ var require_index_light2 = __commonJS({
         root = new protobuf.Root();
       return root.load(filename, callback);
     }
-    protobuf.load = load;
+    protobuf.load = load2;
     function loadSync(filename, root) {
       if (!root)
         root = new protobuf.Root();
@@ -44883,12 +44899,12 @@ var require_src5 = __commonJS({
       root.resolveAll();
       return createPackageDefinition(root, options2);
     }
-    function load(filename, options2) {
+    function load2(filename, options2) {
       return util_1.loadProtosWithOptions(filename, options2).then((loadedRoot) => {
         return createPackageDefinition(loadedRoot, options2);
       });
     }
-    exports2.load = load;
+    exports2.load = load2;
     function loadSync(filename, options2) {
       const loadedRoot = util_1.loadProtosWithOptionsSync(filename, options2);
       return createPackageDefinition(loadedRoot, options2);
@@ -58282,14 +58298,14 @@ var init_dist3 = __esm({
   }
 });
 
-// .svelte-kit/output/server/entries/pages/app/_page.svelte.js
+// .svelte-kit/output/server/entries/pages/_slug_/_page.svelte.js
 var page_svelte_exports2 = {};
 __export(page_svelte_exports2, {
   default: () => Page2
 });
 var firebaseConfig, app, db, TesterBox, IoIosArrowDown, TesterTheme, Page2;
 var init_page_svelte2 = __esm({
-  ".svelte-kit/output/server/entries/pages/app/_page.svelte.js"() {
+  ".svelte-kit/output/server/entries/pages/_slug_/_page.svelte.js"() {
     init_shims();
     init_chunks();
     init_IconBase();
@@ -58339,6 +58355,7 @@ var init_page_svelte2 = __esm({
       return $$rendered;
     });
     Page2 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+      let { data } = $$props;
       async function getData() {
         const docRef = collection(db, "subjects");
         const docSnap = await getDocs(docRef);
@@ -58346,19 +58363,21 @@ var init_page_svelte2 = __esm({
         docSnap.forEach((d) => {
           res.push(d.data());
         });
-        return res;
+        return res[0];
       }
+      if ($$props.data === void 0 && $$bindings.data && data !== void 0)
+        $$bindings.data(data);
       return `${validate_component(Navigation, "Navigation").$$render($$result, {}, {}, {})}
 <section class="${"min-h-screen bg-gradient-to-b from-green-600 via-emerald-600 to-emerald-600 flex flex-col text-zinc-800 font-noto-sans"}"><div class="${"mt-16 h-full max-w-screen-xl w-full px-2 sm:px-0 mx-auto"}">${function(__value) {
         if (is_promise(__value)) {
           __value.then(null, noop);
           return ``;
         }
-        return function(data) {
+        return function(questions) {
           return `
             ${validate_component(TesterBox, "TesterBox").$$render($$result, {}, {}, {
             default: () => {
-              return `${each(data[0].net, (d) => {
+              return `${each(questions[data.title], (d) => {
                 return `${validate_component(TesterTheme, "TesterTheme").$$render($$result, { name: d.name, questions: d.questions }, {}, {})}`;
               })}`;
             }
@@ -58378,16 +58397,20 @@ __export(__exports4, {
   fonts: () => fonts4,
   imports: () => imports4,
   index: () => index4,
-  stylesheets: () => stylesheets4
+  stylesheets: () => stylesheets4,
+  universal: () => page_exports,
+  universal_id: () => universal_id
 });
-var index4, component4, file4, imports4, stylesheets4, fonts4;
+var index4, component4, file4, universal_id, imports4, stylesheets4, fonts4;
 var init__4 = __esm({
   ".svelte-kit/output/server/nodes/3.js"() {
     init_shims();
+    init_page();
     index4 = 3;
     component4 = async () => (await Promise.resolve().then(() => (init_page_svelte2(), page_svelte_exports2))).default;
-    file4 = "_app/immutable/entry/app-page.svelte.e90b9131.js";
-    imports4 = ["_app/immutable/entry/app-page.svelte.e90b9131.js", "_app/immutable/chunks/index.6c4db1c2.js", "_app/immutable/chunks/IconBase.7dff7797.js"];
+    file4 = "_app/immutable/entry/_slug_-page.svelte.fc20e760.js";
+    universal_id = "src/routes/[slug]/+page.js";
+    imports4 = ["_app/immutable/entry/_slug_-page.svelte.fc20e760.js", "_app/immutable/chunks/index.6c4db1c2.js", "_app/immutable/chunks/IconBase.7dff7797.js", "_app/immutable/entry/_slug_-page.js.caa4f42e.js", "_app/immutable/chunks/_page.79f100f5.js"];
     stylesheets4 = ["_app/immutable/assets/IconBase.6bf551a2.css"];
     fonts4 = [];
   }
@@ -58557,7 +58580,7 @@ var options = {
 		<div class="error">
 			<span class="status">` + status + '</span>\n			<div class="message">\n				<h1>' + message + "</h1>\n			</div>\n		</div>\n	</body>\n</html>\n"
   },
-  version_hash: "7g1wgv"
+  version_hash: "9cmdy"
 };
 function get_hooks() {
   return {};
@@ -61798,7 +61821,7 @@ var manifest = {
   assets: /* @__PURE__ */ new Set(["capsule.png", "eco.png", "logo.png", "net.png"]),
   mimeTypes: { ".png": "image/png" },
   _: {
-    client: { "start": { "file": "_app/immutable/entry/start.2945b759.js", "imports": ["_app/immutable/entry/start.2945b759.js", "_app/immutable/chunks/index.6c4db1c2.js", "_app/immutable/chunks/singletons.4774bcc1.js"], "stylesheets": [], "fonts": [] }, "app": { "file": "_app/immutable/entry/app.e58e5ed6.js", "imports": ["_app/immutable/entry/app.e58e5ed6.js", "_app/immutable/chunks/index.6c4db1c2.js"], "stylesheets": [], "fonts": [] } },
+    client: { "start": { "file": "_app/immutable/entry/start.c572c41d.js", "imports": ["_app/immutable/entry/start.c572c41d.js", "_app/immutable/chunks/index.6c4db1c2.js", "_app/immutable/chunks/singletons.f5adca1f.js"], "stylesheets": [], "fonts": [] }, "app": { "file": "_app/immutable/entry/app.221965df.js", "imports": ["_app/immutable/entry/app.221965df.js", "_app/immutable/chunks/index.6c4db1c2.js"], "stylesheets": [], "fonts": [] } },
     nodes: [
       () => Promise.resolve().then(() => (init__(), __exports)),
       () => Promise.resolve().then(() => (init__2(), __exports2)),
@@ -61814,9 +61837,9 @@ var manifest = {
         endpoint: null
       },
       {
-        id: "/app",
-        pattern: /^\/app\/?$/,
-        params: [],
+        id: "/[slug]",
+        pattern: /^\/([^/]+?)\/?$/,
+        params: [{ "name": "slug", "optional": false, "rest": false, "chained": false }],
         page: { layouts: [0], errors: [1], leaf: 3 },
         endpoint: null
       }

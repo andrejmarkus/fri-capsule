@@ -32,7 +32,7 @@
 
 <div>
     <button class="w-full text-left px-4 py-1" on:click={onClick}>
-        {#if isCorrect && isClicked}
+        {#if isCorrect && (isClicked || isUsed)}
             <p class="bg-green-300 shadow-inner px-3 py-1 rounded-md">{name}</p>
         {:else if !isCorrect && isClicked}
             <p class="bg-red-300 shadow-inner px-3 py-1 rounded-md">{name}</p>  
