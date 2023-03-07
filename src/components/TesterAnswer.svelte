@@ -23,7 +23,6 @@
                 
             }
             if(answersCorrect >= correctCount) {
-                console.log(answersCorrect, correctCount)
                 questionsGuessed++;
             }
         }

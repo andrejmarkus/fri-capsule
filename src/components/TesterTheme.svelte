@@ -21,10 +21,10 @@
 </script>
 
 <div class="w-full flex flex-col">
-    <div class="flex justify-between bg-slate-200 to-slate-300 py-2 px-4 my-2 rounded-md drop-shadow-sm">
-        <p class="font-bold">{name}</p>
+    <div class="{isClicked ? 'sticky top-16' : ''} {questionsGuessed >= questionsCount ? 'bg-green-300' : 'bg-slate-200'} flex justify-between items-center py-2 px-4 my-2 rounded-md drop-shadow-sm">
+        <p class="font-bold text-base sm:text-lg">{name}</p>
         <div class="flex items-center">
-            <p class="text-sm mx-4 font-bold">{questionsGuessed}/{questionsCount}</p>
+            <p class="text-md mx-4 font-bold bg-slate-300 px-2 py-1 rounded-md">{questionsGuessed}/{questionsCount}</p>
             <button class="w-6" on:click={onClick}>
                 {#if !isClicked}
                     <IoIosArrowDown />

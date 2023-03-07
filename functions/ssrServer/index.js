@@ -17065,9 +17065,9 @@ var init__ = __esm({
     init_shims();
     index = 0;
     component = async () => (await Promise.resolve().then(() => (init_layout_svelte(), layout_svelte_exports))).default;
-    file = "_app/immutable/entry/_layout.svelte.67330d97.js";
-    imports = ["_app/immutable/entry/_layout.svelte.67330d97.js", "_app/immutable/chunks/index.6c4db1c2.js"];
-    stylesheets = ["_app/immutable/assets/_layout.0610a30f.css"];
+    file = "_app/immutable/entry/_layout.svelte.e289b656.js";
+    imports = ["_app/immutable/entry/_layout.svelte.e289b656.js", "_app/immutable/chunks/index.6c4db1c2.js"];
+    stylesheets = ["_app/immutable/assets/_layout.e1d225eb.css"];
     fonts = [];
   }
 });
@@ -17128,8 +17128,8 @@ var init__2 = __esm({
     init_shims();
     index2 = 1;
     component2 = async () => (await Promise.resolve().then(() => (init_error_svelte(), error_svelte_exports))).default;
-    file2 = "_app/immutable/entry/error.svelte.9023b506.js";
-    imports2 = ["_app/immutable/entry/error.svelte.9023b506.js", "_app/immutable/chunks/index.6c4db1c2.js", "_app/immutable/chunks/singletons.aa655171.js"];
+    file2 = "_app/immutable/entry/error.svelte.79c3cbf9.js";
+    imports2 = ["_app/immutable/entry/error.svelte.79c3cbf9.js", "_app/immutable/chunks/index.6c4db1c2.js", "_app/immutable/chunks/singletons.9f62b555.js"];
     stylesheets2 = [];
     fonts2 = [];
   }
@@ -18579,7 +18579,7 @@ var init_page_svelte = __esm({
       if ($$props.data === void 0 && $$bindings.data && data !== void 0)
         $$bindings.data(data);
       return `<div class="${"aCirc flex flex-col items-center justify-center mx-0 sm:mx-20 font-oswald font-bold"}"><a href="${"/" + escape(data[1], true)}"><button><p class="${"text-zinc-800 text-2xl lg:text-6xl sm:text-4xl w-full drop-shadow-[0.15rem_0.15rem_0.15rem_rgba(0,0,0,0.5)] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10"}">${escape(data[0])}</p>
-            <img class="${"opacity-30 h-52 w-52 sm:h-72 sm:w-72 lg:h-96 lg:w-96"}" src="${"/" + escape(data[2], true) + ".png"}"${add_attribute("alt", data[2], 0)}></button></a></div>`;
+            <img class="${"opacity-30 h-52 w-52 sm:h-72 sm:w-72 lg:h-96 lg:w-96"}" src="${"/" + escape(data[1], true) + ".png"}"${add_attribute("alt", data[1], 0)}></button></a></div>`;
     });
     IoIosArrowDropleftCircle = create_ssr_component(($$result, $$props, $$bindings, slots) => {
       return `${validate_component(IconBase, "IconBase").$$render($$result, Object.assign({}, { viewBox: "0 0 512 512" }, $$props), {}, {
@@ -18597,8 +18597,9 @@ var init_page_svelte = __esm({
     });
     SelectionBox = create_ssr_component(($$result, $$props, $$bindings, slots) => {
       let { subjects = [
-        ["Princ\xEDpy IKS", "piks", "net"],
-        ["Ekonomick\xE9 a pr\xE1vne aspekty podnikania", "eapap", "eco"]
+        ["Princ\xEDpy IKS", "piks"],
+        ["Ekonomick\xE9 a pr\xE1vne aspekty podnikania", "eapap"],
+        ["Z\xE1klady ekonomickej te\xF3rie", "zet"]
       ] } = $$props;
       let index5 = 0;
       if ($$props.subjects === void 0 && $$bindings.subjects && subjects !== void 0)
@@ -18631,8 +18632,8 @@ var init__3 = __esm({
     init_shims();
     index3 = 2;
     component3 = async () => (await Promise.resolve().then(() => (init_page_svelte(), page_svelte_exports))).default;
-    file3 = "_app/immutable/entry/_page.svelte.ff89d2d9.js";
-    imports3 = ["_app/immutable/entry/_page.svelte.ff89d2d9.js", "_app/immutable/chunks/index.6c4db1c2.js", "_app/immutable/chunks/IconBase.7dff7797.js"];
+    file3 = "_app/immutable/entry/_page.svelte.6378bbed.js";
+    imports3 = ["_app/immutable/entry/_page.svelte.6378bbed.js", "_app/immutable/chunks/index.6c4db1c2.js", "_app/immutable/chunks/IconBase.7dff7797.js"];
     stylesheets3 = ["_app/immutable/assets/IconBase.6bf551a2.css"];
     fonts3 = [];
   }
@@ -58347,8 +58348,11 @@ var init_page_svelte2 = __esm({
       let $$rendered;
       do {
         $$settled = true;
-        $$rendered = `<div class="${"w-full flex flex-col"}"><div class="${"flex justify-between bg-slate-200 to-slate-300 py-2 px-4 my-2 rounded-md drop-shadow-sm"}"><p class="${"font-bold"}">${escape(name6)}</p>
-        <div class="${"flex items-center"}"><p class="${"text-sm mx-4 font-bold"}">${escape(questionsGuessed)}/${escape(questionsCount)}</p>
+        $$rendered = `<div class="${"w-full flex flex-col"}"><div class="${escape("", true) + " " + escape(
+          questionsGuessed >= questionsCount ? "bg-green-300" : "bg-slate-200",
+          true
+        ) + " flex justify-between items-center py-2 px-4 my-2 rounded-md drop-shadow-sm"}"><p class="${"font-bold text-base sm:text-lg"}">${escape(name6)}</p>
+        <div class="${"flex items-center"}"><p class="${"text-md mx-4 font-bold bg-slate-300 px-2 py-1 rounded-md"}">${escape(questionsGuessed)}/${escape(questionsCount)}</p>
             <button class="${"w-6"}">${`${validate_component(IoIosArrowDown, "IoIosArrowDown").$$render($$result, {}, {}, {})}`}</button></div></div>
     ${``}</div>`;
       } while (!$$settled);
@@ -58408,9 +58412,9 @@ var init__4 = __esm({
     init_page();
     index4 = 3;
     component4 = async () => (await Promise.resolve().then(() => (init_page_svelte2(), page_svelte_exports2))).default;
-    file4 = "_app/immutable/entry/_slug_-page.svelte.deb11cda.js";
+    file4 = "_app/immutable/entry/_slug_-page.svelte.b93b5573.js";
     universal_id = "src/routes/[slug]/+page.js";
-    imports4 = ["_app/immutable/entry/_slug_-page.svelte.deb11cda.js", "_app/immutable/chunks/index.6c4db1c2.js", "_app/immutable/chunks/IconBase.7dff7797.js", "_app/immutable/entry/_slug_-page.js.caa4f42e.js", "_app/immutable/chunks/_page.79f100f5.js"];
+    imports4 = ["_app/immutable/entry/_slug_-page.svelte.b93b5573.js", "_app/immutable/chunks/index.6c4db1c2.js", "_app/immutable/chunks/IconBase.7dff7797.js", "_app/immutable/entry/_slug_-page.js.caa4f42e.js", "_app/immutable/chunks/_page.79f100f5.js"];
     stylesheets4 = ["_app/immutable/assets/IconBase.6bf551a2.css"];
     fonts4 = [];
   }
@@ -58580,7 +58584,7 @@ var options = {
 		<div class="error">
 			<span class="status">` + status + '</span>\n			<div class="message">\n				<h1>' + message + "</h1>\n			</div>\n		</div>\n	</body>\n</html>\n"
   },
-  version_hash: "i2nhh6"
+  version_hash: "1h6wdbq"
 };
 function get_hooks() {
   return {};
@@ -61818,10 +61822,10 @@ init_shims();
 var manifest = {
   appDir: "_app",
   appPath: "_app",
-  assets: /* @__PURE__ */ new Set(["capsule.png", "eco.png", "logo.png", "net.png"]),
+  assets: /* @__PURE__ */ new Set(["capsule.png", "eapap.png", "logo.png", "piks.png", "zet.png"]),
   mimeTypes: { ".png": "image/png" },
   _: {
-    client: { "start": { "file": "_app/immutable/entry/start.dc15f51d.js", "imports": ["_app/immutable/entry/start.dc15f51d.js", "_app/immutable/chunks/index.6c4db1c2.js", "_app/immutable/chunks/singletons.aa655171.js"], "stylesheets": [], "fonts": [] }, "app": { "file": "_app/immutable/entry/app.145f5f31.js", "imports": ["_app/immutable/entry/app.145f5f31.js", "_app/immutable/chunks/index.6c4db1c2.js"], "stylesheets": [], "fonts": [] } },
+    client: { "start": { "file": "_app/immutable/entry/start.7838977d.js", "imports": ["_app/immutable/entry/start.7838977d.js", "_app/immutable/chunks/index.6c4db1c2.js", "_app/immutable/chunks/singletons.9f62b555.js"], "stylesheets": [], "fonts": [] }, "app": { "file": "_app/immutable/entry/app.e2615006.js", "imports": ["_app/immutable/entry/app.e2615006.js", "_app/immutable/chunks/index.6c4db1c2.js"], "stylesheets": [], "fonts": [] } },
     nodes: [
       () => Promise.resolve().then(() => (init__(), __exports)),
       () => Promise.resolve().then(() => (init__2(), __exports2)),
