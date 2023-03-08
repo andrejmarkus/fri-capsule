@@ -10,7 +10,7 @@
     let isClicked = false;
 
     function onClick() {
-        if(!isUsed) {
+        if(!isUsed && !isClicked) {
             isClicked = true;
             answersSelected++;
 

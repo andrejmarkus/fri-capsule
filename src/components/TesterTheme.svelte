@@ -1,7 +1,7 @@
 <script>
     import IoIosArrowDown from 'svelte-icons/io/IoIosArrowDown.svelte';
     import IoIosArrowUp from 'svelte-icons/io/IoIosArrowUp.svelte';
-  import TesterQuestion from './TesterQuestion.svelte';
+    import TesterQuestion from './TesterQuestion.svelte';
 
     export let name = "";
     export let questions;

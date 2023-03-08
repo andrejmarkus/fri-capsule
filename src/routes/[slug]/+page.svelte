@@ -1,5 +1,4 @@
 <script>
-    import Navigation from "../../components/Navigation.svelte";
     import { db } from "../../firebase";
     import { collection, getDocs } from "firebase/firestore";
     import TesterBox from "../../components/TesterBox.svelte";
@@ -19,7 +18,6 @@
     }
 </script>
 
-<Navigation />
 <section class="min-h-screen bg-gradient-to-b from-green-600 via-emerald-600 to-emerald-600 flex flex-col text-zinc-800 font-noto-sans">
     <div class="mt-16 h-full max-w-screen-xl w-full px-2 sm:px-0 mx-auto">
         {#await getData() then questions}
