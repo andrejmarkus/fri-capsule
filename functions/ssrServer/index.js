@@ -4955,14 +4955,14 @@ var require_util2 = __commonJS({
               `'next' called on an object that does not implement interface ${name6} Iterator.`
             );
           }
-          const { index: index5, kind: kind2, target } = object;
+          const { index: index6, kind: kind2, target } = object;
           const values = target();
           const len = values.length;
-          if (index5 >= len) {
+          if (index6 >= len) {
             return { value: void 0, done: true };
           }
-          const pair = values[index5];
-          object.index = index5 + 1;
+          const pair = values[index6];
+          object.index = index6 + 1;
           return iteratorResult(pair, kind2);
         },
         // The class string of an iterator prototype object for a given interface is the
@@ -5374,11 +5374,11 @@ var require_webidl = __commonJS({
     };
     webidl.converters.ByteString = function(V) {
       const x = webidl.converters.DOMString(V);
-      for (let index5 = 0; index5 < x.length; index5++) {
-        const charCode = x.charCodeAt(index5);
+      for (let index6 = 0; index6 < x.length; index6++) {
+        const charCode = x.charCodeAt(index6);
         if (charCode > 255) {
           throw new TypeError(
-            `Cannot convert argument to a ByteString because the character at index ${index5} has a value of ${charCode} which is greater than 255.`
+            `Cannot convert argument to a ByteString because the character at index ${index6} has a value of ${charCode} which is greater than 255.`
           );
         }
       }
@@ -10636,8 +10636,8 @@ var require_mock_utils = __commonJS({
     function buildHeadersFromArray(headers) {
       const clone = headers.slice();
       const entries = [];
-      for (let index5 = 0; index5 < clone.length; index5 += 2) {
-        entries.push([clone[index5], clone[index5 + 1]]);
+      for (let index6 = 0; index6 < clone.length; index6 += 2) {
+        entries.push([clone[index6], clone[index6 + 1]]);
       }
       return Object.fromEntries(entries);
     }
@@ -10719,14 +10719,14 @@ var require_mock_utils = __commonJS({
       return newMockDispatch;
     }
     function deleteMockDispatch(mockDispatches, key2) {
-      const index5 = mockDispatches.findIndex((dispatch) => {
+      const index6 = mockDispatches.findIndex((dispatch) => {
         if (!dispatch.consumed) {
           return false;
         }
         return matchKey(dispatch, key2);
       });
-      if (index5 !== -1) {
-        mockDispatches.splice(index5, 1);
+      if (index6 !== -1) {
+        mockDispatches.splice(index6, 1);
       }
     }
     function buildKey(opts) {
@@ -16626,8 +16626,8 @@ function subscribe(store, ...callbacks) {
   const unsub = store.subscribe(...callbacks);
   return unsub.unsubscribe ? () => unsub.unsubscribe() : unsub;
 }
-function set_current_component(component5) {
-  current_component = component5;
+function set_current_component(component6) {
+  current_component = component6;
 }
 function get_current_component() {
   if (!current_component)
@@ -16662,13 +16662,13 @@ function each(items, fn) {
   }
   return str;
 }
-function validate_component(component5, name6) {
-  if (!component5 || !component5.$$render) {
+function validate_component(component6, name6) {
+  if (!component6 || !component6.$$render) {
     if (name6 === "svelte:component")
       name6 += " this={...}";
     throw new Error(`<${name6}> is not a valid SSR component. You may need to review your build config to ensure that dependencies are compiled, rather than imported as pre-compiled modules. Otherwise you may need to fix a <${name6}>.`);
   }
-  return component5;
+  return component6;
 }
 function create_ssr_component(fn) {
   function $$render(result, props, bindings, slots, context) {
@@ -16741,20 +16741,20 @@ var require_cookie = __commonJS({
       var obj = {};
       var opt = options2 || {};
       var dec = opt.decode || decode;
-      var index5 = 0;
-      while (index5 < str.length) {
-        var eqIdx = str.indexOf("=", index5);
+      var index6 = 0;
+      while (index6 < str.length) {
+        var eqIdx = str.indexOf("=", index6);
         if (eqIdx === -1) {
           break;
         }
-        var endIdx = str.indexOf(";", index5);
+        var endIdx = str.indexOf(";", index6);
         if (endIdx === -1) {
           endIdx = str.length;
         } else if (endIdx < eqIdx) {
-          index5 = str.lastIndexOf(";", eqIdx - 1) + 1;
+          index6 = str.lastIndexOf(";", eqIdx - 1) + 1;
           continue;
         }
-        var key2 = str.slice(index5, eqIdx).trim();
+        var key2 = str.slice(index6, eqIdx).trim();
         if (void 0 === obj[key2]) {
           var val = str.slice(eqIdx + 1, endIdx).trim();
           if (val.charCodeAt(0) === 34) {
@@ -16762,7 +16762,7 @@ var require_cookie = __commonJS({
           }
           obj[key2] = tryDecode(val, dec);
         }
-        index5 = endIdx + 1;
+        index6 = endIdx + 1;
       }
       return obj;
     }
@@ -17038,13 +17038,17 @@ var layout_svelte_exports = {};
 __export(layout_svelte_exports, {
   default: () => Layout
 });
-var Layout;
+var Navigation, Layout;
 var init_layout_svelte = __esm({
   ".svelte-kit/output/server/entries/pages/_layout.svelte.js"() {
     init_shims();
     init_chunks();
+    Navigation = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+      return `<nav class="${"bg-zinc-800 w-full font-poppins drop-shadow-md z-10 fixed flex justify-center items-center h-14"}"><a href="${"/"}"><img class="${"w-52"}" src="${"./logo.png"}" alt="${"logo"}"></a></nav>`;
+    });
     Layout = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-      return `${slots.default ? slots.default({}) : ``}`;
+      return `${validate_component(Navigation, "Navigation").$$render($$result, {}, {}, {})}
+${slots.default ? slots.default({}) : ``}`;
     });
   }
 });
@@ -17065,8 +17069,8 @@ var init__ = __esm({
     init_shims();
     index = 0;
     component = async () => (await Promise.resolve().then(() => (init_layout_svelte(), layout_svelte_exports))).default;
-    file = "_app/immutable/entry/_layout.svelte.e289b656.js";
-    imports = ["_app/immutable/entry/_layout.svelte.e289b656.js", "_app/immutable/chunks/index.6c4db1c2.js"];
+    file = "_app/immutable/entry/_layout.svelte.af38bd18.js";
+    imports = ["_app/immutable/entry/_layout.svelte.af38bd18.js", "_app/immutable/chunks/index.e0a09590.js"];
     stylesheets = ["_app/immutable/assets/_layout.e1d225eb.css"];
     fonts = [];
   }
@@ -17128,36 +17132,10 @@ var init__2 = __esm({
     init_shims();
     index2 = 1;
     component2 = async () => (await Promise.resolve().then(() => (init_error_svelte(), error_svelte_exports))).default;
-    file2 = "_app/immutable/entry/error.svelte.79c3cbf9.js";
-    imports2 = ["_app/immutable/entry/error.svelte.79c3cbf9.js", "_app/immutable/chunks/index.6c4db1c2.js", "_app/immutable/chunks/singletons.9f62b555.js"];
+    file2 = "_app/immutable/entry/error.svelte.f004cb54.js";
+    imports2 = ["_app/immutable/entry/error.svelte.f004cb54.js", "_app/immutable/chunks/index.e0a09590.js", "_app/immutable/chunks/singletons.2e9a8fec.js"];
     stylesheets2 = [];
     fonts2 = [];
-  }
-});
-
-// .svelte-kit/output/server/chunks/IconBase.js
-var Navigation, css, IconBase;
-var init_IconBase = __esm({
-  ".svelte-kit/output/server/chunks/IconBase.js"() {
-    init_shims();
-    init_chunks();
-    Navigation = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-      return `<nav class="${"bg-zinc-800 w-full font-poppins drop-shadow-md z-10 fixed flex justify-center items-center h-14"}"><a href="${"/"}"><img class="${"w-52"}" src="${"./logo.png"}" alt="${"logo"}"></a></nav>`;
-    });
-    css = {
-      code: "svg.svelte-c8tyih{stroke:currentColor;fill:currentColor;stroke-width:0;width:100%;height:auto;max-height:100%}",
-      map: null
-    };
-    IconBase = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-      let { title = null } = $$props;
-      let { viewBox } = $$props;
-      if ($$props.title === void 0 && $$bindings.title && title !== void 0)
-        $$bindings.title(title);
-      if ($$props.viewBox === void 0 && $$bindings.viewBox && viewBox !== void 0)
-        $$bindings.viewBox(viewBox);
-      $$result.css.add(css);
-      return `<svg xmlns="${"http://www.w3.org/2000/svg"}"${add_attribute("viewBox", viewBox, 0)} class="${"svelte-c8tyih"}">${title ? `<title>${escape(title)}</title>` : ``}${slots.default ? slots.default({}) : ``}</svg>`;
-    });
   }
 });
 
@@ -18169,14 +18147,14 @@ function stagger(val, params) {
       fromIndex = t - 1;
     }
     if (!values.length) {
-      for (var index5 = 0; index5 < t; index5++) {
+      for (var index6 = 0; index6 < t; index6++) {
         if (!grid) {
-          values.push(Math.abs(fromIndex - index5));
+          values.push(Math.abs(fromIndex - index6));
         } else {
           var fromX = !fromCenter ? fromIndex % grid[0] : (grid[0] - 1) / 2;
           var fromY = !fromCenter ? Math.floor(fromIndex / grid[0]) : (grid[1] - 1) / 2;
-          var toX = index5 % grid[0];
-          var toY = Math.floor(index5 / grid[0]);
+          var toX = index6 % grid[0];
+          var toY = Math.floor(index6 / grid[0]);
           var distanceX = fromX - toX;
           var distanceY = fromY - toY;
           var value = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
@@ -18562,6 +18540,29 @@ var init_anime_es = __esm({
   }
 });
 
+// .svelte-kit/output/server/chunks/IconBase.js
+var css, IconBase;
+var init_IconBase = __esm({
+  ".svelte-kit/output/server/chunks/IconBase.js"() {
+    init_shims();
+    init_chunks();
+    css = {
+      code: "svg.svelte-c8tyih{stroke:currentColor;fill:currentColor;stroke-width:0;width:100%;height:auto;max-height:100%}",
+      map: null
+    };
+    IconBase = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+      let { title = null } = $$props;
+      let { viewBox } = $$props;
+      if ($$props.title === void 0 && $$bindings.title && title !== void 0)
+        $$bindings.title(title);
+      if ($$props.viewBox === void 0 && $$bindings.viewBox && viewBox !== void 0)
+        $$bindings.viewBox(viewBox);
+      $$result.css.add(css);
+      return `<svg xmlns="${"http://www.w3.org/2000/svg"}"${add_attribute("viewBox", viewBox, 0)} class="${"svelte-c8tyih"}">${title ? `<title>${escape(title)}</title>` : ``}${slots.default ? slots.default({}) : ``}</svg>`;
+    });
+  }
+});
+
 // .svelte-kit/output/server/entries/pages/_page.svelte.js
 var page_svelte_exports = {};
 __export(page_svelte_exports, {
@@ -18572,8 +18573,8 @@ var init_page_svelte = __esm({
   ".svelte-kit/output/server/entries/pages/_page.svelte.js"() {
     init_shims();
     init_chunks();
-    init_IconBase();
     init_anime_es();
+    init_IconBase();
     Selection = create_ssr_component(($$result, $$props, $$bindings, slots) => {
       let { data } = $$props;
       if ($$props.data === void 0 && $$bindings.data && data !== void 0)
@@ -18601,16 +18602,15 @@ var init_page_svelte = __esm({
         ["Ekonomick\xE9 a pr\xE1vne aspekty podnikania", "eapap"],
         ["Z\xE1klady ekonomickej te\xF3rie", "zet"]
       ] } = $$props;
-      let index5 = 0;
+      let index6 = 0;
       if ($$props.subjects === void 0 && $$bindings.subjects && subjects !== void 0)
         $$bindings.subjects(subjects);
       return `<div class="${"p-6 bg-gradient-to-b from-slate-200 to-slate-300 text-zinc-800 rounded-2xl drop-shadow-lg flex flex-col items-center justify-center gap-4 font-poppins"}"><div class="${"h-full w-full flex flex-col sm:flex-row sm:justify-center justify-between items-center"}"><button class="${"w-20 sm:w-36 text-zinc-800"}">${validate_component(IoIosArrowDropleftCircle, "IoIosArrowDropleftCircle").$$render($$result, {}, {}, {})}</button>
-        ${validate_component(Selection, "Selection").$$render($$result, { data: subjects[index5] }, {}, {})}
+        ${validate_component(Selection, "Selection").$$render($$result, { data: subjects[index6] }, {}, {})}
         <button class="${"w-20 sm:w-36 text-zinc-800"}">${validate_component(IoIosArrowDroprightCircle, "IoIosArrowDroprightCircle").$$render($$result, {}, {}, {})}</button></div></div>`;
     });
     Page = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-      return `${validate_component(Navigation, "Navigation").$$render($$result, {}, {}, {})}
-<section class="${"h-screen bg-gradient-to-b from-green-600 via-emerald-600 to-emerald-600"}"><div class="${"h-full md:max-w-screen-xl sm:max-w-screen-md mx-auto flex flex-col justify-center items-center"}"><p class="${"mb-8 text-slate-200 drop-shadow-lg font-oswald font-bold text-4xl sm:text-7xl lg:text-8xl text-center"}">VYBER SI PREDMET</p>
+      return `<section class="${"h-screen bg-gradient-to-b from-green-600 via-emerald-600 to-emerald-600"}"><div class="${"h-full md:max-w-screen-xl sm:max-w-screen-md mx-auto flex flex-col justify-center items-center"}"><p class="${"mb-8 text-slate-200 drop-shadow-lg font-oswald font-bold text-4xl sm:text-7xl lg:text-8xl text-center"}">VYBER SI PREDMET</p>
         ${validate_component(SelectionBox, "SelectionBox").$$render($$result, {}, {}, {})}</div></section>`;
     });
   }
@@ -18632,10 +18632,49 @@ var init__3 = __esm({
     init_shims();
     index3 = 2;
     component3 = async () => (await Promise.resolve().then(() => (init_page_svelte(), page_svelte_exports))).default;
-    file3 = "_app/immutable/entry/_page.svelte.6378bbed.js";
-    imports3 = ["_app/immutable/entry/_page.svelte.6378bbed.js", "_app/immutable/chunks/index.6c4db1c2.js", "_app/immutable/chunks/IconBase.7dff7797.js"];
+    file3 = "_app/immutable/entry/_page.svelte.3e02487e.js";
+    imports3 = ["_app/immutable/entry/_page.svelte.3e02487e.js", "_app/immutable/chunks/index.e0a09590.js", "_app/immutable/chunks/IconBase.1330d312.js"];
     stylesheets3 = ["_app/immutable/assets/IconBase.6bf551a2.css"];
     fonts3 = [];
+  }
+});
+
+// .svelte-kit/output/server/entries/pages/report/_page.svelte.js
+var page_svelte_exports2 = {};
+__export(page_svelte_exports2, {
+  default: () => Page2
+});
+var Page2;
+var init_page_svelte2 = __esm({
+  ".svelte-kit/output/server/entries/pages/report/_page.svelte.js"() {
+    init_shims();
+    init_chunks();
+    Page2 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+      return `<section class="${"h-screen bg-gradient-to-b from-green-600 via-emerald-600 to-emerald-600"}"></section>`;
+    });
+  }
+});
+
+// .svelte-kit/output/server/nodes/3.js
+var __exports4 = {};
+__export(__exports4, {
+  component: () => component4,
+  file: () => file4,
+  fonts: () => fonts4,
+  imports: () => imports4,
+  index: () => index4,
+  stylesheets: () => stylesheets4
+});
+var index4, component4, file4, imports4, stylesheets4, fonts4;
+var init__4 = __esm({
+  ".svelte-kit/output/server/nodes/3.js"() {
+    init_shims();
+    index4 = 3;
+    component4 = async () => (await Promise.resolve().then(() => (init_page_svelte2(), page_svelte_exports2))).default;
+    file4 = "_app/immutable/entry/report-page.svelte.29ab5ced.js";
+    imports4 = ["_app/immutable/entry/report-page.svelte.29ab5ced.js", "_app/immutable/chunks/index.e0a09590.js"];
+    stylesheets4 = [];
+    fonts4 = [];
   }
 });
 
@@ -19197,8 +19236,8 @@ var init_index_node_esm = __esm({
 function normalizeIdentifierForFactory(identifier) {
   return identifier === DEFAULT_ENTRY_NAME ? void 0 : identifier;
 }
-function isComponentEager(component5) {
-  return component5.instantiationMode === "EAGER";
+function isComponentEager(component6) {
+  return component6.instantiationMode === "EAGER";
 }
 var Component, DEFAULT_ENTRY_NAME, Provider, ComponentContainer;
 var init_index_esm2017 = __esm({
@@ -19299,18 +19338,18 @@ var init_index_esm2017 = __esm({
       getComponent() {
         return this.component;
       }
-      setComponent(component5) {
-        if (component5.name !== this.name) {
-          throw Error(`Mismatching Component ${component5.name} for Provider ${this.name}.`);
+      setComponent(component6) {
+        if (component6.name !== this.name) {
+          throw Error(`Mismatching Component ${component6.name} for Provider ${this.name}.`);
         }
         if (this.component) {
           throw Error(`Component for ${this.name} has already been provided`);
         }
-        this.component = component5;
+        this.component = component6;
         if (!this.shouldAutoInitialize()) {
           return;
         }
-        if (isComponentEager(component5)) {
+        if (isComponentEager(component6)) {
           try {
             this.getOrInitializeService({ instanceIdentifier: DEFAULT_ENTRY_NAME });
           } catch (e) {
@@ -19453,19 +19492,19 @@ var init_index_esm2017 = __esm({
        * for different tests.
        * if overwrite is false: throw an exception
        */
-      addComponent(component5) {
-        const provider = this.getProvider(component5.name);
+      addComponent(component6) {
+        const provider = this.getProvider(component6.name);
         if (provider.isComponentSet()) {
-          throw new Error(`Component ${component5.name} has already been registered with ${this.name}`);
+          throw new Error(`Component ${component6.name} has already been registered with ${this.name}`);
         }
-        provider.setComponent(component5);
+        provider.setComponent(component6);
       }
-      addOrOverwriteComponent(component5) {
-        const provider = this.getProvider(component5.name);
+      addOrOverwriteComponent(component6) {
+        const provider = this.getProvider(component6.name);
         if (provider.isComponentSet()) {
-          this.providers.delete(component5.name);
+          this.providers.delete(component6.name);
         }
-        this.addComponent(component5);
+        this.addComponent(component6);
       }
       /**
        * getProvider provides a type safe interface where it can only be called with a field name
@@ -19814,25 +19853,25 @@ var init_build = __esm({
 
 // node_modules/@firebase/app/dist/esm/index.esm2017.js
 function isVersionServiceProvider(provider) {
-  const component5 = provider.getComponent();
-  return (component5 === null || component5 === void 0 ? void 0 : component5.type) === "VERSION";
+  const component6 = provider.getComponent();
+  return (component6 === null || component6 === void 0 ? void 0 : component6.type) === "VERSION";
 }
-function _addComponent(app2, component5) {
+function _addComponent(app2, component6) {
   try {
-    app2.container.addComponent(component5);
+    app2.container.addComponent(component6);
   } catch (e) {
-    logger.debug(`Component ${component5.name} failed to register with FirebaseApp ${app2.name}`, e);
+    logger.debug(`Component ${component6.name} failed to register with FirebaseApp ${app2.name}`, e);
   }
 }
-function _registerComponent(component5) {
-  const componentName = component5.name;
+function _registerComponent(component6) {
+  const componentName = component6.name;
   if (_components.has(componentName)) {
     logger.debug(`There were multiple attempts to register component ${componentName}.`);
     return false;
   }
-  _components.set(componentName, component5);
+  _components.set(componentName, component6);
   for (const app2 of _apps.values()) {
-    _addComponent(app2, component5);
+    _addComponent(app2, component6);
   }
   return true;
 }
@@ -19872,8 +19911,8 @@ function initializeApp(_options, rawConfig = {}) {
     }
   }
   const container = new ComponentContainer(name6);
-  for (const component5 of _components.values()) {
-    container.addComponent(component5);
+  for (const component6 of _components.values()) {
+    container.addComponent(component6);
   }
   const newApp = new FirebaseAppImpl(options2, config, container);
   _apps.set(name6, newApp);
@@ -21262,7 +21301,7 @@ function warnOnBrowserContextMismatch() {
     mismatchedEnvMessages.push("Cookies are not available.");
   }
   if (mismatchedEnvMessages.length > 0) {
-    const details = mismatchedEnvMessages.map((message, index5) => `(${index5 + 1}) ${message}`).join(" ");
+    const details = mismatchedEnvMessages.map((message, index6) => `(${index6 + 1}) ${message}`).join(" ");
     const err = ERROR_FACTORY3.create("invalid-analytics-context", {
       errorInfo: details
     });
@@ -21929,7 +21968,7 @@ var require_call_credentials = __commonJS({
           return true;
         }
         if (other instanceof ComposedCallCredentials) {
-          return this.creds.every((value, index5) => value._equals(other.creds[index5]));
+          return this.creds.every((value, index6) => value._equals(other.creds[index6]));
         } else {
           return false;
         }
@@ -25299,12 +25338,12 @@ var require_lodash = __commonJS({
     var freeSelf = typeof self == "object" && self && self.Object === Object && self;
     var root = freeGlobal || freeSelf || Function("return this")();
     function arrayReduce(array2, iteratee, accumulator, initAccum) {
-      var index5 = -1, length = array2 ? array2.length : 0;
+      var index6 = -1, length = array2 ? array2.length : 0;
       if (initAccum && length) {
-        accumulator = array2[++index5];
+        accumulator = array2[++index6];
       }
-      while (++index5 < length) {
-        accumulator = iteratee(accumulator, array2[index5], index5, array2);
+      while (++index6 < length) {
+        accumulator = iteratee(accumulator, array2[index6], index6, array2);
       }
       return accumulator;
     }
@@ -25341,7 +25380,7 @@ var require_lodash = __commonJS({
     var symbolProto = Symbol2 ? Symbol2.prototype : void 0;
     var symbolToString = symbolProto ? symbolProto.toString : void 0;
     function baseSlice(array2, start, end) {
-      var index5 = -1, length = array2.length;
+      var index6 = -1, length = array2.length;
       if (start < 0) {
         start = -start > length ? 0 : length + start;
       }
@@ -25352,8 +25391,8 @@ var require_lodash = __commonJS({
       length = start > end ? 0 : end - start >>> 0;
       start >>>= 0;
       var result = Array(length);
-      while (++index5 < length) {
-        result[index5] = array2[index5 + start];
+      while (++index6 < length) {
+        result[index6] = array2[index6 + start];
       }
       return result;
     }
@@ -25395,9 +25434,9 @@ var require_lodash = __commonJS({
     function toString(value) {
       return value == null ? "" : baseToString(value);
     }
-    var camelCase = createCompounder(function(result, word, index5) {
+    var camelCase = createCompounder(function(result, word, index6) {
       word = word.toLowerCase();
-      return result + (index5 ? capitalize(word) : word);
+      return result + (index6 ? capitalize(word) : word);
     });
     function capitalize(string) {
       return upperFirst(toString(string).toLowerCase());
@@ -25426,9 +25465,9 @@ var require_aspromise = __commonJS({
     init_shims();
     module2.exports = asPromise;
     function asPromise(fn, ctx) {
-      var params = new Array(arguments.length - 1), offset = 0, index5 = 2, pending = true;
-      while (index5 < arguments.length)
-        params[offset++] = arguments[index5++];
+      var params = new Array(arguments.length - 1), offset = 0, index6 = 2, pending = true;
+      while (index6 < arguments.length)
+        params[offset++] = arguments[index6++];
       return new Promise(function executor(resolve, reject) {
         params[offset] = function callback(err) {
           if (pending) {
@@ -27375,13 +27414,13 @@ var require_oneof = __commonJS({
     OneOf.prototype.remove = function remove2(field) {
       if (!(field instanceof Field))
         throw TypeError("field must be a Field");
-      var index5 = this.fieldsArray.indexOf(field);
-      if (index5 < 0)
+      var index6 = this.fieldsArray.indexOf(field);
+      if (index6 < 0)
         throw Error(field + " is not a member of " + this);
-      this.fieldsArray.splice(index5, 1);
-      index5 = this.oneof.indexOf(field.name);
-      if (index5 > -1)
-        this.oneof.splice(index5, 1);
+      this.fieldsArray.splice(index6, 1);
+      index6 = this.oneof.indexOf(field.name);
+      if (index6 > -1)
+        this.oneof.splice(index6, 1);
       field.partOf = null;
       return this;
     };
@@ -27404,9 +27443,9 @@ var require_oneof = __commonJS({
       ReflectionObject.prototype.onRemove.call(this, parent);
     };
     OneOf.d = function decorateOneOf() {
-      var fieldNames = new Array(arguments.length), index5 = 0;
-      while (index5 < arguments.length)
-        fieldNames[index5] = arguments[index5++];
+      var fieldNames = new Array(arguments.length), index6 = 0;
+      while (index6 < arguments.length)
+        fieldNames[index6] = arguments[index6++];
       return function oneOfDecorator(prototype, oneofName) {
         util.decorateType(prototype.constructor).add(new OneOf(oneofName, fieldNames));
         Object.defineProperty(prototype, oneofName, {
@@ -28246,7 +28285,7 @@ var require_converter = __commonJS({
       }
       var hasKs2 = false;
       for (i = 0; i < fields.length; ++i) {
-        var field = fields[i], index5 = mtype._fieldsArray.indexOf(field), prop = util.safeProp(field.name);
+        var field = fields[i], index6 = mtype._fieldsArray.indexOf(field), prop = util.safeProp(field.name);
         if (field.map) {
           if (!hasKs2) {
             hasKs2 = true;
@@ -28257,7 +28296,7 @@ var require_converter = __commonJS({
             gen,
             field,
             /* sorted */
-            index5,
+            index6,
             prop + "[ks2[j]]"
           )("}");
         } else if (field.repeated) {
@@ -28266,7 +28305,7 @@ var require_converter = __commonJS({
             gen,
             field,
             /* sorted */
-            index5,
+            index6,
             prop + "[j]"
           )("}");
         } else {
@@ -28275,7 +28314,7 @@ var require_converter = __commonJS({
             gen,
             field,
             /* sorted */
-            index5,
+            index6,
             prop
           );
           if (field.partOf)
@@ -28867,9 +28906,9 @@ var require_root = __commonJS({
             object.extensionField.parent.remove(object.extensionField);
             object.extensionField = null;
           } else {
-            var index5 = this.deferred.indexOf(object);
-            if (index5 > -1)
-              this.deferred.splice(index5, 1);
+            var index6 = this.deferred.indexOf(object);
+            if (index6 > -1)
+              this.deferred.splice(index6, 1);
           }
         }
       } else if (object instanceof Enum) {
@@ -28906,17 +28945,17 @@ var require_util6 = __commonJS({
     util.fs = util.inquire("fs");
     util.toArray = function toArray2(object) {
       if (object) {
-        var keys = Object.keys(object), array2 = new Array(keys.length), index5 = 0;
-        while (index5 < keys.length)
-          array2[index5] = object[keys[index5++]];
+        var keys = Object.keys(object), array2 = new Array(keys.length), index6 = 0;
+        while (index6 < keys.length)
+          array2[index6] = object[keys[index6++]];
         return array2;
       }
       return [];
     };
     util.toObject = function toObject(array2) {
-      var object = {}, index5 = 0;
-      while (index5 < array2.length) {
-        var key2 = array2[index5++], val = array2[index5++];
+      var object = {}, index6 = 0;
+      while (index6 < array2.length) {
+        var key2 = array2[index6++], val = array2[index6++];
         if (val !== void 0)
           object[key2] = val;
       }
@@ -29252,12 +29291,12 @@ var require_encoder = __commonJS({
         mtype.fieldsArray.slice().sort(util.compareFieldsById)
       );
       for (var i = 0; i < fields.length; ++i) {
-        var field = fields[i].resolve(), index5 = mtype._fieldsArray.indexOf(field), type = field.resolvedType instanceof Enum ? "int32" : field.type, wireType = types.basic[type];
+        var field = fields[i].resolve(), index6 = mtype._fieldsArray.indexOf(field), type = field.resolvedType instanceof Enum ? "int32" : field.type, wireType = types.basic[type];
         ref = "m" + util.safeProp(field.name);
         if (field.map) {
           gen("if(%s!=null&&Object.hasOwnProperty.call(m,%j)){", ref, field.name)("for(var ks=Object.keys(%s),i=0;i<ks.length;++i){", ref)("w.uint32(%i).fork().uint32(%i).%s(ks[i])", (field.id << 3 | 2) >>> 0, 8 | types.mapKey[field.keyType], field.keyType);
           if (wireType === void 0)
-            gen("types[%i].encode(%s[ks[i]],w.uint32(18).fork()).ldelim().ldelim()", index5, ref);
+            gen("types[%i].encode(%s[ks[i]],w.uint32(18).fork()).ldelim().ldelim()", index6, ref);
           else
             gen(".uint32(%i).%s(%s[ks[i]]).ldelim()", 16 | wireType, type, ref);
           gen("}")("}");
@@ -29268,7 +29307,7 @@ var require_encoder = __commonJS({
           } else {
             gen("for(var i=0;i<%s.length;++i)", ref);
             if (wireType === void 0)
-              genTypePartial(gen, field, index5, ref + "[i]");
+              genTypePartial(gen, field, index6, ref + "[i]");
             else
               gen("w.uint32(%i).%s(%s[i])", (field.id << 3 | wireType) >>> 0, type, ref);
           }
@@ -29277,7 +29316,7 @@ var require_encoder = __commonJS({
           if (field.optional)
             gen("if(%s!=null&&Object.hasOwnProperty.call(m,%j))", ref, field.name);
           if (wireType === void 0)
-            genTypePartial(gen, field, index5, ref);
+            genTypePartial(gen, field, index6, ref);
           else
             gen("w.uint32(%i).%s(%s)", (field.id << 3 | wireType) >>> 0, type, ref);
         }
@@ -29620,7 +29659,7 @@ var require_parse2 = __commonJS({
         options2 = parse3.defaults;
       var preferTrailingComment = options2.preferTrailingComment || false;
       var tn = tokenize(source, options2.alternateCommentMode || false), next = tn.next, push = tn.push, peek = tn.peek, skip = tn.skip, cmnt = tn.cmnt;
-      var head = true, pkg, imports5, weakImports, syntax, isProto3 = false;
+      var head = true, pkg, imports6, weakImports, syntax, isProto3 = false;
       var ptr = root;
       var applyCase = options2.keepCase ? function(name6) {
         return name6;
@@ -29746,7 +29785,7 @@ var require_parse2 = __commonJS({
           case "public":
             next();
           default:
-            whichImports = imports5 || (imports5 = []);
+            whichImports = imports6 || (imports6 = []);
             break;
         }
         token2 = readString();
@@ -30194,7 +30233,7 @@ var require_parse2 = __commonJS({
       parse3.filename = null;
       return {
         "package": pkg,
-        "imports": imports5,
+        "imports": imports6,
         weakImports,
         syntax,
         root
@@ -30530,8 +30569,8 @@ var require_common = __commonJS({
         }
       }
     });
-    common.get = function get(file5) {
-      return common[file5] || null;
+    common.get = function get(file6) {
+      return common[file6] || null;
     };
   }
 });
@@ -31360,26 +31399,26 @@ var require_descriptor2 = __commonJS({
       return set2;
     };
     function Root_toDescriptorRecursive(ns, files, syntax) {
-      var file5 = exports2.FileDescriptorProto.create({ name: ns.filename || (ns.fullName.substring(1).replace(/\./g, "_") || "root") + ".proto" });
+      var file6 = exports2.FileDescriptorProto.create({ name: ns.filename || (ns.fullName.substring(1).replace(/\./g, "_") || "root") + ".proto" });
       if (syntax)
-        file5.syntax = syntax;
+        file6.syntax = syntax;
       if (!(ns instanceof Root2))
-        file5["package"] = ns.fullName.substring(1);
+        file6["package"] = ns.fullName.substring(1);
       for (var i = 0, nested2; i < ns.nestedArray.length; ++i)
         if ((nested2 = ns._nestedArray[i]) instanceof Type)
-          file5.messageType.push(nested2.toDescriptor(syntax));
+          file6.messageType.push(nested2.toDescriptor(syntax));
         else if (nested2 instanceof Enum)
-          file5.enumType.push(nested2.toDescriptor());
+          file6.enumType.push(nested2.toDescriptor());
         else if (nested2 instanceof Field)
-          file5.extension.push(nested2.toDescriptor(syntax));
+          file6.extension.push(nested2.toDescriptor(syntax));
         else if (nested2 instanceof Service)
-          file5.service.push(nested2.toDescriptor());
+          file6.service.push(nested2.toDescriptor());
         else if (nested2 instanceof /* plain */
         Namespace)
           Root_toDescriptorRecursive(nested2, files, syntax);
-      file5.options = toDescriptorOptions(ns.options, exports2.FileOptions);
-      if (file5.messageType.length + file5.enumType.length + file5.extension.length + file5.service.length)
-        files.push(file5);
+      file6.options = toDescriptorOptions(ns.options, exports2.FileOptions);
+      if (file6.messageType.length + file6.enumType.length + file6.extension.length + file6.service.length)
+        files.push(file6);
     }
     var unnamedMessageIndex = 0;
     Type.fromDescriptor = function fromDescriptor(descriptor, syntax) {
@@ -37308,9 +37347,9 @@ var require_load_balancer_outlier_detection = __commonJS({
         this.refCount -= 1;
         if (this.refCount <= 0) {
           if (this.mapEntry) {
-            const index5 = this.mapEntry.subchannelWrappers.indexOf(this);
-            if (index5 >= 0) {
-              this.mapEntry.subchannelWrappers.splice(index5, 1);
+            const index6 = this.mapEntry.subchannelWrappers.indexOf(this);
+            if (index6 >= 0) {
+              this.mapEntry.subchannelWrappers.splice(index6, 1);
             }
           }
         }
@@ -38240,11 +38279,11 @@ var require_load_balancer_pick_first = __commonJS({
         if (this.triedAllSubchannels) {
           return;
         }
-        for (const [index5, subchannel] of this.subchannels.entries()) {
-          if (index5 > this.currentSubchannelIndex) {
+        for (const [index6, subchannel] of this.subchannels.entries()) {
+          if (index6 > this.currentSubchannelIndex) {
             const subchannelState = subchannel.getConnectivityState();
             if (subchannelState === connectivity_state_1.ConnectivityState.IDLE || subchannelState === connectivity_state_1.ConnectivityState.CONNECTING) {
-              this.startConnecting(index5);
+              this.startConnecting(index6);
               return;
             }
           }
@@ -38327,10 +38366,10 @@ var require_load_balancer_pick_first = __commonJS({
             return;
           }
         }
-        for (const [index5, subchannel] of this.subchannels.entries()) {
+        for (const [index6, subchannel] of this.subchannels.entries()) {
           const subchannelState = subchannel.getConnectivityState();
           if (subchannelState === connectivity_state_1.ConnectivityState.IDLE || subchannelState === connectivity_state_1.ConnectivityState.CONNECTING) {
-            this.startConnecting(index5);
+            this.startConnecting(index6);
             if (this.currentPick === null) {
               this.updateState(connectivity_state_1.ConnectivityState.CONNECTING, new picker_1.QueuePicker(this));
             }
@@ -38342,7 +38381,7 @@ var require_load_balancer_pick_first = __commonJS({
         }
       }
       updateAddressList(addressList, lbConfig) {
-        if (this.subchannels.length === 0 || !this.latestAddressList.every((value, index5) => addressList[index5] === value)) {
+        if (this.subchannels.length === 0 || !this.latestAddressList.every((value, index6) => addressList[index6] === value)) {
           this.latestAddressList = addressList;
           this.connectToAddressList();
         }
@@ -38469,14 +38508,14 @@ var require_load_balancer_round_robin = __commonJS({
       calculateAndUpdateState() {
         if (this.subchannelStateCounts[connectivity_state_1.ConnectivityState.READY] > 0) {
           const readySubchannels = this.subchannels.filter((subchannel) => subchannel.getConnectivityState() === connectivity_state_1.ConnectivityState.READY);
-          let index5 = 0;
+          let index6 = 0;
           if (this.currentReadyPicker !== null) {
-            index5 = readySubchannels.indexOf(this.currentReadyPicker.peekNextSubchannel());
-            if (index5 < 0) {
-              index5 = 0;
+            index6 = readySubchannels.indexOf(this.currentReadyPicker.peekNextSubchannel());
+            if (index6 < 0) {
+              index6 = 0;
             }
           }
-          this.updateState(connectivity_state_1.ConnectivityState.READY, new RoundRobinPicker(readySubchannels, index5));
+          this.updateState(connectivity_state_1.ConnectivityState.READY, new RoundRobinPicker(readySubchannels, index6));
         } else if (this.subchannelStateCounts[connectivity_state_1.ConnectivityState.CONNECTING] > 0) {
           this.updateState(connectivity_state_1.ConnectivityState.CONNECTING, new picker_1.QueuePicker(this));
         } else if (this.subchannelStateCounts[connectivity_state_1.ConnectivityState.TRANSIENT_FAILURE] > 0) {
@@ -39966,13 +40005,13 @@ var require_oneof2 = __commonJS({
     OneOf.prototype.remove = function remove2(field) {
       if (!(field instanceof Field))
         throw TypeError("field must be a Field");
-      var index5 = this.fieldsArray.indexOf(field);
-      if (index5 < 0)
+      var index6 = this.fieldsArray.indexOf(field);
+      if (index6 < 0)
         throw Error(field + " is not a member of " + this);
-      this.fieldsArray.splice(index5, 1);
-      index5 = this.oneof.indexOf(field.name);
-      if (index5 > -1)
-        this.oneof.splice(index5, 1);
+      this.fieldsArray.splice(index6, 1);
+      index6 = this.oneof.indexOf(field.name);
+      if (index6 > -1)
+        this.oneof.splice(index6, 1);
       field.partOf = null;
       return this;
     };
@@ -39995,9 +40034,9 @@ var require_oneof2 = __commonJS({
       ReflectionObject.prototype.onRemove.call(this, parent);
     };
     OneOf.d = function decorateOneOf() {
-      var fieldNames = new Array(arguments.length), index5 = 0;
-      while (index5 < arguments.length)
-        fieldNames[index5] = arguments[index5++];
+      var fieldNames = new Array(arguments.length), index6 = 0;
+      while (index6 < arguments.length)
+        fieldNames[index6] = arguments[index6++];
       return function oneOfDecorator(prototype, oneofName) {
         util.decorateType(prototype.constructor).add(new OneOf(oneofName, fieldNames));
         Object.defineProperty(prototype, oneofName, {
@@ -40832,7 +40871,7 @@ var require_converter2 = __commonJS({
       }
       var hasKs2 = false;
       for (i = 0; i < fields.length; ++i) {
-        var field = fields[i], index5 = mtype._fieldsArray.indexOf(field), prop = util.safeProp(field.name);
+        var field = fields[i], index6 = mtype._fieldsArray.indexOf(field), prop = util.safeProp(field.name);
         if (field.map) {
           if (!hasKs2) {
             hasKs2 = true;
@@ -40843,7 +40882,7 @@ var require_converter2 = __commonJS({
             gen,
             field,
             /* sorted */
-            index5,
+            index6,
             prop + "[ks2[j]]"
           )("}");
         } else if (field.repeated) {
@@ -40852,7 +40891,7 @@ var require_converter2 = __commonJS({
             gen,
             field,
             /* sorted */
-            index5,
+            index6,
             prop + "[j]"
           )("}");
         } else {
@@ -40861,7 +40900,7 @@ var require_converter2 = __commonJS({
             gen,
             field,
             /* sorted */
-            index5,
+            index6,
             prop
           );
           if (field.partOf)
@@ -41449,9 +41488,9 @@ var require_root2 = __commonJS({
             object.extensionField.parent.remove(object.extensionField);
             object.extensionField = null;
           } else {
-            var index5 = this.deferred.indexOf(object);
-            if (index5 > -1)
-              this.deferred.splice(index5, 1);
+            var index6 = this.deferred.indexOf(object);
+            if (index6 > -1)
+              this.deferred.splice(index6, 1);
           }
         }
       } else if (object instanceof Enum) {
@@ -41488,17 +41527,17 @@ var require_util8 = __commonJS({
     util.fs = util.inquire("fs");
     util.toArray = function toArray2(object) {
       if (object) {
-        var keys = Object.keys(object), array2 = new Array(keys.length), index5 = 0;
-        while (index5 < keys.length)
-          array2[index5] = object[keys[index5++]];
+        var keys = Object.keys(object), array2 = new Array(keys.length), index6 = 0;
+        while (index6 < keys.length)
+          array2[index6] = object[keys[index6++]];
         return array2;
       }
       return [];
     };
     util.toObject = function toObject(array2) {
-      var object = {}, index5 = 0;
-      while (index5 < array2.length) {
-        var key2 = array2[index5++], val = array2[index5++];
+      var object = {}, index6 = 0;
+      while (index6 < array2.length) {
+        var key2 = array2[index6++], val = array2[index6++];
         if (val !== void 0)
           object[key2] = val;
       }
@@ -41824,12 +41863,12 @@ var require_encoder2 = __commonJS({
         mtype.fieldsArray.slice().sort(util.compareFieldsById)
       );
       for (var i = 0; i < fields.length; ++i) {
-        var field = fields[i].resolve(), index5 = mtype._fieldsArray.indexOf(field), type = field.resolvedType instanceof Enum ? "int32" : field.type, wireType = types.basic[type];
+        var field = fields[i].resolve(), index6 = mtype._fieldsArray.indexOf(field), type = field.resolvedType instanceof Enum ? "int32" : field.type, wireType = types.basic[type];
         ref = "m" + util.safeProp(field.name);
         if (field.map) {
           gen("if(%s!=null&&Object.hasOwnProperty.call(m,%j)){", ref, field.name)("for(var ks=Object.keys(%s),i=0;i<ks.length;++i){", ref)("w.uint32(%i).fork().uint32(%i).%s(ks[i])", (field.id << 3 | 2) >>> 0, 8 | types.mapKey[field.keyType], field.keyType);
           if (wireType === void 0)
-            gen("types[%i].encode(%s[ks[i]],w.uint32(18).fork()).ldelim().ldelim()", index5, ref);
+            gen("types[%i].encode(%s[ks[i]],w.uint32(18).fork()).ldelim().ldelim()", index6, ref);
           else
             gen(".uint32(%i).%s(%s[ks[i]]).ldelim()", 16 | wireType, type, ref);
           gen("}")("}");
@@ -41840,7 +41879,7 @@ var require_encoder2 = __commonJS({
           } else {
             gen("for(var i=0;i<%s.length;++i)", ref);
             if (wireType === void 0)
-              genTypePartial(gen, field, index5, ref + "[i]");
+              genTypePartial(gen, field, index6, ref + "[i]");
             else
               gen("w.uint32(%i).%s(%s[i])", (field.id << 3 | wireType) >>> 0, type, ref);
           }
@@ -41849,7 +41888,7 @@ var require_encoder2 = __commonJS({
           if (field.optional)
             gen("if(%s!=null&&Object.hasOwnProperty.call(m,%j))", ref, field.name);
           if (wireType === void 0)
-            genTypePartial(gen, field, index5, ref);
+            genTypePartial(gen, field, index6, ref);
           else
             gen("w.uint32(%i).%s(%s)", (field.id << 3 | wireType) >>> 0, type, ref);
         }
@@ -42178,7 +42217,7 @@ var require_parse3 = __commonJS({
         options2 = parse3.defaults;
       var preferTrailingComment = options2.preferTrailingComment || false;
       var tn = tokenize(source, options2.alternateCommentMode || false), next = tn.next, push = tn.push, peek = tn.peek, skip = tn.skip, cmnt = tn.cmnt;
-      var head = true, pkg, imports5, weakImports, syntax, isProto3 = false;
+      var head = true, pkg, imports6, weakImports, syntax, isProto3 = false;
       var ptr = root;
       var applyCase = options2.keepCase ? function(name6) {
         return name6;
@@ -42304,7 +42343,7 @@ var require_parse3 = __commonJS({
           case "public":
             next();
           default:
-            whichImports = imports5 || (imports5 = []);
+            whichImports = imports6 || (imports6 = []);
             break;
         }
         token2 = readString();
@@ -42728,7 +42767,7 @@ var require_parse3 = __commonJS({
       parse3.filename = null;
       return {
         "package": pkg,
-        "imports": imports5,
+        "imports": imports6,
         weakImports,
         syntax,
         root
@@ -43064,8 +43103,8 @@ var require_common2 = __commonJS({
         }
       }
     });
-    common.get = function get(file5) {
-      return common[file5] || null;
+    common.get = function get(file6) {
+      return common[file6] || null;
     };
   }
 });
@@ -43894,26 +43933,26 @@ var require_descriptor4 = __commonJS({
       return set2;
     };
     function Root_toDescriptorRecursive(ns, files, syntax) {
-      var file5 = exports2.FileDescriptorProto.create({ name: ns.filename || (ns.fullName.substring(1).replace(/\./g, "_") || "root") + ".proto" });
+      var file6 = exports2.FileDescriptorProto.create({ name: ns.filename || (ns.fullName.substring(1).replace(/\./g, "_") || "root") + ".proto" });
       if (syntax)
-        file5.syntax = syntax;
+        file6.syntax = syntax;
       if (!(ns instanceof Root2))
-        file5["package"] = ns.fullName.substring(1);
+        file6["package"] = ns.fullName.substring(1);
       for (var i = 0, nested2; i < ns.nestedArray.length; ++i)
         if ((nested2 = ns._nestedArray[i]) instanceof Type)
-          file5.messageType.push(nested2.toDescriptor(syntax));
+          file6.messageType.push(nested2.toDescriptor(syntax));
         else if (nested2 instanceof Enum)
-          file5.enumType.push(nested2.toDescriptor());
+          file6.enumType.push(nested2.toDescriptor());
         else if (nested2 instanceof Field)
-          file5.extension.push(nested2.toDescriptor(syntax));
+          file6.extension.push(nested2.toDescriptor(syntax));
         else if (nested2 instanceof Service)
-          file5.service.push(nested2.toDescriptor());
+          file6.service.push(nested2.toDescriptor());
         else if (nested2 instanceof /* plain */
         Namespace)
           Root_toDescriptorRecursive(nested2, files, syntax);
-      file5.options = toDescriptorOptions(ns.options, exports2.FileOptions);
-      if (file5.messageType.length + file5.enumType.length + file5.extension.length + file5.service.length)
-        files.push(file5);
+      file6.options = toDescriptorOptions(ns.options, exports2.FileOptions);
+      if (file6.messageType.length + file6.enumType.length + file6.extension.length + file6.service.length)
+        files.push(file6);
     }
     var unnamedMessageIndex = 0;
     Type.fromDescriptor = function fromDescriptor(descriptor, syntax) {
@@ -45014,7 +45053,7 @@ function arrayEquals(left, right, comparator) {
   if (left.length !== right.length) {
     return false;
   }
-  return left.every((value, index5) => comparator(value, right[index5]));
+  return left.every((value, index6) => comparator(value, right[index6]));
 }
 function newIndexOffsetSuccessorFromReadTime(readTime, largestBatchId) {
   const successorSeconds = readTime.toTimestamp().seconds;
@@ -45539,12 +45578,12 @@ function boundCompareToDocument(bound, orderBy, doc) {
   let comparison = 0;
   for (let i = 0; i < bound.position.length; i++) {
     const orderByComponent = orderBy[i];
-    const component5 = bound.position[i];
+    const component6 = bound.position[i];
     if (orderByComponent.field.isKeyField()) {
-      comparison = DocumentKey.comparator(DocumentKey.fromName(component5.referenceValue), doc.key);
+      comparison = DocumentKey.comparator(DocumentKey.fromName(component6.referenceValue), doc.key);
     } else {
       const docValue = doc.data.field(orderByComponent.field);
-      comparison = valueCompare(component5, docValue);
+      comparison = valueCompare(component6, docValue);
     }
     if (orderByComponent.dir === "desc") {
       comparison = comparison * -1;
@@ -45628,7 +45667,7 @@ function fieldFilterEquals(f1, f2) {
 }
 function compositeFilterEquals(f1, f2) {
   if (f2 instanceof CompositeFilter && f1.op === f2.op && f1.filters.length === f2.filters.length) {
-    const subFiltersMatch = f1.filters.reduce((result, f1Filter, index5) => result && filterEquals(f1Filter, f2.filters[index5]), true);
+    const subFiltersMatch = f1.filters.reduce((result, f1Filter, index6) => result && filterEquals(f1Filter, f2.filters[index6]), true);
     return subFiltersMatch;
   }
   return false;
@@ -48160,7 +48199,7 @@ function validateHasExplicitOrderByForLimitToLast(query) {
 }
 function changesFromSnapshot(querySnapshot, includeMetadataChanges) {
   if (querySnapshot._snapshot.oldDocs.isEmpty()) {
-    let index5 = 0;
+    let index6 = 0;
     return querySnapshot._snapshot.docChanges.map((change) => {
       const doc = new QueryDocumentSnapshot(querySnapshot._firestore, querySnapshot._userDataWriter, change.doc.key, change.doc, new SnapshotMetadata(querySnapshot._snapshot.mutatedKeys.has(change.doc.key), querySnapshot._snapshot.fromCache), querySnapshot.query.converter);
       change.doc;
@@ -48168,7 +48207,7 @@ function changesFromSnapshot(querySnapshot, includeMetadataChanges) {
         type: "added",
         doc,
         oldIndex: -1,
-        newIndex: index5++
+        newIndex: index6++
       };
     });
   } else {
@@ -48856,8 +48895,8 @@ var init_index_node = __esm({
       lastSegment() {
         return this.get(this.length - 1);
       }
-      get(index5) {
-        return this.segments[this.offset + index5];
+      get(index6) {
+        return this.segments[this.offset + index6];
       }
       isEmpty() {
         return this.length === 0;
@@ -51557,10 +51596,10 @@ var init_index_node = __esm({
       getCollectionParents(transaction, collectionId) {
         return PersistencePromise.resolve(this.collectionParentIndex.getEntries(collectionId));
       }
-      addFieldIndex(transaction, index5) {
+      addFieldIndex(transaction, index6) {
         return PersistencePromise.resolve();
       }
-      deleteFieldIndex(transaction, index5) {
+      deleteFieldIndex(transaction, index6) {
         return PersistencePromise.resolve();
       }
       getDocumentsMatchingTarget(transaction, target) {
@@ -52228,8 +52267,8 @@ var init_index_node = __esm({
       getNextMutationBatchAfterBatchId(transaction, batchId) {
         const nextBatchId = batchId + 1;
         const rawIndex = this.indexOfBatchId(nextBatchId);
-        const index5 = rawIndex < 0 ? 0 : rawIndex;
-        return PersistencePromise.resolve(this.mutationQueue.length > index5 ? this.mutationQueue[index5] : null);
+        const index6 = rawIndex < 0 ? 0 : rawIndex;
+        return PersistencePromise.resolve(this.mutationQueue.length > index6 ? this.mutationQueue[index6] : null);
       }
       getHighestUnacknowledgedBatchId() {
         return PersistencePromise.resolve(this.mutationQueue.length === 0 ? BATCHID_UNKNOWN : this.nextBatchId - 1);
@@ -52324,8 +52363,8 @@ var init_index_node = __esm({
        * form (e.g. "acknowledged" in a routine that acknowledges batches).
        */
       indexOfExistingBatchId(batchId, action) {
-        const index5 = this.indexOfBatchId(batchId);
-        return index5;
+        const index6 = this.indexOfBatchId(batchId);
+        return index6;
       }
       /**
        * Finds the index of the given batchId in the mutation queue. This operation
@@ -52348,11 +52387,11 @@ var init_index_node = __esm({
        * other functions that uses this code easier to read and more efficent.
        */
       findMutationBatch(batchId) {
-        const index5 = this.indexOfBatchId(batchId);
-        if (index5 < 0 || index5 >= this.mutationQueue.length) {
+        const index6 = this.indexOfBatchId(batchId);
+        if (index6 < 0 || index6 >= this.mutationQueue.length) {
           return null;
         }
-        const batch = this.mutationQueue[index5];
+        const batch = this.mutationQueue[index6];
         return batch;
       }
     };
@@ -57792,8 +57831,8 @@ This typically indicates that your device does not have a healthy Internet conne
       }
       /** Called once a DelayedOperation is run or canceled. */
       removeDelayedOperation(op) {
-        const index5 = this.delayedOperations.indexOf(op);
-        this.delayedOperations.splice(index5, 1);
+        const index6 = this.delayedOperations.indexOf(op);
+        this.delayedOperations.splice(index6, 1);
       }
     };
     Firestore = class extends Firestore$1 {
@@ -58300,19 +58339,19 @@ var init_dist3 = __esm({
 });
 
 // .svelte-kit/output/server/entries/pages/_slug_/_page.svelte.js
-var page_svelte_exports2 = {};
-__export(page_svelte_exports2, {
-  default: () => Page2
+var page_svelte_exports3 = {};
+__export(page_svelte_exports3, {
+  default: () => Page3
 });
-var firebaseConfig, app, db, TesterBox, IoIosArrowDown, TesterTheme, Page2;
-var init_page_svelte2 = __esm({
+var firebaseConfig, app, db, TesterBox, IoIosArrowDown, TesterTheme, Page3;
+var init_page_svelte3 = __esm({
   ".svelte-kit/output/server/entries/pages/_slug_/_page.svelte.js"() {
     init_shims();
     init_chunks();
-    init_IconBase();
     init_dist();
     init_dist2();
     init_dist3();
+    init_IconBase();
     firebaseConfig = {
       apiKey: "AIzaSyDKA1b2-tgxprfN_YIHVpbfHz3Mxc4zwcc",
       authDomain: "fricapsule.firebaseapp.com",
@@ -58358,7 +58397,7 @@ var init_page_svelte2 = __esm({
       } while (!$$settled);
       return $$rendered;
     });
-    Page2 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
+    Page3 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
       let { data } = $$props;
       async function getData() {
         const docRef = collection(db, "subjects");
@@ -58371,8 +58410,7 @@ var init_page_svelte2 = __esm({
       }
       if ($$props.data === void 0 && $$bindings.data && data !== void 0)
         $$bindings.data(data);
-      return `${validate_component(Navigation, "Navigation").$$render($$result, {}, {}, {})}
-<section class="${"min-h-screen bg-gradient-to-b from-green-600 via-emerald-600 to-emerald-600 flex flex-col text-zinc-800 font-noto-sans"}"><div class="${"mt-16 h-full max-w-screen-xl w-full px-2 sm:px-0 mx-auto"}">${function(__value) {
+      return `<section class="${"min-h-screen bg-gradient-to-b from-green-600 via-emerald-600 to-emerald-600 flex flex-col text-zinc-800 font-noto-sans"}"><div class="${"mt-16 h-full max-w-screen-xl w-full px-2 sm:px-0 mx-auto"}">${function(__value) {
         if (is_promise(__value)) {
           __value.then(null, noop);
           return ``;
@@ -58393,30 +58431,30 @@ var init_page_svelte2 = __esm({
   }
 });
 
-// .svelte-kit/output/server/nodes/3.js
-var __exports4 = {};
-__export(__exports4, {
-  component: () => component4,
-  file: () => file4,
-  fonts: () => fonts4,
-  imports: () => imports4,
-  index: () => index4,
-  stylesheets: () => stylesheets4,
+// .svelte-kit/output/server/nodes/4.js
+var __exports5 = {};
+__export(__exports5, {
+  component: () => component5,
+  file: () => file5,
+  fonts: () => fonts5,
+  imports: () => imports5,
+  index: () => index5,
+  stylesheets: () => stylesheets5,
   universal: () => page_exports,
   universal_id: () => universal_id
 });
-var index4, component4, file4, universal_id, imports4, stylesheets4, fonts4;
-var init__4 = __esm({
-  ".svelte-kit/output/server/nodes/3.js"() {
+var index5, component5, file5, universal_id, imports5, stylesheets5, fonts5;
+var init__5 = __esm({
+  ".svelte-kit/output/server/nodes/4.js"() {
     init_shims();
     init_page();
-    index4 = 3;
-    component4 = async () => (await Promise.resolve().then(() => (init_page_svelte2(), page_svelte_exports2))).default;
-    file4 = "_app/immutable/entry/_slug_-page.svelte.b93b5573.js";
+    index5 = 4;
+    component5 = async () => (await Promise.resolve().then(() => (init_page_svelte3(), page_svelte_exports3))).default;
+    file5 = "_app/immutable/entry/_slug_-page.svelte.65cbed77.js";
     universal_id = "src/routes/[slug]/+page.js";
-    imports4 = ["_app/immutable/entry/_slug_-page.svelte.b93b5573.js", "_app/immutable/chunks/index.6c4db1c2.js", "_app/immutable/chunks/IconBase.7dff7797.js", "_app/immutable/entry/_slug_-page.js.caa4f42e.js", "_app/immutable/chunks/_page.79f100f5.js"];
-    stylesheets4 = ["_app/immutable/assets/IconBase.6bf551a2.css"];
-    fonts4 = [];
+    imports5 = ["_app/immutable/entry/_slug_-page.svelte.65cbed77.js", "_app/immutable/chunks/index.e0a09590.js", "_app/immutable/chunks/IconBase.1330d312.js", "_app/immutable/entry/_slug_-page.js.caa4f42e.js", "_app/immutable/chunks/_page.79f100f5.js"];
+    stylesheets5 = ["_app/immutable/assets/IconBase.6bf551a2.css"];
+    fonts5 = [];
   }
 });
 
@@ -58584,7 +58622,7 @@ var options = {
 		<div class="error">
 			<span class="status">` + status + '</span>\n			<div class="message">\n				<h1>' + message + "</h1>\n			</div>\n		</div>\n	</body>\n</html>\n"
   },
-  version_hash: "1h6wdbq"
+  version_hash: "1edhnrn"
 };
 function get_hooks() {
   return {};
@@ -58922,13 +58960,13 @@ function stringify(value, reducers) {
       return NEGATIVE_INFINITY;
     if (thing === 0 && 1 / thing < 0)
       return NEGATIVE_ZERO;
-    const index6 = p++;
-    indexes.set(thing, index6);
+    const index7 = p++;
+    indexes.set(thing, index7);
     for (const { key: key2, fn } of custom) {
       const value2 = fn(thing);
       if (value2) {
-        stringified[index6] = `["${key2}",${flatten(value2)}]`;
-        return index6;
+        stringified[index7] = `["${key2}",${flatten(value2)}]`;
+        return index7;
       }
     }
     let str = "";
@@ -59020,12 +59058,12 @@ function stringify(value, reducers) {
           }
       }
     }
-    stringified[index6] = str;
-    return index6;
+    stringified[index7] = str;
+    return index7;
   }
-  const index5 = flatten(value);
-  if (index5 < 0)
-    return `${index5}`;
+  const index6 = flatten(value);
+  if (index6 < 0)
+    return `${index6}`;
   return `[${stringified.join(",")}]`;
 }
 function stringify_primitive2(thing) {
@@ -60278,8 +60316,8 @@ async function render_response({
   }
   const { client } = manifest2._;
   const modulepreloads = /* @__PURE__ */ new Set([...client.start.imports, ...client.app.imports]);
-  const stylesheets5 = new Set(client.app.stylesheets);
-  const fonts5 = new Set(client.app.fonts);
+  const stylesheets6 = new Set(client.app.stylesheets);
+  const fonts6 = new Set(client.app.fonts);
   const link_header_preloads = /* @__PURE__ */ new Set();
   const inline_styles = /* @__PURE__ */ new Map();
   let rendered;
@@ -60338,9 +60376,9 @@ async function render_response({
       for (const url of node.imports)
         modulepreloads.add(url);
       for (const url of node.stylesheets)
-        stylesheets5.add(url);
+        stylesheets6.add(url);
       for (const url of node.fonts)
-        fonts5.add(url);
+        fonts6.add(url);
       if (node.inline_styles) {
         Object.entries(await node.inline_styles()).forEach(([k, v]) => inline_styles.set(k, v));
       }
@@ -60368,7 +60406,7 @@ async function render_response({
     head += `
 	<style${attributes.join("")}>${content}</style>`;
   }
-  for (const dep of stylesheets5) {
+  for (const dep of stylesheets6) {
     const path = prefixed(dep);
     if (resolve_opts.preload({ type: "css", path })) {
       const attributes = ['rel="stylesheet"'];
@@ -60382,7 +60420,7 @@ async function render_response({
 		<link href="${path}" ${attributes.join(" ")}>`;
     }
   }
-  for (const dep of fonts5) {
+  for (const dep of fonts6) {
     const path = prefixed(dep);
     if (resolve_opts.preload({ type: "font", path })) {
       const ext = dep.slice(dep.lastIndexOf(".") + 1);
@@ -61108,11 +61146,11 @@ async function render_page(event, page2, options2, manifest2, state, resolve_opt
           const error2 = await handle_error_and_jsonify(event, options2, err);
           while (i--) {
             if (page2.errors[i]) {
-              const index5 = (
+              const index6 = (
                 /** @type {number} */
                 page2.errors[i]
               );
-              const node2 = await manifest2._.nodes[index5]();
+              const node2 = await manifest2._.nodes[index6]();
               let j = i;
               while (!branch[j])
                 j -= 1;
@@ -61370,10 +61408,10 @@ function create_fetch({ event, options: options2, manifest: manifest2, state, ge
         const is_asset = manifest2.assets.has(filename);
         const is_asset_html = manifest2.assets.has(filename_html);
         if (is_asset || is_asset_html) {
-          const file5 = is_asset ? filename : filename_html;
+          const file6 = is_asset ? filename : filename_html;
           if (state.read) {
             const type = is_asset ? manifest2.mimeTypes[filename.slice(filename.lastIndexOf("."))] : "text/html";
-            return new Response(state.read(file5), {
+            return new Response(state.read(file6), {
               headers: type ? { "content-type": type } : {}
             });
           }
@@ -61431,14 +61469,14 @@ function normalize_fetch_input(info, init2, url) {
 }
 function validator(expected) {
   const set2 = new Set(expected);
-  function validate(module2, file5) {
+  function validate(module2, file6) {
     if (!module2)
       return;
     for (const key2 in module2) {
       if (key2[0] === "_" || set2.has(key2))
         continue;
-      const hint = hint_for_supported_files(key2, file5 == null ? void 0 : file5.slice(file5.lastIndexOf("."))) ?? `valid exports are ${expected.join(", ")}, or anything with a '_' prefix`;
-      throw new Error(`Invalid export '${key2}'${file5 ? ` in ${file5}` : ""} (${hint})`);
+      const hint = hint_for_supported_files(key2, file6 == null ? void 0 : file6.slice(file6.lastIndexOf("."))) ?? `valid exports are ${expected.join(", ")}, or anything with a '_' prefix`;
+      throw new Error(`Invalid export '${key2}'${file6 ? ` in ${file6}` : ""} (${hint})`);
     }
   }
   return validate;
@@ -61825,12 +61863,13 @@ var manifest = {
   assets: /* @__PURE__ */ new Set(["capsule.png", "eapap.png", "logo.png", "piks.png", "zet.png"]),
   mimeTypes: { ".png": "image/png" },
   _: {
-    client: { "start": { "file": "_app/immutable/entry/start.7838977d.js", "imports": ["_app/immutable/entry/start.7838977d.js", "_app/immutable/chunks/index.6c4db1c2.js", "_app/immutable/chunks/singletons.9f62b555.js"], "stylesheets": [], "fonts": [] }, "app": { "file": "_app/immutable/entry/app.e2615006.js", "imports": ["_app/immutable/entry/app.e2615006.js", "_app/immutable/chunks/index.6c4db1c2.js"], "stylesheets": [], "fonts": [] } },
+    client: { "start": { "file": "_app/immutable/entry/start.5a2d650e.js", "imports": ["_app/immutable/entry/start.5a2d650e.js", "_app/immutable/chunks/index.e0a09590.js", "_app/immutable/chunks/singletons.2e9a8fec.js"], "stylesheets": [], "fonts": [] }, "app": { "file": "_app/immutable/entry/app.72f20f4a.js", "imports": ["_app/immutable/entry/app.72f20f4a.js", "_app/immutable/chunks/index.e0a09590.js"], "stylesheets": [], "fonts": [] } },
     nodes: [
       () => Promise.resolve().then(() => (init__(), __exports)),
       () => Promise.resolve().then(() => (init__2(), __exports2)),
       () => Promise.resolve().then(() => (init__3(), __exports3)),
-      () => Promise.resolve().then(() => (init__4(), __exports4))
+      () => Promise.resolve().then(() => (init__4(), __exports4)),
+      () => Promise.resolve().then(() => (init__5(), __exports5))
     ],
     routes: [
       {
@@ -61841,10 +61880,17 @@ var manifest = {
         endpoint: null
       },
       {
+        id: "/report",
+        pattern: /^\/report\/?$/,
+        params: [],
+        page: { layouts: [0], errors: [1], leaf: 3 },
+        endpoint: null
+      },
+      {
         id: "/[slug]",
         pattern: /^\/([^/]+?)\/?$/,
         params: [{ "name": "slug", "optional": false, "rest": false, "chained": false }],
-        page: { layouts: [0], errors: [1], leaf: 3 },
+        page: { layouts: [0], errors: [1], leaf: 4 },
         endpoint: null
       }
     ],

@@ -18,6 +18,20 @@
             questionsGuessed = 0;
         }
     }
+
+    // Questions Shuffle
+    function fisherYates ( myArray ) {
+        let i = myArray.length;
+        if ( i == 0 ) return false;
+        while ( --i ) {
+            let j = Math.floor( Math.random() * ( i + 1 ) );
+            let tempi = myArray[i];
+            let tempj = myArray[j];
+            myArray[i] = tempj;
+            myArray[j] = tempi;
+        }
+    }
+    fisherYates(questions);
 </script>
 
 <div class="w-full flex flex-col">
@@ -36,8 +50,8 @@
     </div>
     {#if isClicked}
         <div>
-            {#each questions as q}
-                <TesterQuestion name={q.question} answers={q.answers} bind:questionsGuessed={questionsGuessed}/>
+            {#each questions as q, i}
+                <TesterQuestion number={i + 1} name={q.question} answers={q.answers} bind:questionsGuessed={questionsGuessed}/>
             {/each}
             <p class="text-xl text-center py-5 font-bold">Tvoje skóre: {questionsGuessed}/{questionsCount}</p>
         </div>
