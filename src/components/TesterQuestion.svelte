@@ -4,6 +4,7 @@
     export let number;
     export let name = "";
     export let answers;
+    export let img;
     export let questionsGuessed;
 
     let answersCorrect = 0;
@@ -34,6 +35,7 @@
 
 <div class="bg-slate-100 rounded-lg shadow-sm my-3 py-2 mx-2 flex flex-col justify-center">
     <p class="px-4 font-semibold">{number}. {name}</p>
+    <img class="w-11/12 sm:w-1/2 pl-2 m-1" src="{img}" alt="">
     {#each answers as a}
         <TesterAnswer name={a.answer} isCorrect={a.isCorrect} correctCount={correctCount} bind:answersSelected={answersSelected} bind:answersCorrect={answersCorrect} bind:isUsed={isUsed} bind:questionsGuessed={questionsGuessed} />
     {/each}

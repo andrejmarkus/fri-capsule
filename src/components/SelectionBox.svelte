@@ -8,7 +8,8 @@
     export let subjects = [
         ["Princípy IKS", "piks"],
         ["Ekonomické a právne aspekty podnikania", "eapap"],
-        ["Základy ekonomickej teórie", "zet"]
+        ["Základy ekonomickej teórie", "zet"],
+        ["Algoritmická teória grafov", "atg"]
     ];
 
     let index = 0;
