@@ -38,27 +38,27 @@
     (Object.keys(themeProgress.questions).length > 0 ||
       themeProgress.order.length > 0);
 
+  // Manage question order and shuffling reactively
+  // This ensures that when a theme is opened or reset, questions are shuffled if no order exists
+  $: if (isClicked && !themeProgress?.order?.length) {
+    // If there is any progress (questions answered), don't shuffle - preserve current order
+    const hasProgress =
+      themeProgress && Object.keys(themeProgress.questions).length > 0;
+
+    if (!hasProgress) {
+      fisherYates(questions);
+    }
+
+    // Save the current (shuffled or original) order for stability
+    progressStore.saveOrder(
+      subjectSlug,
+      name,
+      questions.map((q) => q.question),
+    );
+  }
+
   function onClick() {
     isClicked = !isClicked;
-    if (isClicked) {
-      // Only shuffle if no order has been saved yet
-      if (!themeProgress?.order?.length) {
-        // If there is any progress (questions answered), don't shuffle - preserve original order
-        const hasProgress =
-          themeProgress && Object.keys(themeProgress.questions).length > 0;
-
-        if (!hasProgress) {
-          fisherYates(questions);
-        }
-
-        // Save the current (shuffled or original) order
-        progressStore.saveOrder(
-          subjectSlug,
-          name,
-          questions.map((q) => q.question),
-        );
-      }
-    }
   }
 
   function resetThemeProgress(e: any) {
