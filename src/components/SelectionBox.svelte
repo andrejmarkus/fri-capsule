@@ -30,7 +30,7 @@
       description: "Analýza trhu, spotrebiteľského správania a makroekonómie.",
     },
     {
-      name: "Algoritmická Teória",
+      name: "Algoritmická Teória Grafov",
       slug: "atg",
       color: "from-rose-500 to-rose-700",
       description: "Štruktúry grafov, algoritmy a ich aplikácie v praxi.",

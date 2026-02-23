@@ -1,9 +1,5 @@
 <script lang="ts">
   import { fly } from "svelte/transition";
-  import { onMount } from "svelte";
-  import IoIosPaperPlane from "svelte-icons/io/IoIosPaperPlane.svelte";
-  import IoIosBug from "svelte-icons/io/IoIosBug.svelte";
-  import IoIosChatbubbles from "svelte-icons/io/IoIosChatbubbles.svelte";
   import { db } from "../../firebase";
   import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 
@@ -82,9 +78,19 @@
         <div
           class="w-20 h-20 bg-emerald-500/10 border border-emerald-500/20 rounded-full flex items-center justify-center mx-auto mb-8"
         >
-          <div class="w-10 h-10 text-emerald-500">
-            <IoIosPaperPlane />
-          </div>
+          <svg
+            class="w-10 h-10 text-emerald-500"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
+            ></path>
+          </svg>
         </div>
         <h2
           class="text-3xl font-oswald font-black text-white uppercase tracking-tighter mb-4"
@@ -155,7 +161,19 @@
                   : "bg-white/5 text-slate-400 border-white/5 hover:border-white/10"
               }`}
             >
-              <div class="w-4 h-4"><IoIosBug /></div>
+              <svg
+                class="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 8V4m0 0a2 2 0 100-4 2 2 0 000 4zm0 16v-4m0 0a2 2 0 100-4 2 2 0 000 4zm-8-8H0m4 0a2 2 0 100-4 2 2 0 000 4zm16 0h4m-4 0a2 2 0 100-4 2 2 0 000 4z"
+                ></path>
+              </svg>
               <span class="text-xs font-black uppercase tracking-widest"
                 >Chyba v otázke</span
               >
@@ -169,7 +187,19 @@
                   : "bg-white/5 text-slate-400 border-white/5 hover:border-white/10"
               }`}
             >
-              <div class="w-4 h-4"><IoIosChatbubbles /></div>
+              <svg
+                class="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"
+                ></path>
+              </svg>
               <span class="text-xs font-black uppercase tracking-widest"
                 >Návrh / Feedback</span
               >
@@ -209,11 +239,19 @@
             <span class="uppercase tracking-[0.2em] text-sm italic font-black"
               >Odoslať Report</span
             >
-            <div
-              class="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"
+            <svg
+              class="w-[18px] h-[18px] group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
             >
-              <IoIosPaperPlane />
-            </div>
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
+              ></path>
+            </svg>
           {/if}
         </button>
       </form>

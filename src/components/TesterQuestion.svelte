@@ -1,18 +1,63 @@
 <script lang="ts">
   import TesterAnswer from "./TesterAnswer.svelte";
   import { fly } from "svelte/transition";
+  import { progressStore } from "../lib/stores/progress";
+  import type { ProgressState } from "../lib/stores/progress";
 
   export let number: number;
   export let name = "";
   export let answers: any[] = [];
   export let img: string | undefined;
-  export let questionsGuessed: number;
+  export let subjectSlug = "";
+  export let themeName = "";
+
+  $: themeData = ($progressStore as ProgressState)[subjectSlug]?.[themeName];
+  $: storedState = themeData?.questions?.[name];
 
   let answersCorrect = 0;
   let isUsed = false;
   let answersSelected = 0;
+  let selectedHistory: string[] = []; // Store names of selected answers
 
-  let correctCount = answers.filter((a) => a.isCorrect).length;
+  $: if (storedState && !isUsed) {
+    isUsed = storedState.isUsed;
+    selectedHistory = storedState.selected || [];
+    // Recalculate counts based on stored history
+    const correctAnswers = answers
+      .filter((a) => a.isCorrect)
+      .map((a) => a.answer);
+    answersSelected = selectedHistory.length;
+    answersCorrect = selectedHistory.filter((sh) =>
+      correctAnswers.includes(sh),
+    ).length;
+  } else if (!storedState && isUsed) {
+    // If progress was reset
+    isUsed = false;
+    answersCorrect = 0;
+    answersSelected = 0;
+    selectedHistory = [];
+  }
+
+  $: correctCount = answers.filter((a) => a.isCorrect).length;
+
+  function onAnswerClicked(answerName: string, isCorrect: boolean) {
+    if (isUsed) return;
+
+    if (!selectedHistory.includes(answerName)) {
+      selectedHistory = [...selectedHistory, answerName];
+      answersSelected++;
+      if (isCorrect) answersCorrect++;
+    }
+
+    if (answersSelected >= correctCount) {
+      isUsed = true;
+      progressStore.saveQuestionState(subjectSlug, themeName, name, {
+        selected: selectedHistory,
+        isUsed: true,
+        isCorrect: answersCorrect === correctCount,
+      });
+    }
+  }
 
   function fisherYates(myArray: any[]) {
     let i = myArray.length;
@@ -26,7 +71,13 @@
     }
   }
 
-  $: if (answers && answers.length > 0 && !isUsed && answersSelected === 0) {
+  $: if (
+    answers &&
+    answers.length > 0 &&
+    !isUsed &&
+    !storedState &&
+    answersSelected === 0
+  ) {
     fisherYates(answers);
   }
 </script>
@@ -91,14 +142,13 @@
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
       {#each answers as a (a.answer)}
+        {@const isSelected = selectedHistory.includes(a.answer)}
         <TesterAnswer
           name={a.answer}
           isCorrect={a.isCorrect}
-          {correctCount}
-          bind:answersSelected
-          bind:answersCorrect
-          bind:isUsed
-          bind:questionsGuessed
+          {isUsed}
+          isClicked={isSelected}
+          on:clicked={(e) => onAnswerClicked(a.answer, a.isCorrect)}
         />
       {/each}
     </div>

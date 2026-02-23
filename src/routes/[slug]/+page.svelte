@@ -5,6 +5,9 @@
   import TesterTheme from "../../components/TesterTheme.svelte";
   import type { PageData } from "./$types";
   import { fly } from "svelte/transition";
+  import { progressStore } from "../../lib/stores/progress";
+  import type { ProgressState, ThemeProgress } from "../../lib/stores/progress";
+  import IoMdRefresh from "svelte-icons/io/IoMdRefresh.svelte";
 
   export let data: PageData;
 
@@ -17,6 +20,35 @@
 
     const subjectsDoc = querySnapshot.docs[0].data();
     return subjectsDoc[data.slug] || [];
+  }
+
+  function resetAll() {
+    if (
+      confirm(
+        `Naozaj chceš resetovať CELÝ progres pre predmet "${data.slug.toUpperCase()}"?`,
+      )
+    ) {
+      progressStore.resetSubject(data.slug);
+    }
+  }
+
+  function calculateOverallProgress(themes: any[], _progress: any) {
+    if (!themes || themes.length === 0) return 0;
+    const totalQuestions = themes.reduce(
+      (acc, theme) => acc + (theme.questions?.length || 0),
+      0,
+    );
+
+    // Count questions across all themes that are marked as isCorrect: true
+    let finishedCount = 0;
+    const subjectData = (_progress as ProgressState)[data.slug] || {};
+    Object.values(subjectData).forEach((themeData: ThemeProgress) => {
+      Object.values(themeData.questions).forEach((questionState) => {
+        if (questionState.isCorrect) finishedCount++;
+      });
+    });
+
+    return totalQuestions > 0 ? (finishedCount / totalQuestions) * 100 : 0;
   }
 </script>
 
@@ -73,10 +105,65 @@
         </div>
       {:then themes}
         {#if themes && themes.length > 0}
+          <!-- Overall Progress -->
+          <div
+            class="mb-12 glass-dark p-8 rounded-[2.5rem] border border-white/5 flex flex-col md:flex-row items-center gap-8 shadow-2xl overflow-hidden relative"
+            in:fly={{ y: 20, duration: 600, delay: 200 }}
+          >
+            <div
+              class="absolute inset-0 bg-emerald-500/5 blur-[100px] pointer-events-none"
+            ></div>
+
+            <div
+              class="relative z-10 flex-shrink-0 w-24 h-24 rounded-full border-4 border-slate-800 flex items-center justify-center bg-slate-900 shadow-inner overflow-hidden"
+            >
+              <div
+                class="absolute bottom-0 left-0 w-full bg-emerald-500/20 transition-all duration-1000"
+                style={`height: ${calculateOverallProgress(themes, $progressStore)}%`}
+              ></div>
+              <span class="text-white font-oswald text-2xl font-black"
+                >{Math.round(calculateOverallProgress(themes, $progressStore))}
+                <span class="text-[10px] text-emerald-500 ml-0.5">%</span></span
+              >
+            </div>
+
+            <div class="relative z-10 flex-1 text-center md:text-left">
+              <h4
+                class="text-white font-oswald text-xl font-black uppercase tracking-tight mb-2"
+              >
+                Celkový progres predmetu
+              </h4>
+              <p
+                class="text-slate-500 text-xs font-bold uppercase tracking-widest leading-relaxed"
+              >
+                Dokonči všetky okruhy na 100% pre úspešné zvládnutie skúšky.
+              </p>
+            </div>
+
+            <button
+              class="relative z-10 flex items-center gap-3 px-6 py-3 bg-red-500/10 hover:bg-red-500/20 border border-red-500/20 rounded-2xl transition-all group"
+              on:click={resetAll}
+            >
+              <div
+                class="w-4 h-4 text-red-500 group-hover:rotate-180 transition-transform duration-500"
+              >
+                <IoMdRefresh />
+              </div>
+              <span
+                class="text-red-500 text-[10px] font-black tracking-widest uppercase mt-0.5"
+                >Resetovať Predmet</span
+              >
+            </button>
+          </div>
+
           <TesterBox>
             {#each themes as theme, i}
               <div in:fly={{ y: 20, duration: 600, delay: 100 * i }}>
-                <TesterTheme name={theme.name} questions={theme.questions} />
+                <TesterTheme
+                  subjectSlug={data.slug}
+                  name={theme.name}
+                  questions={theme.questions}
+                />
               </div>
             {/each}
           </TesterBox>

@@ -1,7 +1,7 @@
 <script lang="ts">
   import SelectionBox from "../components/SelectionBox.svelte";
   import { onMount } from "svelte";
-  import { fly, fade } from "svelte/transition";
+  import { fly } from "svelte/transition";
 
   let mounted = false;
   onMount(() => {
