@@ -4,6 +4,11 @@
   import Footer from "../components/Footer.svelte";
 </script>
 
+<svelte:head>
+  <meta name="theme-color" content="#020617" />
+  <meta property="og:site_name" content="FRI Capsule" />
+</svelte:head>
+
 <div class="min-h-screen flex flex-col bg-slate-950">
   <Navigation />
   <main class="flex-grow">

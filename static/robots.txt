@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://fri-capsule.web.app/sitemap.xml

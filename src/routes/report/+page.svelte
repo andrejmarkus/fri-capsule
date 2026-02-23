@@ -35,7 +35,11 @@
 </script>
 
 <svelte:head>
-  <title>Reportovať Problém | FRI CAPSULE</title>
+  <title>Nahlásenie Chyby / Spätná Väzba | FRI CAPSULE</title>
+  <meta
+    name="description"
+    content="Pomôž nám vylepšiť FRI Capsule. Nahlás chybu v otázkach alebo nám pošli svoj nápad na zlepšenie."
+  />
 </svelte:head>
 
 <section

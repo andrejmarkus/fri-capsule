@@ -10,7 +10,17 @@
 </script>
 
 <svelte:head>
-  <title>FRI CAPSULE | Digitálne Štúdium</title>
+  <title>FRI CAPSULE | Digitálna Študovňa a Interaktívne Testy</title>
+  <meta
+    name="description"
+    content="Digitálna študovňa pre študentov FRI UNIZA. Efektívna príprava na skúšky z PIKS, EAPAP, ZET a ATG pomocou interaktívnych testov a kapsúl."
+  />
+  <meta property="og:title" content="FRI CAPSULE | Digitálna Študovňa" />
+  <meta
+    property="og:description"
+    content="Efektívna príprava na skúšky s interaktívnymi testami pre študentov FRI UNIZA."
+  />
+  <meta property="og:url" content="https://fri-capsule.web.app/" />
 </svelte:head>
 
 <section

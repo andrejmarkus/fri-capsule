@@ -50,10 +50,28 @@
 
     return totalQuestions > 0 ? (finishedCount / totalQuestions) * 100 : 0;
   }
+
+  const subjectNames: Record<string, string> = {
+    piks: "Princípy IKS",
+    eapap: "Podnikanie",
+    zet: "Základy Ekonómie",
+    atg: "Algoritmická Teória Grafov",
+  };
 </script>
 
 <svelte:head>
-  <title>{data.slug.toUpperCase()} | Kapitoly | FRI CAPSULE</title>
+  <title
+    >{subjectNames[data.slug] || data.slug.toUpperCase()} | Kapitoly | FRI CAPSULE</title
+  >
+  <meta
+    name="description"
+    content={`Priprav sa na skúšku z predmetu ${subjectNames[data.slug] || data.slug.toUpperCase()} na FRI UNIZA. Interaktívne okruhy a testovacie otázky.`}
+  />
+  <meta
+    property="og:title"
+    content={`${subjectNames[data.slug] || data.slug.toUpperCase()} | FRI CAPSULE`}
+  />
+  <meta property="og:image" content={`/${data.slug}.png`} />
 </svelte:head>
 
 <section
