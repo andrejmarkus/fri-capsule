@@ -11,3 +11,4 @@ vite.config.ts.timestamp-*
 .firebase
 public/_app
 .firebase/hosting.cHVibGlj.cache
+firebase-debug.log
