@@ -1,72 +1,65 @@
-<script>
-    import Selection from "./Selection.svelte";
-    import IoIosArrowDropleftCircle from 'svelte-icons/io/IoIosArrowDropleftCircle.svelte';
-    import IoIosArrowDroprightCircle from 'svelte-icons/io/IoIosArrowDroprightCircle.svelte';
+<script lang="ts">
+  import Selection from "./Selection.svelte";
+  import { fly } from "svelte/transition";
+  import { onMount } from "svelte";
 
-    import anime from "animejs/lib/anime.es";
+  interface Subject {
+    name: string;
+    slug: string;
+    color: string;
+    description: string;
+  }
 
-    export let subjects = [
-        ["Princípy IKS", "piks"],
-        ["Ekonomické a právne aspekty podnikania", "eapap"],
-        ["Základy ekonomickej teórie", "zet"],
-        ["Algoritmická teória grafov", "atg"]
-    ];
+  export let subjects: Subject[] = [
+    {
+      name: "Princípy IKS",
+      slug: "piks",
+      color: "from-blue-500 to-blue-700",
+      description: "Sieťové technológie, protokoly a systémová architektúra.",
+    },
+    {
+      name: "Podnikanie",
+      slug: "eapap",
+      color: "from-emerald-500 to-emerald-700",
+      description: "Ekonomické a právne základy podnikateľského prostredia.",
+    },
+    {
+      name: "Základy Ekonómie",
+      slug: "zet",
+      color: "from-indigo-500 to-indigo-700",
+      description: "Analýza trhu, spotrebiteľského správania a makroekonómie.",
+    },
+    {
+      name: "Algoritmická Teória",
+      slug: "atg",
+      color: "from-rose-500 to-rose-700",
+      description: "Štruktúry grafov, algoritmy a ich aplikácie v praxi.",
+    },
+  ];
 
-    let index = 0;
-
-    function next() {
-        animateNext();
-
-        index++;
-        if (index >= subjects.length) {
-            index = 0;
-        }
-    }
-
-    function previous() {
-        animatePrevious();
-
-        index--;
-        if (index < 0) {
-            index = subjects.length - 1;
-        }
-    }
-
-    function animateButton(e) {
-        anime({
-            targets: e.target,
-            rotate: [10, -10, 0],
-            scale: [1.1, 1],
-            duration: 300,
-            easing: "linear"
-        })
-    }
-
-    function animateNext() {
-        anime({
-            targets: ".aCirc",
-            translateX: [-200, 200, 0],
-            scale: [0, 0, 1],
-            duration: 600,
-            easing: "linear"
-        })
-    }
-
-    function animatePrevious() {
-        anime({
-            targets: ".aCirc",
-            translateX: [200, -200, 0],
-            scale: [0, 0, 1],
-            duration: 600,
-            easing: "linear"
-        })
-    }
+  let mounted = false;
+  onMount(() => {
+    mounted = true;
+  });
 </script>
 
-<div class="p-6 bg-gradient-to-b from-slate-200 to-slate-300 text-zinc-800 rounded-2xl drop-shadow-lg flex flex-col items-center justify-center gap-4 font-poppins">
-    <div class="h-full w-full flex flex-col sm:flex-row sm:justify-center justify-between items-center">
-        <button class="w-20 sm:w-36 text-zinc-800" on:click={previous} on:mouseenter={animateButton}><IoIosArrowDropleftCircle /></button>
-        <Selection data={subjects[index]} />
-        <button class="w-20 sm:w-36 text-zinc-800" on:click={next} on:mouseenter={animateButton}><IoIosArrowDroprightCircle /></button>
-    </div>
+<div
+  class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-7xl px-4"
+>
+  {#if mounted}
+    {#each subjects as subject, i}
+      <div
+        class="subject-card group h-full"
+        in:fly={{ y: 20, duration: 800, delay: 600 + i * 100, opacity: 0 }}
+      >
+        <Selection {subject} />
+      </div>
+    {/each}
+  {/if}
 </div>
+
+<style>
+  .subject-card {
+    transition-property: transform, opacity;
+  }
+</style>

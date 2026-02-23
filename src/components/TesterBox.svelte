@@ -1,3 +1,3 @@
-<div class="px-5 py-3 mx-3 xl:mx-0 bg-gradient-to-b from-white to-slate-50 rounded-md drop-shadow-lg">
+<div class="space-y-6 w-full max-w-4xl mx-auto px-4">
     <slot />
 </div>

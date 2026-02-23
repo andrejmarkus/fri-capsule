@@ -1,7 +1,49 @@
+/* New Fonts import */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Oswald:wght@300;400;500;600;700&display=swap');
+
 /* Tailwind CSS import */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* New Fonts import */
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&family=Oswald:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap');
+@layer base {
+    body {
+        @apply bg-slate-950 text-slate-200 font-sans selection:bg-emerald-500/30 selection:text-emerald-200;
+        font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    h1, h2, h3, .font-oswald {
+        font-family: 'Oswald', sans-serif;
+    }
+}
+
+@layer components {
+    .glass {
+        @apply bg-white/5 backdrop-blur-xl border border-white/10;
+    }
+
+    .glass-dark {
+        @apply bg-slate-900/40 backdrop-blur-2xl border border-slate-800/50;
+    }
+
+    .btn-primary {
+        @apply px-6 py-3 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold transition-all duration-300 shadow-lg shadow-emerald-900/20 hover:shadow-emerald-500/20 hover:-translate-y-0.5;
+    }
+
+    .text-gradient {
+        @apply bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-indigo-400;
+    }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    @apply bg-slate-950;
+}
+
+::-webkit-scrollbar-thumb {
+    @apply bg-slate-800 rounded-full hover:bg-slate-700 transition-colors;
+}
