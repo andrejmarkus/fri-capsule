@@ -1,4 +1,4 @@
-declare module 'svelte-icons/*.svelte' {
-	import { SvelteComponentTyped } from 'svelte';
-	export default class extends SvelteComponentTyped<any, any, any> {}
+declare module 'svelte-icons/*' {
+	import { SvelteComponent } from 'svelte';
+	export default class extends SvelteComponent<any, any, any> {}
 }
