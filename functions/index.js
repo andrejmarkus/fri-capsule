@@ -16,17 +16,6 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-let ssrServerServer;
-exports.ssrServer = functions.region("europe-west1").https.onRequest(async (request, response) => {
-    if (!ssrServerServer) {
-        functions.logger.info("Initialising SvelteKit SSR entry");
-        ssrServerServer = require("./ssrServer/index").default;
-        functions.logger.info("SvelteKit SSR entry initialised!");
-    }
-    functions.logger.info("Requested resource: " + request.originalUrl);
-    return ssrServerServer(request, response);
-});
-
 // Trigger email when a new report is created in Firestore
 exports.onReportCreated = functions.region("europe-west1").firestore
     .document("reports/{reportId}")

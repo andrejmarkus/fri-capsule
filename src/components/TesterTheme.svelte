@@ -33,6 +33,11 @@
   $: progress =
     questionsCount > 0 ? (questionsGuessed / questionsCount) * 100 : 0;
 
+  $: hasAnyProgress =
+    themeProgress &&
+    (Object.keys(themeProgress.questions).length > 0 ||
+      themeProgress.order.length > 0);
+
   function onClick() {
     isClicked = !isClicked;
     if (isClicked) {
@@ -123,7 +128,7 @@
           </span>
         </div>
 
-        {#if questionsGuessed > 0}
+        {#if hasAnyProgress}
           <button
             class="w-8 h-8 rounded-full flex items-center justify-center border border-white/10 text-slate-500 hover:text-red-400 hover:bg-red-500/10 hover:border-red-500/20 transition-all duration-300 z-30"
             on:click={resetThemeProgress}
