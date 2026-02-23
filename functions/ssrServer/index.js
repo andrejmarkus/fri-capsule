@@ -16716,7 +16716,6 @@ var current_component, ATTR_REGEX, CONTENT_REGEX, missing_component, on_destroy;
 var init_chunks = __esm({
   ".svelte-kit/output/server/chunks/index.js"() {
     init_shims();
-    Promise.resolve();
     ATTR_REGEX = /[&"]/g;
     CONTENT_REGEX = /[&<]/g;
     missing_component = {
@@ -16941,18 +16940,22 @@ var require_set_cookie = __commonJS({
           return {};
         }
       }
-      if (input.headers && input.headers["set-cookie"]) {
-        input = input.headers["set-cookie"];
-      } else if (input.headers) {
-        var sch = input.headers[Object.keys(input.headers).find(function(key2) {
-          return key2.toLowerCase() === "set-cookie";
-        })];
-        if (!sch && input.headers.cookie && !options2.silent) {
-          console.warn(
-            "Warning: set-cookie-parser appears to have been called on a request object. It is designed to parse Set-Cookie headers from responses, not Cookie headers from requests. Set the option {silent: true} to suppress this warning."
-          );
+      if (input.headers) {
+        if (typeof input.headers.getSetCookie === "function") {
+          input = input.headers.getSetCookie();
+        } else if (input.headers["set-cookie"]) {
+          input = input.headers["set-cookie"];
+        } else {
+          var sch = input.headers[Object.keys(input.headers).find(function(key2) {
+            return key2.toLowerCase() === "set-cookie";
+          })];
+          if (!sch && input.headers.cookie && !options2.silent) {
+            console.warn(
+              "Warning: set-cookie-parser appears to have been called on a request object. It is designed to parse Set-Cookie headers from responses, not Cookie headers from requests. Set the option {silent: true} to suppress this warning."
+            );
+          }
+          input = sch;
         }
-        input = sch;
       }
       if (!Array.isArray(input)) {
         input = [input];
@@ -17044,7 +17047,7 @@ var init_layout_svelte = __esm({
     init_shims();
     init_chunks();
     Navigation = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-      return `<nav class="${"bg-zinc-800 w-full font-poppins drop-shadow-md z-10 fixed flex justify-center items-center h-14"}"><a href="${"/"}"><img class="${"w-52"}" src="${"./logo.png"}" alt="${"logo"}"></a></nav>`;
+      return `<nav class="bg-zinc-800 w-full font-poppins drop-shadow-md z-10 fixed flex justify-center items-center h-14"><a href="/"><img class="w-52" src="./logo.png" alt="logo"></a></nav>`;
     });
     Layout = create_ssr_component(($$result, $$props, $$bindings, slots) => {
       return `${validate_component(Navigation, "Navigation").$$render($$result, {}, {}, {})}
@@ -17069,9 +17072,9 @@ var init__ = __esm({
     init_shims();
     index = 0;
     component = async () => (await Promise.resolve().then(() => (init_layout_svelte(), layout_svelte_exports))).default;
-    file = "_app/immutable/entry/_layout.svelte.f0d1e532.js";
-    imports = ["_app/immutable/entry/_layout.svelte.f0d1e532.js", "_app/immutable/chunks/index.e0a09590.js"];
-    stylesheets = ["_app/immutable/assets/_layout.f5b5ba00.css"];
+    file = "_app/immutable/entry/_layout.svelte.66393085.js";
+    imports = ["_app/immutable/entry/_layout.svelte.66393085.js", "_app/immutable/chunks/index.213a7fe9.js"];
+    stylesheets = ["_app/immutable/assets/_layout.44a7c630.css"];
     fonts = [];
   }
 });
@@ -17132,8 +17135,8 @@ var init__2 = __esm({
     init_shims();
     index2 = 1;
     component2 = async () => (await Promise.resolve().then(() => (init_error_svelte(), error_svelte_exports))).default;
-    file2 = "_app/immutable/entry/error.svelte.3f0d748c.js";
-    imports2 = ["_app/immutable/entry/error.svelte.3f0d748c.js", "_app/immutable/chunks/index.e0a09590.js", "_app/immutable/chunks/singletons.536303db.js"];
+    file2 = "_app/immutable/entry/error.svelte.c548ef13.js";
+    imports2 = ["_app/immutable/entry/error.svelte.c548ef13.js", "_app/immutable/chunks/index.213a7fe9.js", "_app/immutable/chunks/singletons.b9b2a3a7.js"];
     stylesheets2 = [];
     fonts2 = [];
   }
@@ -18558,7 +18561,7 @@ var init_IconBase = __esm({
       if ($$props.viewBox === void 0 && $$bindings.viewBox && viewBox !== void 0)
         $$bindings.viewBox(viewBox);
       $$result.css.add(css);
-      return `<svg xmlns="${"http://www.w3.org/2000/svg"}"${add_attribute("viewBox", viewBox, 0)} class="${"svelte-c8tyih"}">${title ? `<title>${escape(title)}</title>` : ``}${slots.default ? slots.default({}) : ``}</svg>`;
+      return `<svg xmlns="http://www.w3.org/2000/svg"${add_attribute("viewBox", viewBox, 0)} class="svelte-c8tyih">${title ? `<title>${escape(title)}</title>` : ``}${slots.default ? slots.default({}) : ``}</svg>`;
     });
   }
 });
@@ -18579,20 +18582,20 @@ var init_page_svelte = __esm({
       let { data } = $$props;
       if ($$props.data === void 0 && $$bindings.data && data !== void 0)
         $$bindings.data(data);
-      return `<div class="${"aCirc flex flex-col items-center justify-center mx-0 sm:mx-20 font-oswald font-bold"}"><a href="${"/" + escape(data[1], true)}"><button><p class="${"text-zinc-800 text-2xl lg:text-6xl sm:text-4xl w-full drop-shadow-[0.15rem_0.15rem_0.15rem_rgba(0,0,0,0.5)] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10"}">${escape(data[0])}</p>
-            <img class="${"opacity-30 h-52 w-52 sm:h-72 sm:w-72 lg:h-96 lg:w-96"}" src="${"/" + escape(data[1], true) + ".png"}"${add_attribute("alt", data[1], 0)}></button></a></div>`;
+      return `<div class="aCirc flex flex-col items-center justify-center mx-0 sm:mx-20 font-oswald font-bold"><a href="${"/" + escape(data[1], true)}"><button><p class="text-zinc-800 text-2xl lg:text-6xl sm:text-4xl w-full drop-shadow-[0.15rem_0.15rem_0.15rem_rgba(0,0,0,0.5)] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10">${escape(data[0])}</p>
+            <img class="opacity-30 h-52 w-52 sm:h-72 sm:w-72 lg:h-96 lg:w-96" src="${"/" + escape(data[1], true) + ".png"}"${add_attribute("alt", data[1], 0)}></button></a></div>`;
     });
     IoIosArrowDropleftCircle = create_ssr_component(($$result, $$props, $$bindings, slots) => {
       return `${validate_component(IconBase, "IconBase").$$render($$result, Object.assign({}, { viewBox: "0 0 512 512" }, $$props), {}, {
         default: () => {
-          return `<path d="${"M256 48C141.1 48 48 141.1 48 256s93.1 208 208 208 208-93.1 208-208S370.9 48 256 48zm43.4 289.1c7.5 7.5 7.5 19.8 0 27.3-3.8 3.8-8.7 5.6-13.6 5.6s-9.9-1.9-13.7-5.7l-94-94.3c-6.9-7.6-6.7-19.3.6-26.6l95.4-95.7c7.5-7.5 19.7-7.6 27.3 0 7.5 7.5 7.6 19.7 0 27.3l-81.9 81 79.9 81.1z"}"></path>`;
+          return `<path d="M256 48C141.1 48 48 141.1 48 256s93.1 208 208 208 208-93.1 208-208S370.9 48 256 48zm43.4 289.1c7.5 7.5 7.5 19.8 0 27.3-3.8 3.8-8.7 5.6-13.6 5.6s-9.9-1.9-13.7-5.7l-94-94.3c-6.9-7.6-6.7-19.3.6-26.6l95.4-95.7c7.5-7.5 19.7-7.6 27.3 0 7.5 7.5 7.6 19.7 0 27.3l-81.9 81 79.9 81.1z"></path>`;
         }
       })}`;
     });
     IoIosArrowDroprightCircle = create_ssr_component(($$result, $$props, $$bindings, slots) => {
       return `${validate_component(IconBase, "IconBase").$$render($$result, Object.assign({}, { viewBox: "0 0 512 512" }, $$props), {}, {
         default: () => {
-          return `<path d="${"M48 256c0 114.9 93.1 208 208 208s208-93.1 208-208S370.9 48 256 48 48 141.1 48 256zm244.5 0l-81.9-81.1c-7.5-7.5-7.5-19.8 0-27.3s19.8-7.5 27.3 0l95.4 95.7c7.3 7.3 7.5 19.1.6 26.6l-94 94.3c-3.8 3.8-8.7 5.7-13.7 5.7-4.9 0-9.9-1.9-13.6-5.6-7.5-7.5-7.6-19.7 0-27.3l79.9-81z"}"></path>`;
+          return `<path d="M48 256c0 114.9 93.1 208 208 208s208-93.1 208-208S370.9 48 256 48 48 141.1 48 256zm244.5 0l-81.9-81.1c-7.5-7.5-7.5-19.8 0-27.3s19.8-7.5 27.3 0l95.4 95.7c7.3 7.3 7.5 19.1.6 26.6l-94 94.3c-3.8 3.8-8.7 5.7-13.7 5.7-4.9 0-9.9-1.9-13.6-5.6-7.5-7.5-7.6-19.7 0-27.3l79.9-81z"></path>`;
         }
       })}`;
     });
@@ -18606,12 +18609,12 @@ var init_page_svelte = __esm({
       let index6 = 0;
       if ($$props.subjects === void 0 && $$bindings.subjects && subjects !== void 0)
         $$bindings.subjects(subjects);
-      return `<div class="${"p-6 bg-gradient-to-b from-slate-200 to-slate-300 text-zinc-800 rounded-2xl drop-shadow-lg flex flex-col items-center justify-center gap-4 font-poppins"}"><div class="${"h-full w-full flex flex-col sm:flex-row sm:justify-center justify-between items-center"}"><button class="${"w-20 sm:w-36 text-zinc-800"}">${validate_component(IoIosArrowDropleftCircle, "IoIosArrowDropleftCircle").$$render($$result, {}, {}, {})}</button>
+      return `<div class="p-6 bg-gradient-to-b from-slate-200 to-slate-300 text-zinc-800 rounded-2xl drop-shadow-lg flex flex-col items-center justify-center gap-4 font-poppins"><div class="h-full w-full flex flex-col sm:flex-row sm:justify-center justify-between items-center"><button class="w-20 sm:w-36 text-zinc-800">${validate_component(IoIosArrowDropleftCircle, "IoIosArrowDropleftCircle").$$render($$result, {}, {}, {})}</button>
         ${validate_component(Selection, "Selection").$$render($$result, { data: subjects[index6] }, {}, {})}
-        <button class="${"w-20 sm:w-36 text-zinc-800"}">${validate_component(IoIosArrowDroprightCircle, "IoIosArrowDroprightCircle").$$render($$result, {}, {}, {})}</button></div></div>`;
+        <button class="w-20 sm:w-36 text-zinc-800">${validate_component(IoIosArrowDroprightCircle, "IoIosArrowDroprightCircle").$$render($$result, {}, {}, {})}</button></div></div>`;
     });
     Page = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-      return `<section class="${"h-screen bg-gradient-to-b from-green-600 via-emerald-600 to-emerald-600"}"><div class="${"h-full md:max-w-screen-xl sm:max-w-screen-md mx-auto flex flex-col justify-center items-center"}"><p class="${"mb-8 text-slate-200 drop-shadow-lg font-oswald font-bold text-4xl sm:text-7xl lg:text-8xl text-center"}">VYBER SI PREDMET</p>
+      return `<section class="h-screen bg-gradient-to-b from-green-600 via-emerald-600 to-emerald-600"><div class="h-full md:max-w-screen-xl sm:max-w-screen-md mx-auto flex flex-col justify-center items-center"><p class="mb-8 text-slate-200 drop-shadow-lg font-oswald font-bold text-4xl sm:text-7xl lg:text-8xl text-center">VYBER SI PREDMET</p>
         ${validate_component(SelectionBox, "SelectionBox").$$render($$result, {}, {}, {})}</div></section>`;
     });
   }
@@ -18633,8 +18636,8 @@ var init__3 = __esm({
     init_shims();
     index3 = 2;
     component3 = async () => (await Promise.resolve().then(() => (init_page_svelte(), page_svelte_exports))).default;
-    file3 = "_app/immutable/entry/_page.svelte.055a6ae1.js";
-    imports3 = ["_app/immutable/entry/_page.svelte.055a6ae1.js", "_app/immutable/chunks/index.e0a09590.js", "_app/immutable/chunks/IconBase.1330d312.js"];
+    file3 = "_app/immutable/entry/_page.svelte.ba3688c4.js";
+    imports3 = ["_app/immutable/entry/_page.svelte.ba3688c4.js", "_app/immutable/chunks/index.213a7fe9.js", "_app/immutable/chunks/IconBase.867590d3.js"];
     stylesheets3 = ["_app/immutable/assets/IconBase.6bf551a2.css"];
     fonts3 = [];
   }
@@ -18651,7 +18654,7 @@ var init_page_svelte2 = __esm({
     init_shims();
     init_chunks();
     Page2 = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-      return `<section class="${"h-screen bg-gradient-to-b from-green-600 via-emerald-600 to-emerald-600"}"></section>`;
+      return `<section class="h-screen bg-gradient-to-b from-green-600 via-emerald-600 to-emerald-600"></section>`;
     });
   }
 });
@@ -18672,8 +18675,8 @@ var init__4 = __esm({
     init_shims();
     index4 = 3;
     component4 = async () => (await Promise.resolve().then(() => (init_page_svelte2(), page_svelte_exports2))).default;
-    file4 = "_app/immutable/entry/report-page.svelte.29ab5ced.js";
-    imports4 = ["_app/immutable/entry/report-page.svelte.29ab5ced.js", "_app/immutable/chunks/index.e0a09590.js"];
+    file4 = "_app/immutable/entry/report-page.svelte.d88c3aa2.js";
+    imports4 = ["_app/immutable/entry/report-page.svelte.d88c3aa2.js", "_app/immutable/chunks/index.213a7fe9.js"];
     stylesheets4 = [];
     fonts4 = [];
   }
@@ -20096,7 +20099,7 @@ var init_index_esm20173 = __esm({
       }
     };
     name$o = "@firebase/app";
-    version$1 = "0.9.4";
+    version$1 = "0.9.7";
     logger = new Logger("@firebase/app");
     name$n = "@firebase/app-compat";
     name$m = "@firebase/analytics-compat";
@@ -20122,7 +20125,7 @@ var init_index_esm20173 = __esm({
     name$2 = "@firebase/firestore";
     name$1 = "@firebase/firestore-compat";
     name = "firebase";
-    version = "9.17.2";
+    version = "9.19.1";
     DEFAULT_ENTRY_NAME2 = "[DEFAULT]";
     PLATFORM_LOG_STRING = {
       [name$o]: "fire-core",
@@ -20395,7 +20398,7 @@ var init_dist = __esm({
     init_index_esm20173();
     init_index_esm20173();
     name2 = "firebase";
-    version2 = "9.17.2";
+    version2 = "9.19.1";
     registerVersion(name2, version2, "app");
   }
 });
@@ -20996,12 +20999,33 @@ var init_index_esm20174 = __esm({
 });
 
 // node_modules/@firebase/analytics/dist/esm/index.esm2017.js
+function createGtagTrustedTypesScriptURL(url) {
+  if (!url.startsWith(GTAG_URL)) {
+    const err = ERROR_FACTORY3.create("invalid-gtag-resource", {
+      gtagURL: url
+    });
+    logger2.warn(err.message);
+    return "";
+  }
+  return url;
+}
 function promiseAllSettled(promises) {
   return Promise.all(promises.map((promise) => promise.catch((e) => e)));
 }
+function createTrustedTypesPolicy(policyName, policyOptions) {
+  let trustedTypesPolicy;
+  if (window.trustedTypes) {
+    trustedTypesPolicy = window.trustedTypes.createPolicy(policyName, policyOptions);
+  }
+  return trustedTypesPolicy;
+}
 function insertScriptTag(dataLayerName2, measurementId) {
+  const trustedTypesPolicy = createTrustedTypesPolicy("firebase-js-sdk-policy", {
+    createScriptURL: createGtagTrustedTypesScriptURL
+  });
   const script = document.createElement("script");
-  script.src = `${GTAG_URL}?l=${dataLayerName2}&id=${measurementId}`;
+  const gtagScriptURL = `${GTAG_URL}?l=${dataLayerName2}&id=${measurementId}`;
+  script.src = trustedTypesPolicy ? trustedTypesPolicy === null || trustedTypesPolicy === void 0 ? void 0 : trustedTypesPolicy.createScriptURL(gtagScriptURL) : gtagScriptURL;
   script.async = true;
   document.head.appendChild(script);
 }
@@ -21460,7 +21484,11 @@ var init_index_esm20175 = __esm({
       [
         "no-app-id"
         /* AnalyticsError.NO_APP_ID */
-      ]: 'The "appId" field is empty in the local Firebase config. Firebase Analytics requires this field tocontain a valid app ID.'
+      ]: 'The "appId" field is empty in the local Firebase config. Firebase Analytics requires this field tocontain a valid app ID.',
+      [
+        "invalid-gtag-resource"
+        /* AnalyticsError.INVALID_GTAG_RESOURCE */
+      ]: "Trusted Types detected an invalid gtag resource: {$gtagURL}."
     };
     ERROR_FACTORY3 = new ErrorFactory("analytics", "Analytics", ERRORS2);
     LONG_RETRY_FACTOR = 30;
@@ -21508,7 +21536,7 @@ var init_index_esm20175 = __esm({
     gtagName = "gtag";
     globalInitDone = false;
     name4 = "@firebase/analytics";
-    version4 = "0.9.4";
+    version4 = "0.9.5";
     registerAnalytics();
   }
 });
@@ -29889,6 +29917,9 @@ var require_parse2 = __commonJS({
         if (type === "group") {
           parseGroup(parent, rule);
           return;
+        }
+        while (type.endsWith(".") || peek().startsWith(".")) {
+          type += next();
         }
         if (!typeRefRe.test(type))
           throw illegal(type, "type");
@@ -45029,9 +45060,8 @@ function makeAuthCredentialsProvider(credentials2) {
     return new EmptyAuthCredentialsProvider();
   }
   switch (credentials2["type"]) {
-    case "gapi":
-      const client = credentials2["client"];
-      return new FirstPartyAuthCredentialsProvider(client, credentials2["sessionIndex"] || "0", credentials2["iamToken"] || null, credentials2["authTokenFactory"] || null);
+    case "firstParty":
+      return new FirstPartyAuthCredentialsProvider(credentials2["sessionIndex"] || "0", credentials2["iamToken"] || null, credentials2["authTokenFactory"] || null);
     case "provider":
       return credentials2["client"];
     default:
@@ -47098,6 +47128,21 @@ function setMaxReadTime(localStoreImpl, collectionGroup, changedDocs) {
   });
   localStoreImpl.collectionGroupReadTime.set(collectionGroup, readTime);
 }
+function generateInitialUniqueDebugId() {
+  const minResult = 268435456;
+  const maxResult = 2415919104;
+  const resultRange = maxResult - minResult;
+  const resultOffset = Math.round(resultRange * Math.random());
+  return minResult + resultOffset;
+}
+function generateUniqueDebugId() {
+  if (lastUniqueDebugId === null) {
+    lastUniqueDebugId = generateInitialUniqueDebugId();
+  } else {
+    lastUniqueDebugId++;
+  }
+  return "0x" + lastUniqueDebugId.toString(16);
+}
 function nodePromise(action) {
   return new Promise((resolve, reject) => {
     action((error2, value) => {
@@ -47962,7 +48007,7 @@ async function setOfflineComponentProvider(client, offlineComponentProvider) {
     }
   });
   offlineComponentProvider.persistence.setDatabaseDeletedListener(() => client.terminate());
-  client.offlineComponents = offlineComponentProvider;
+  client._offlineComponents = offlineComponentProvider;
 }
 async function setOnlineComponentProvider(client, onlineComponentProvider) {
   client.asyncQueue.verifyOperationInProgress();
@@ -47972,21 +48017,55 @@ async function setOnlineComponentProvider(client, onlineComponentProvider) {
   await onlineComponentProvider.initialize(offlineComponentProvider, configuration);
   client.setCredentialChangeListener((user) => remoteStoreHandleCredentialChange(onlineComponentProvider.remoteStore, user));
   client.setAppCheckTokenChangeListener((_, user) => remoteStoreHandleCredentialChange(onlineComponentProvider.remoteStore, user));
-  client.onlineComponents = onlineComponentProvider;
+  client._onlineComponents = onlineComponentProvider;
+}
+function canFallbackFromIndexedDbError(error2) {
+  if (error2.name === "FirebaseError") {
+    return error2.code === Code.FAILED_PRECONDITION || error2.code === Code.UNIMPLEMENTED;
+  } else if (typeof DOMException !== "undefined" && error2 instanceof DOMException) {
+    return (
+      // When the browser is out of quota we could get either quota exceeded
+      // or an aborted error depending on whether the error happened during
+      // schema migration.
+      error2.code === DOM_EXCEPTION_QUOTA_EXCEEDED || error2.code === DOM_EXCEPTION_ABORTED || // Firefox Private Browsing mode disables IndexedDb and returns
+      // INVALID_STATE for any usage.
+      error2.code === DOM_EXCEPTION_INVALID_STATE
+    );
+  }
+  return true;
 }
 async function ensureOfflineComponents(client) {
-  if (!client.offlineComponents) {
-    logDebug(LOG_TAG$2, "Using default OfflineComponentProvider");
-    await setOfflineComponentProvider(client, new MemoryOfflineComponentProvider());
+  if (!client._offlineComponents) {
+    if (client._uninitializedComponentsProvider) {
+      logDebug(LOG_TAG$2, "Using user provided OfflineComponentProvider");
+      try {
+        await setOfflineComponentProvider(client, client._uninitializedComponentsProvider._offline);
+      } catch (e) {
+        const error2 = e;
+        if (!canFallbackFromIndexedDbError(error2)) {
+          throw error2;
+        }
+        logWarn("Error using user provided cache. Falling back to memory cache: " + error2);
+        await setOfflineComponentProvider(client, new MemoryOfflineComponentProvider());
+      }
+    } else {
+      logDebug(LOG_TAG$2, "Using default OfflineComponentProvider");
+      await setOfflineComponentProvider(client, new MemoryOfflineComponentProvider());
+    }
   }
-  return client.offlineComponents;
+  return client._offlineComponents;
 }
 async function ensureOnlineComponents(client) {
-  if (!client.onlineComponents) {
-    logDebug(LOG_TAG$2, "Using default OnlineComponentProvider");
-    await setOnlineComponentProvider(client, new OnlineComponentProvider());
+  if (!client._onlineComponents) {
+    if (client._uninitializedComponentsProvider) {
+      logDebug(LOG_TAG$2, "Using user provided OnlineComponentProvider");
+      await setOnlineComponentProvider(client, client._uninitializedComponentsProvider._online);
+    } else {
+      logDebug(LOG_TAG$2, "Using default OnlineComponentProvider");
+      await setOnlineComponentProvider(client, new OnlineComponentProvider());
+    }
   }
-  return client.onlineComponents;
+  return client._onlineComponents;
 }
 async function getEventManager(client) {
   const onlineComponentProvider = await ensureOnlineComponents(client);
@@ -48119,10 +48198,17 @@ function ensureFirestoreConfigured(firestore) {
   return firestore._firestoreClient;
 }
 function configureFirestore(firestore) {
-  var _a;
+  var _a, _b, _c;
   const settings = firestore._freezeSettings();
   const databaseInfo = makeDatabaseInfo(firestore._databaseId, ((_a = firestore._app) === null || _a === void 0 ? void 0 : _a.options.appId) || "", firestore._persistenceKey, settings);
   firestore._firestoreClient = new FirestoreClient(firestore._authCredentials, firestore._appCheckCredentials, firestore._queue, databaseInfo);
+  if (((_b = settings.cache) === null || _b === void 0 ? void 0 : _b._offlineComponentProvider) && ((_c = settings.cache) === null || _c === void 0 ? void 0 : _c._onlineComponentProvider)) {
+    firestore._firestoreClient._uninitializedComponentsProvider = {
+      _offlineKind: settings.cache.kind,
+      _offline: settings.cache._offlineComponentProvider,
+      _online: settings.cache._onlineComponentProvider
+    };
+  }
 }
 function registerFirestore(variant, useFetchStreams = true) {
   setSDKVersion(SDK_VERSION);
@@ -48258,7 +48344,7 @@ function getDocs(query) {
   validateHasExplicitOrderByForLimitToLast(query._query);
   return firestoreClientGetDocumentsViaSnapshotListener(client, query._query).then((snapshot) => new QuerySnapshot(firestore, userDataWriter, query, snapshot));
 }
-var import_util6, import_crypto, grpc, protoLoader, name5, version$12, User, version5, SDK_VERSION2, logClient, Code, FirestoreError, Deferred2, OAuthToken, EmptyAuthCredentialsProvider, EmulatorAuthCredentialsProvider, FirebaseAuthCredentialsProvider, FirstPartyToken, FirstPartyAuthCredentialsProvider, AppCheckToken, FirebaseAppCheckTokenProvider, AutoId, MIN_SECONDS, MS_TO_NANOS, Timestamp, SnapshotVersion, DOCUMENT_KEY_NAME, BasePath, ResourcePath, identifierRegExp, FieldPath$1, DocumentKey, INITIAL_LARGEST_BATCH_ID, FieldIndex, IndexOffset, PRIMARY_LEASE_LOST_ERROR_MSG, PersistenceTransaction, PersistencePromise, INITIAL_BACKFILL_DELAY_MS, REGULAR_BACKFILL_DELAY_MS, ListenSequence, DbRemoteDocumentStore$1, DbPrimaryClientStore, DbMutationQueueStore, DbMutationBatchStore, DbDocumentMutationStore, DbRemoteDocumentStore, DbRemoteDocumentGlobalStore, DbTargetStore, DbTargetDocumentStore, DbTargetGlobalStore, DbCollectionParentStore, DbClientMetadataStore, DbBundleStore, DbNamedQueryStore, DbIndexConfigurationStore, DbIndexStateStore, DbIndexEntryStore, DbDocumentOverlayStore, V1_STORES, V3_STORES, V4_STORES, V6_STORES, V8_STORES, V11_STORES, V12_STORES, V13_STORES, V14_STORES, V15_STORES, SortedMap, SortedMapIterator, LLRBNode, LLRBEmptyNode, SortedSet, SortedSetIterator, FieldMask, ByteString, ISO_TIMESTAMP_REG_EXP, SERVER_TIMESTAMP_SENTINEL, TYPE_KEY, PREVIOUS_VALUE_KEY, LOCAL_WRITE_TIME_KEY, DatabaseInfo, DEFAULT_DATABASE_NAME, DatabaseId, BATCHID_UNKNOWN, MAX_VALUE_TYPE, MAX_VALUE, ObjectValue, MutableDocument, Bound, OrderBy, Filter, FieldFilter, CompositeFilter, KeyFieldFilter, KeyFieldInFilter, KeyFieldNotInFilter, ArrayContainsFilter, InFilter, NotInFilter, ArrayContainsAnyFilter, TargetImpl, QueryImpl, ObjectMap, EMPTY_MUTABLE_DOCUMENT_MAP, EMPTY_DOCUMENT_MAP, EMPTY_DOCUMENT_VERSION_MAP, EMPTY_DOCUMENT_KEY_SET, EMPTY_TARGET_ID_SET, TransformOperation, ServerTimestampTransform, ArrayUnionTransformOperation, ArrayRemoveTransformOperation, NumericIncrementTransformOperation, Precondition, Mutation, SetMutation, PatchMutation, DeleteMutation, MutationBatch, Overlay, ExistenceFilter, RpcCode, RemoteEvent, TargetChange, DocumentWatchChange, ExistenceFilterChange, WatchTargetChange, TargetState, LOG_TAG$g, WatchChangeAggregator, DIRECTIONS, OPERATORS, COMPOSITE_OPERATORS, JsonProtoSerializer, TargetData, LocalSerializer, INDEX_TYPE_NULL, INDEX_TYPE_BOOLEAN, INDEX_TYPE_NAN, INDEX_TYPE_NUMBER, INDEX_TYPE_TIMESTAMP, INDEX_TYPE_STRING, INDEX_TYPE_BLOB, INDEX_TYPE_REFERENCE, INDEX_TYPE_GEOPOINT, INDEX_TYPE_ARRAY, INDEX_TYPE_MAP, INDEX_TYPE_REFERENCE_SEGMENT, NOT_TRUNCATED, FirestoreIndexValueWriter, MemoryIndexManager, MemoryCollectionParentIndex, EMPTY_VALUE, OFFSET, TargetIdGenerator, LRU_COLLECTION_DISABLED, LRU_DEFAULT_CACHE_SIZE_BYTES, LruParams, LRU_MINIMUM_CACHE_SIZE_BYTES, INITIAL_GC_DELAY_MS, REGULAR_GC_DELAY_MS, RemoteDocumentChangeBuffer, OverlayedDocument, LocalDocumentsView, MemoryBundleCache, MemoryDocumentOverlayCache, ReferenceSet, DocReference, MemoryMutationQueue, MemoryRemoteDocumentCacheImpl, MemoryRemoteDocumentChangeBuffer, MemoryTargetCache, LOG_TAG$d, MemoryPersistence, MemoryTransaction, MemoryEagerDelegate, MAX_CLIENT_AGE_MS, LOG_TAG$b, RESUME_TOKEN_MAX_AGE_MICROS, LocalStoreImpl, QueryEngine, LocalClientState, MemorySharedClientState, NoopConnectivityMonitor, StreamBridge, grpcVersion, LOG_TAG$9, X_GOOG_API_CLIENT_VALUE, GrpcConnection, nested, protos, protos$1, protoLoaderOptions, LOG_TAG$8, DEFAULT_BACKOFF_INITIAL_DELAY_MS, DEFAULT_BACKOFF_FACTOR2, DEFAULT_BACKOFF_MAX_DELAY_MS, ExponentialBackoff, LOG_TAG$7, IDLE_TIMEOUT_MS, HEALTHY_TIMEOUT_MS, PersistentStream, PersistentListenStream, Datastore, DatastoreImpl, LOG_TAG$6, MAX_WATCH_STREAM_FAILURES, ONLINE_STATE_TIMEOUT_MS, OnlineStateTracker, LOG_TAG$5, RemoteStoreImpl, LOG_TAG$4, DelayedOperation, DocumentSet, DocumentChangeSet, ViewSnapshot, QueryListenersInfo, EventManagerImpl, QueryListener, LocalViewChanges, AddedLimboDocument, RemovedLimboDocument, View, LOG_TAG$3, QueryView, LimboResolution, SyncEngineImpl, MemoryOfflineComponentProvider, OnlineComponentProvider, AsyncObserver, LOG_TAG$2, MAX_CONCURRENT_LIMBO_RESOLUTIONS, FirestoreClient, LOG_TAG$1, datastoreInstances, DEFAULT_HOST, DEFAULT_SSL, FirestoreSettingsImpl, Firestore$1, DocumentReference, Query, CollectionReference, LOG_TAG, AsyncQueueImpl, Firestore, Bytes, FieldPath, GeoPoint, FIELD_PATH_RESERVED, DocumentSnapshot$1, QueryDocumentSnapshot$1, AbstractUserDataWriter, SnapshotMetadata, DocumentSnapshot, QueryDocumentSnapshot, QuerySnapshot, ExpUserDataWriter;
+var import_util6, import_crypto, grpc, protoLoader, name5, version$12, User, version5, SDK_VERSION2, logClient, Code, FirestoreError, Deferred2, OAuthToken, EmptyAuthCredentialsProvider, EmulatorAuthCredentialsProvider, FirebaseAuthCredentialsProvider, FirstPartyToken, FirstPartyAuthCredentialsProvider, AppCheckToken, FirebaseAppCheckTokenProvider, AutoId, MIN_SECONDS, MS_TO_NANOS, Timestamp, SnapshotVersion, DOCUMENT_KEY_NAME, BasePath, ResourcePath, identifierRegExp, FieldPath$1, DocumentKey, INITIAL_LARGEST_BATCH_ID, FieldIndex, IndexOffset, PRIMARY_LEASE_LOST_ERROR_MSG, PersistenceTransaction, PersistencePromise, INITIAL_BACKFILL_DELAY_MS, REGULAR_BACKFILL_DELAY_MS, ListenSequence, DbRemoteDocumentStore$1, DbPrimaryClientStore, DbMutationQueueStore, DbMutationBatchStore, DbDocumentMutationStore, DbRemoteDocumentStore, DbRemoteDocumentGlobalStore, DbTargetStore, DbTargetDocumentStore, DbTargetGlobalStore, DbCollectionParentStore, DbClientMetadataStore, DbBundleStore, DbNamedQueryStore, DbIndexConfigurationStore, DbIndexStateStore, DbIndexEntryStore, DbDocumentOverlayStore, V1_STORES, V3_STORES, V4_STORES, V6_STORES, V8_STORES, V11_STORES, V12_STORES, V13_STORES, V14_STORES, V15_STORES, SortedMap, SortedMapIterator, LLRBNode, LLRBEmptyNode, SortedSet, SortedSetIterator, FieldMask, ByteString, ISO_TIMESTAMP_REG_EXP, SERVER_TIMESTAMP_SENTINEL, TYPE_KEY, PREVIOUS_VALUE_KEY, LOCAL_WRITE_TIME_KEY, DatabaseInfo, DEFAULT_DATABASE_NAME, DatabaseId, BATCHID_UNKNOWN, MAX_VALUE_TYPE, MAX_VALUE, ObjectValue, MutableDocument, Bound, OrderBy, Filter, FieldFilter, CompositeFilter, KeyFieldFilter, KeyFieldInFilter, KeyFieldNotInFilter, ArrayContainsFilter, InFilter, NotInFilter, ArrayContainsAnyFilter, TargetImpl, QueryImpl, ObjectMap, EMPTY_MUTABLE_DOCUMENT_MAP, EMPTY_DOCUMENT_MAP, EMPTY_DOCUMENT_VERSION_MAP, EMPTY_DOCUMENT_KEY_SET, EMPTY_TARGET_ID_SET, TransformOperation, ServerTimestampTransform, ArrayUnionTransformOperation, ArrayRemoveTransformOperation, NumericIncrementTransformOperation, Precondition, Mutation, SetMutation, PatchMutation, DeleteMutation, MutationBatch, Overlay, ExistenceFilter, RpcCode, TestingHooks, gTestingHooksSingletonInstance, RemoteEvent, TargetChange, DocumentWatchChange, ExistenceFilterChange, WatchTargetChange, TargetState, LOG_TAG$g, WatchChangeAggregator, DIRECTIONS, OPERATORS, COMPOSITE_OPERATORS, JsonProtoSerializer, TargetData, LocalSerializer, INDEX_TYPE_NULL, INDEX_TYPE_BOOLEAN, INDEX_TYPE_NAN, INDEX_TYPE_NUMBER, INDEX_TYPE_TIMESTAMP, INDEX_TYPE_STRING, INDEX_TYPE_BLOB, INDEX_TYPE_REFERENCE, INDEX_TYPE_GEOPOINT, INDEX_TYPE_ARRAY, INDEX_TYPE_MAP, INDEX_TYPE_REFERENCE_SEGMENT, NOT_TRUNCATED, FirestoreIndexValueWriter, MemoryIndexManager, MemoryCollectionParentIndex, EMPTY_VALUE, OFFSET, TargetIdGenerator, LRU_COLLECTION_DISABLED, LRU_DEFAULT_CACHE_SIZE_BYTES, LruParams, LRU_MINIMUM_CACHE_SIZE_BYTES, INITIAL_GC_DELAY_MS, REGULAR_GC_DELAY_MS, RemoteDocumentChangeBuffer, OverlayedDocument, LocalDocumentsView, MemoryBundleCache, MemoryDocumentOverlayCache, ReferenceSet, DocReference, MemoryMutationQueue, MemoryRemoteDocumentCacheImpl, MemoryRemoteDocumentChangeBuffer, MemoryTargetCache, LOG_TAG$d, MemoryPersistence, MemoryTransaction, MemoryEagerDelegate, MAX_CLIENT_AGE_MS, LOG_TAG$b, RESUME_TOKEN_MAX_AGE_MICROS, LocalStoreImpl, QueryEngine, LocalClientState, MemorySharedClientState, NoopConnectivityMonitor, StreamBridge, lastUniqueDebugId, grpcVersion, LOG_TAG$9, X_GOOG_API_CLIENT_VALUE, GrpcConnection, nested, protos, protos$1, protoLoaderOptions, LOG_TAG$8, DEFAULT_BACKOFF_INITIAL_DELAY_MS, DEFAULT_BACKOFF_FACTOR2, DEFAULT_BACKOFF_MAX_DELAY_MS, ExponentialBackoff, LOG_TAG$7, IDLE_TIMEOUT_MS, HEALTHY_TIMEOUT_MS, PersistentStream, PersistentListenStream, Datastore, DatastoreImpl, LOG_TAG$6, MAX_WATCH_STREAM_FAILURES, ONLINE_STATE_TIMEOUT_MS, OnlineStateTracker, LOG_TAG$5, RemoteStoreImpl, LOG_TAG$4, DelayedOperation, DocumentSet, DocumentChangeSet, ViewSnapshot, QueryListenersInfo, EventManagerImpl, QueryListener, LocalViewChanges, AddedLimboDocument, RemovedLimboDocument, View, LOG_TAG$3, QueryView, LimboResolution, SyncEngineImpl, MemoryOfflineComponentProvider, OnlineComponentProvider, AsyncObserver, LOG_TAG$2, MAX_CONCURRENT_LIMBO_RESOLUTIONS, DOM_EXCEPTION_INVALID_STATE, DOM_EXCEPTION_ABORTED, DOM_EXCEPTION_QUOTA_EXCEEDED, FirestoreClient, LOG_TAG$1, datastoreInstances, DEFAULT_HOST, DEFAULT_SSL, FirestoreSettingsImpl, Firestore$1, DocumentReference, Query, CollectionReference, LOG_TAG, AsyncQueueImpl, Firestore, Bytes, FieldPath, GeoPoint, FIELD_PATH_RESERVED, DocumentSnapshot$1, QueryDocumentSnapshot$1, AbstractUserDataWriter, SnapshotMetadata, DocumentSnapshot, QueryDocumentSnapshot, QuerySnapshot, ExpUserDataWriter;
 var init_index_node = __esm({
   "node_modules/@firebase/firestore/dist/index.node.mjs"() {
     init_shims();
@@ -48271,7 +48357,7 @@ var init_index_node = __esm({
     grpc = __toESM(require_src3(), 1);
     protoLoader = __toESM(require_src5(), 1);
     name5 = "@firebase/firestore";
-    version$12 = "3.8.4";
+    version$12 = "3.10.0";
     User = class {
       constructor(uid) {
         this.uid = uid;
@@ -48298,7 +48384,7 @@ var init_index_node = __esm({
     User.GOOGLE_CREDENTIALS = new User("google-credentials-uid");
     User.FIRST_PARTY = new User("first-party-uid");
     User.MOCK_USER = new User("mock-user");
-    version5 = "9.17.2";
+    version5 = "9.19.0";
     SDK_VERSION2 = version5;
     logClient = new Logger("@firebase/firestore");
     Code = {
@@ -48562,8 +48648,7 @@ var init_index_node = __esm({
       }
     };
     FirstPartyToken = class {
-      constructor(gapi, sessionIndex, iamToken, authTokenFactory) {
-        this.gapi = gapi;
+      constructor(sessionIndex, iamToken, authTokenFactory) {
         this.sessionIndex = sessionIndex;
         this.iamToken = iamToken;
         this.authTokenFactory = authTokenFactory;
@@ -48571,13 +48656,15 @@ var init_index_node = __esm({
         this.user = User.FIRST_PARTY;
         this._headers = /* @__PURE__ */ new Map();
       }
-      /** Gets an authorization token, using a provided factory function, or falling back to First Party GAPI. */
+      /**
+       * Gets an authorization token, using a provided factory function, or return
+       * null.
+       */
       getAuthToken() {
         if (this.authTokenFactory) {
           return this.authTokenFactory();
         } else {
-          hardAssert(!!(typeof this.gapi === "object" && this.gapi !== null && this.gapi["auth"] && this.gapi["auth"]["getAuthHeaderValueForFirstParty"]));
-          return this.gapi["auth"]["getAuthHeaderValueForFirstParty"]([]);
+          return null;
         }
       }
       get headers() {
@@ -48593,14 +48680,13 @@ var init_index_node = __esm({
       }
     };
     FirstPartyAuthCredentialsProvider = class {
-      constructor(gapi, sessionIndex, iamToken, authTokenFactory) {
-        this.gapi = gapi;
+      constructor(sessionIndex, iamToken, authTokenFactory) {
         this.sessionIndex = sessionIndex;
         this.iamToken = iamToken;
         this.authTokenFactory = authTokenFactory;
       }
       getToken() {
-        return Promise.resolve(new FirstPartyToken(this.gapi, this.sessionIndex, this.iamToken, this.authTokenFactory));
+        return Promise.resolve(new FirstPartyToken(this.sessionIndex, this.iamToken, this.authTokenFactory));
       }
       start(asyncQueue, changeListener) {
         asyncQueue.enqueueRetryable(() => changeListener(User.FIRST_PARTY));
@@ -50924,6 +51010,55 @@ var init_index_node = __esm({
       RpcCode2[RpcCode2["UNAVAILABLE"] = 14] = "UNAVAILABLE";
       RpcCode2[RpcCode2["DATA_LOSS"] = 15] = "DATA_LOSS";
     })(RpcCode || (RpcCode = {}));
+    TestingHooks = class {
+      constructor() {
+        this.onExistenceFilterMismatchCallbacks = /* @__PURE__ */ new Map();
+      }
+      /**
+       * Returns the singleton instance of this class, or null if it has not been
+       * initialized.
+       */
+      static get instance() {
+        return gTestingHooksSingletonInstance;
+      }
+      /**
+       * Returns the singleton instance of this class, creating it if is has never
+       * been created before.
+       */
+      static getOrCreateInstance() {
+        if (gTestingHooksSingletonInstance === null) {
+          gTestingHooksSingletonInstance = new TestingHooks();
+        }
+        return gTestingHooksSingletonInstance;
+      }
+      /**
+       * Registers a callback to be notified when an existence filter mismatch
+       * occurs in the Watch listen stream.
+       *
+       * The relative order in which callbacks are notified is unspecified; do not
+       * rely on any particular ordering. If a given callback is registered multiple
+       * times then it will be notified multiple times, once per registration.
+       *
+       * @param callback the callback to invoke upon existence filter mismatch.
+       *
+       * @return a function that, when called, unregisters the given callback; only
+       * the first invocation of the returned function does anything; all subsequent
+       * invocations do nothing.
+       */
+      onExistenceFilterMismatch(callback) {
+        const key2 = Symbol();
+        this.onExistenceFilterMismatchCallbacks.set(key2, callback);
+        return () => this.onExistenceFilterMismatchCallbacks.delete(key2);
+      }
+      /**
+       * Invokes all currently-registered `onExistenceFilterMismatch` callbacks.
+       * @param info Information about the existence filter mismatch.
+       */
+      notifyOnExistenceFilterMismatch(info) {
+        this.onExistenceFilterMismatchCallbacks.forEach((callback) => callback(info));
+      }
+    };
+    gTestingHooksSingletonInstance = null;
     RemoteEvent = class {
       constructor(snapshotVersion, targetChanges, targetMismatches, documentUpdates, resolvedLimboDocuments) {
         this.snapshotVersion = snapshotVersion;
@@ -51164,6 +51299,7 @@ var init_index_node = __esm({
        * `pendingTargetResets`.
        */
       handleExistenceFilter(watchChange) {
+        var _a;
         const targetId = watchChange.targetId;
         const expectedCount = watchChange.existenceFilter.count;
         const targetData = this.targetDataForActiveTarget(targetId);
@@ -51181,6 +51317,10 @@ var init_index_node = __esm({
             if (currentSize !== expectedCount) {
               this.resetTarget(targetId);
               this.pendingTargetResets = this.pendingTargetResets.add(targetId);
+              (_a = TestingHooks.instance) === null || _a === void 0 ? void 0 : _a.notifyOnExistenceFilterMismatch({
+                localCacheCount: currentSize,
+                existenceFilterCount: watchChange.existenceFilter.count
+              });
             }
           }
         }
@@ -53045,8 +53185,9 @@ var init_index_node = __esm({
         this.wrappedOnMessage(msg);
       }
     };
+    lastUniqueDebugId = null;
     grpcVersion = "1.7.3";
-    LOG_TAG$9 = "Connection";
+    LOG_TAG$9 = "GrpcConnection";
     X_GOOG_API_CLIENT_VALUE = `gl-node/${process.versions.node} fire/${SDK_VERSION2} grpc/${grpcVersion}`;
     GrpcConnection = class {
       constructor(protos2, databaseInfo) {
@@ -53067,33 +53208,35 @@ var init_index_node = __esm({
         return this.cachedStub;
       }
       invokeRPC(rpcName, path, request, authToken, appCheckToken) {
+        const streamId = generateUniqueDebugId();
         const stub = this.ensureActiveStub();
         const metadata = createMetadata(this.databasePath, authToken, appCheckToken, this.databaseInfo.appId);
         const jsonRequest = Object.assign({ database: this.databasePath }, request);
         return nodePromise((callback) => {
-          logDebug(LOG_TAG$9, `RPC '${rpcName}' invoked with request:`, request);
+          logDebug(LOG_TAG$9, `RPC '${rpcName}' ${streamId} invoked with request:`, request);
           return stub[rpcName](jsonRequest, metadata, (grpcError, value) => {
             if (grpcError) {
-              logDebug(LOG_TAG$9, `RPC '${rpcName}' failed with error:`, grpcError);
+              logDebug(LOG_TAG$9, `RPC '${rpcName}' ${streamId} failed with error:`, grpcError);
               callback(new FirestoreError(mapCodeFromRpcCode(grpcError.code), grpcError.message));
             } else {
-              logDebug(LOG_TAG$9, `RPC '${rpcName}' completed with response:`, value);
+              logDebug(LOG_TAG$9, `RPC '${rpcName}' ${streamId} completed with response:`, value);
               callback(void 0, value);
             }
           });
         });
       }
       invokeStreamingRPC(rpcName, path, request, authToken, appCheckToken, expectedResponseCount) {
+        const streamId = generateUniqueDebugId();
         const results = [];
         const responseDeferred = new Deferred2();
-        logDebug(LOG_TAG$9, `RPC '${rpcName}' invoked (streaming) with request:`, request);
+        logDebug(LOG_TAG$9, `RPC '${rpcName}' ${streamId} invoked (streaming) with request:`, request);
         const stub = this.ensureActiveStub();
         const metadata = createMetadata(this.databasePath, authToken, appCheckToken, this.databaseInfo.appId);
         const jsonRequest = Object.assign(Object.assign({}, request), { database: this.databasePath });
         const stream = stub[rpcName](jsonRequest, metadata);
         let callbackFired = false;
         stream.on("data", (response) => {
-          logDebug(LOG_TAG$9, `RPC ${rpcName} received result:`, response);
+          logDebug(LOG_TAG$9, `RPC ${rpcName} ${streamId} received result:`, response);
           results.push(response);
           if (expectedResponseCount !== void 0 && results.length === expectedResponseCount) {
             callbackFired = true;
@@ -53101,14 +53244,14 @@ var init_index_node = __esm({
           }
         });
         stream.on("end", () => {
-          logDebug(LOG_TAG$9, `RPC '${rpcName}' completed.`);
+          logDebug(LOG_TAG$9, `RPC '${rpcName}' ${streamId} completed.`);
           if (!callbackFired) {
             callbackFired = true;
             responseDeferred.resolve(results);
           }
         });
         stream.on("error", (grpcError) => {
-          logDebug(LOG_TAG$9, `RPC '${rpcName}' failed with error:`, grpcError);
+          logDebug(LOG_TAG$9, `RPC '${rpcName}' ${streamId} failed with error:`, grpcError);
           const code = mapCodeFromRpcCode(grpcError.code);
           responseDeferred.reject(new FirestoreError(code, grpcError.message));
         });
@@ -53116,6 +53259,7 @@ var init_index_node = __esm({
       }
       // TODO(mikelehen): This "method" is a monster. Should be refactored.
       openStream(rpcName, authToken, appCheckToken) {
+        const streamId = generateUniqueDebugId();
         const stub = this.ensureActiveStub();
         const metadata = createMetadata(this.databasePath, authToken, appCheckToken, this.databaseInfo.appId);
         const grpcStream = stub[rpcName](metadata);
@@ -53130,7 +53274,7 @@ var init_index_node = __esm({
         const stream = new StreamBridge({
           sendFn: (msg) => {
             if (!closed) {
-              logDebug(LOG_TAG$9, "GRPC stream sending:", msg);
+              logDebug(LOG_TAG$9, `RPC '${rpcName}' stream ${streamId} sending:`, msg);
               try {
                 grpcStream.write(msg);
               } catch (e) {
@@ -53139,32 +53283,32 @@ var init_index_node = __esm({
                 throw e;
               }
             } else {
-              logDebug(LOG_TAG$9, "Not sending because gRPC stream is closed:", msg);
+              logDebug(LOG_TAG$9, `RPC '${rpcName}' stream ${streamId} not sending because gRPC stream is closed:`, msg);
             }
           },
           closeFn: () => {
-            logDebug(LOG_TAG$9, "GRPC stream closed locally via close().");
+            logDebug(LOG_TAG$9, `RPC '${rpcName}' stream ${streamId} closed locally via close().`);
             close();
           }
         });
         grpcStream.on("data", (msg) => {
           if (!closed) {
-            logDebug(LOG_TAG$9, "GRPC stream received:", msg);
+            logDebug(LOG_TAG$9, `RPC '${rpcName}' stream ${streamId} received:`, msg);
             stream.callOnMessage(msg);
           }
         });
         grpcStream.on("end", () => {
-          logDebug(LOG_TAG$9, "GRPC stream ended.");
+          logDebug(LOG_TAG$9, `RPC '${rpcName}' stream ${streamId} ended.`);
           close();
         });
         grpcStream.on("error", (grpcError) => {
           if (!closed) {
-            logWarn(LOG_TAG$9, "GRPC stream error. Code:", grpcError.code, "Message:", grpcError.message);
+            logWarn(LOG_TAG$9, `RPC '${rpcName}' stream ${streamId} error. Code:`, grpcError.code, "Message:", grpcError.message);
             const code = mapCodeFromRpcCode(grpcError.code);
             close(new FirestoreError(code, grpcError.message));
           }
         });
-        logDebug(LOG_TAG$9, "Opening GRPC stream");
+        logDebug(LOG_TAG$9, `Opening RPC '${rpcName}' stream ${streamId} to ${this.databaseInfo.host}`);
         setTimeout(() => {
           stream.callOnOpen();
         }, 0);
@@ -57404,6 +57548,9 @@ This typically indicates that your device does not have a healthy Internet conne
     };
     LOG_TAG$2 = "FirestoreClient";
     MAX_CONCURRENT_LIMBO_RESOLUTIONS = 100;
+    DOM_EXCEPTION_INVALID_STATE = 11;
+    DOM_EXCEPTION_ABORTED = 20;
+    DOM_EXCEPTION_QUOTA_EXCEEDED = 22;
     FirestoreClient = class {
       constructor(authCredentials, appCheckCredentials, asyncQueue, databaseInfo) {
         this.authCredentials = authCredentials;
@@ -57442,8 +57589,8 @@ This typically indicates that your device does not have a healthy Internet conne
         this.appCheckCredentialListener = listener;
       }
       /**
-       * Checks that the client has not been terminated. Ensures that other methods on
-       * this class cannot be called after the client is terminated.
+       * Checks that the client has not been terminated. Ensures that other methods on //
+       * this class cannot be called after the client is terminated. //
        */
       verifyNotTerminated() {
         if (this.asyncQueue.isShuttingDown) {
@@ -57455,11 +57602,11 @@ This typically indicates that your device does not have a healthy Internet conne
         const deferred = new Deferred2();
         this.asyncQueue.enqueueAndForgetEvenWhileRestricted(async () => {
           try {
-            if (this.onlineComponents) {
-              await this.onlineComponents.terminate();
+            if (this._onlineComponents) {
+              await this._onlineComponents.terminate();
             }
-            if (this.offlineComponents) {
-              await this.offlineComponents.terminate();
+            if (this._offlineComponents) {
+              await this._offlineComponents.terminate();
             }
             this.authCredentials.shutdown();
             this.appCheckCredentials.shutdown();
@@ -57491,6 +57638,7 @@ This typically indicates that your device does not have a healthy Internet conne
         }
         this.credentials = settings.credentials;
         this.ignoreUndefinedProperties = !!settings.ignoreUndefinedProperties;
+        this.cache = settings.localCache;
         if (settings.cacheSizeBytes === void 0) {
           this.cacheSizeBytes = LRU_DEFAULT_CACHE_SIZE_BYTES;
         } else {
@@ -58378,12 +58526,12 @@ var init_page_svelte3 = __esm({
     getAnalytics(app);
     db = getFirestore(app);
     TesterBox = create_ssr_component(($$result, $$props, $$bindings, slots) => {
-      return `<div class="${"px-5 py-3 mx-3 xl:mx-0 bg-gradient-to-b from-white to-slate-50 rounded-md drop-shadow-lg"}">${slots.default ? slots.default({}) : ``}</div>`;
+      return `<div class="px-5 py-3 mx-3 xl:mx-0 bg-gradient-to-b from-white to-slate-50 rounded-md drop-shadow-lg">${slots.default ? slots.default({}) : ``}</div>`;
     });
     IoIosArrowDown = create_ssr_component(($$result, $$props, $$bindings, slots) => {
       return `${validate_component(IconBase, "IconBase").$$render($$result, Object.assign({}, { viewBox: "0 0 512 512" }, $$props), {}, {
         default: () => {
-          return `<path d="${"M256 294.1L383 167c9.4-9.4 24.6-9.4 33.9 0s9.3 24.6 0 34L273 345c-9.1 9.1-23.7 9.3-33.1.7L95 201.1c-4.7-4.7-7-10.9-7-17s2.3-12.3 7-17c9.4-9.4 24.6-9.4 33.9 0l127.1 127z"}"></path>`;
+          return `<path d="M256 294.1L383 167c9.4-9.4 24.6-9.4 33.9 0s9.3 24.6 0 34L273 345c-9.1 9.1-23.7 9.3-33.1.7L95 201.1c-4.7-4.7-7-10.9-7-17s2.3-12.3 7-17c9.4-9.4 24.6-9.4 33.9 0l127.1 127z"></path>`;
         }
       })}`;
     });
@@ -58401,12 +58549,13 @@ var init_page_svelte3 = __esm({
       let $$rendered;
       do {
         $$settled = true;
-        $$rendered = `<div class="${"w-full flex flex-col"}"><div class="${escape("", true) + " " + escape(
+        $$rendered = `<div class="w-full flex flex-col"><div class="${escape("", true) + " " + escape(
           questionsGuessed >= questionsCount ? "bg-green-300" : "bg-slate-200",
           true
-        ) + " flex justify-between items-center py-2 px-4 my-2 rounded-md drop-shadow-sm"}"><p class="${"font-bold text-base sm:text-lg"}">${escape(name6)}</p>
-        <div class="${"flex items-center"}"><p class="${"text-md mx-4 font-bold bg-slate-300 px-2 py-1 rounded-md"}">${escape(questionsGuessed)}/${escape(questionsCount)}</p>
-            <button class="${"w-6"}">${`${validate_component(IoIosArrowDown, "IoIosArrowDown").$$render($$result, {}, {}, {})}`}</button></div></div>
+        ) + " flex justify-between items-center py-2 px-4 my-2 rounded-md drop-shadow-sm"}"><p class="font-bold text-base sm:text-lg">${escape(name6)}</p>
+        <div class="flex items-center"><p class="text-md mx-4 font-bold bg-slate-300 px-2 py-1 rounded-md">${escape(questionsGuessed)}/${escape(questionsCount)}</p>
+            
+            <button class="w-6">${`${validate_component(IoIosArrowDown, "IoIosArrowDown").$$render($$result, {}, {}, {})}`}</button></div></div>
     ${``}</div>`;
       } while (!$$settled);
       return $$rendered;
@@ -58424,7 +58573,7 @@ var init_page_svelte3 = __esm({
       }
       if ($$props.data === void 0 && $$bindings.data && data !== void 0)
         $$bindings.data(data);
-      return `<section class="${"min-h-screen bg-gradient-to-b from-green-600 via-emerald-600 to-emerald-600 flex flex-col text-zinc-800 font-noto-sans"}"><div class="${"mt-16 h-full max-w-screen-xl w-full px-2 sm:px-0 mx-auto"}">${function(__value) {
+      return `<section class="min-h-screen bg-gradient-to-b from-green-600 via-emerald-600 to-emerald-600 flex flex-col text-zinc-800 font-noto-sans"><div class="mt-16 h-full max-w-screen-xl w-full px-2 sm:px-0 mx-auto">${function(__value) {
         if (is_promise(__value)) {
           __value.then(null, noop);
           return ``;
@@ -58464,9 +58613,9 @@ var init__5 = __esm({
     init_page();
     index5 = 4;
     component5 = async () => (await Promise.resolve().then(() => (init_page_svelte3(), page_svelte_exports3))).default;
-    file5 = "_app/immutable/entry/_slug_-page.svelte.1e4956c3.js";
+    file5 = "_app/immutable/entry/_slug_-page.svelte.9e62d570.js";
     universal_id = "src/routes/[slug]/+page.js";
-    imports5 = ["_app/immutable/entry/_slug_-page.svelte.1e4956c3.js", "_app/immutable/chunks/index.e0a09590.js", "_app/immutable/chunks/IconBase.1330d312.js", "_app/immutable/entry/_slug_-page.js.caa4f42e.js", "_app/immutable/chunks/_page.79f100f5.js"];
+    imports5 = ["_app/immutable/entry/_slug_-page.svelte.9e62d570.js", "_app/immutable/chunks/index.213a7fe9.js", "_app/immutable/chunks/IconBase.867590d3.js", "_app/immutable/entry/_slug_-page.js.caa4f42e.js", "_app/immutable/chunks/_page.79f100f5.js"];
     stylesheets5 = ["_app/immutable/assets/IconBase.6bf551a2.css"];
     fonts5 = [];
   }
@@ -58593,6 +58742,11 @@ var options = {
 
 		<style>
 			body {
+				--bg: white;
+				--fg: #222;
+				--divider: #ccc;
+				background: var(--bg);
+				color: var(--fg);
 				font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
 					Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 				display: flex;
@@ -58617,7 +58771,7 @@ var options = {
 			}
 
 			.message {
-				border-left: 1px solid #ccc;
+				border-left: 1px solid var(--divider);
 				padding: 0 0 0 1rem;
 				margin: 0 0 0 1rem;
 				min-height: 2.5rem;
@@ -58630,13 +58784,21 @@ var options = {
 				font-size: 1em;
 				margin: 0;
 			}
+
+			@media (prefers-color-scheme: dark) {
+				body {
+					--bg: #222;
+					--fg: #ddd;
+					--divider: #666;
+				}
+			}
 		</style>
 	</head>
 	<body>
 		<div class="error">
 			<span class="status">` + status + '</span>\n			<div class="message">\n				<h1>' + message + "</h1>\n			</div>\n		</div>\n	</body>\n</html>\n"
   },
-  version_hash: "yebgb9"
+  version_hash: "ul5y8t"
 };
 function get_hooks() {
   return {};
@@ -59138,10 +59300,15 @@ function negotiate(accept, types) {
 function is_content_type(request, ...types) {
   var _a;
   const type = ((_a = request.headers.get("content-type")) == null ? void 0 : _a.split(";", 1)[0].trim()) ?? "";
-  return types.includes(type);
+  return types.includes(type.toLowerCase());
 }
 function is_form_content_type(request) {
-  return is_content_type(request, "application/x-www-form-urlencoded", "multipart/form-data");
+  return is_content_type(
+    request,
+    "application/x-www-form-urlencoded",
+    "multipart/form-data",
+    "text/plain"
+  );
 }
 var HttpError = class HttpError2 {
   /**
@@ -59248,7 +59415,8 @@ function allowed_methods(mod2) {
   return allowed;
 }
 function static_error_page(options2, status, message) {
-  return text(options2.templates.error({ status, message }), {
+  let page2 = options2.templates.error({ status, message });
+  return text(page2, {
     headers: { "content-type": "text/html; charset=utf-8" },
     status
   });
@@ -59599,7 +59767,7 @@ async function call_action(event, actions) {
   }
   if (!is_form_content_type(event.request)) {
     throw new Error(
-      `Actions expect form-encoded data (received ${event.request.headers.get("content-type")}`
+      `Actions expect form-encoded data (received ${event.request.headers.get("content-type")})`
     );
   }
   return action(event);
@@ -59878,7 +60046,7 @@ function writable(value, start = noop) {
     run2(value);
     return () => {
       subscribers.delete(subscriber);
-      if (subscribers.size === 0) {
+      if (subscribers.size === 0 && stop) {
         stop();
         stop = null;
       }
@@ -60282,21 +60450,29 @@ function defer() {
   return { promise, fulfil, reject };
 }
 function create_async_iterator() {
-  let deferred = defer();
+  let deferred = [defer()];
   return {
     iterator: {
       [Symbol.asyncIterator]() {
         return {
-          next: () => deferred.promise
+          next: async () => {
+            const next = await deferred[0].promise;
+            if (!next.done)
+              deferred.shift();
+            return next;
+          }
         };
       }
     },
     push: (value) => {
-      deferred.fulfil({ value, done: false });
-      deferred = defer();
+      deferred[deferred.length - 1].fulfil({
+        value,
+        done: false
+      });
+      deferred.push(defer());
     },
     done: () => {
-      deferred.fulfil({ done: true });
+      deferred[deferred.length - 1].fulfil({ done: true });
     }
   };
 }
@@ -60422,17 +60598,17 @@ async function render_response({
   }
   for (const dep of stylesheets6) {
     const path = prefixed(dep);
-    if (resolve_opts.preload({ type: "css", path })) {
-      const attributes = ['rel="stylesheet"'];
-      if (inline_styles.has(dep)) {
-        attributes.push("disabled", 'media="(max-width: 0)"');
-      } else {
+    const attributes = ['rel="stylesheet"'];
+    if (inline_styles.has(dep)) {
+      attributes.push("disabled", 'media="(max-width: 0)"');
+    } else {
+      if (resolve_opts.preload({ type: "css", path })) {
         const preload_atts = ['rel="preload"', 'as="style"'];
         link_header_preloads.add(`<${encodeURI(path)}>; ${preload_atts.join(";")}; nopush`);
       }
-      head += `
-		<link href="${path}" ${attributes.join(" ")}>`;
     }
+    head += `
+		<link href="${path}" ${attributes.join(" ")}>`;
   }
   for (const dep of fonts6) {
     const path = prefixed(dep);
@@ -60982,7 +61158,6 @@ function get_data_json(event, options2, nodes) {
 }
 var MAX_DEPTH = 10;
 async function render_page(event, page2, options2, manifest2, state, resolve_opts) {
-  var _a;
   if (state.depth > MAX_DEPTH) {
     return text(`Not found: ${event.url.pathname}`, {
       status: 404
@@ -61020,30 +61195,13 @@ async function render_page(event, page2, options2, manifest2, state, resolve_opt
     }
     const should_prerender_data = nodes.some((node) => node == null ? void 0 : node.server);
     const data_pathname = add_data_suffix(event.url.pathname);
-    const should_prerender = get_option(nodes, "prerender");
+    const should_prerender = get_option(nodes, "prerender") ?? false;
     if (should_prerender) {
       const mod2 = leaf_node.server;
       if (mod2 == null ? void 0 : mod2.actions) {
         throw new Error("Cannot prerender pages with actions");
       }
     } else if (state.prerendering) {
-      if (should_prerender !== false && get_option(nodes, "ssr") === false && !((_a = leaf_node.server) == null ? void 0 : _a.actions)) {
-        return await render_response({
-          branch: [],
-          fetched: [],
-          page_config: {
-            ssr: false,
-            csr: get_option(nodes, "csr") ?? true
-          },
-          status,
-          error: null,
-          event,
-          options: options2,
-          manifest: manifest2,
-          state,
-          resolve_opts
-        });
-      }
       return new Response(void 0, {
         status: 204
       });
@@ -61255,6 +61413,11 @@ function exec(match, params, matchers) {
     }
     if (!param.matcher || matchers[param.matcher](value)) {
       result[param.name] = value;
+      const next_param = params[i + 1];
+      const next_value = values[i + 1];
+      if (next_param && !next_param.rest && next_param.optional && next_value) {
+        buffered = 0;
+      }
       continue;
     }
     if (param.optional && param.chained) {
@@ -61295,9 +61458,20 @@ function get_cookies(request, url, trailing_slash) {
       const decoder = (opts == null ? void 0 : opts.decode) || decodeURIComponent;
       const req_cookies = (0, import_cookie.parse)(header, { decode: decoder });
       const cookie = req_cookies[name6];
-      {
-        return cookie;
+      return cookie;
+    },
+    /**
+     * @param {import('cookie').CookieParseOptions} opts
+     */
+    getAll(opts) {
+      const decoder = (opts == null ? void 0 : opts.decode) || decodeURIComponent;
+      const cookies2 = (0, import_cookie.parse)(header, { decode: decoder });
+      for (const c of Object.values(new_cookies)) {
+        if (domain_matches(url.hostname, c.options.domain) && path_matches(url.pathname, c.options.path)) {
+          cookies2[c.name] = c.value;
+        }
       }
+      return Object.entries(cookies2).map(([name6, value]) => ({ name: name6, value }));
     },
     /**
      * @param {string} name
@@ -61541,7 +61715,7 @@ async function respond(request, options2, manifest2, state) {
   var _a, _b, _c, _d;
   let url = new URL(request.url);
   if (options2.csrf_check_origin) {
-    const forbidden = request.method === "POST" && request.headers.get("origin") !== url.origin && is_form_content_type(request);
+    const forbidden = is_form_content_type(request) && (request.method === "POST" || request.method === "PUT" || request.method === "PATCH" || request.method === "DELETE") && request.headers.get("origin") !== url.origin;
     if (forbidden) {
       const csrf_error = error(403, `Cross-site ${request.method} form submissions are forbidden`);
       if (request.headers.get("accept") === "application/json") {
@@ -61651,7 +61825,7 @@ async function respond(request, options2, manifest2, state) {
       const normalized = normalize_path(url.pathname, trailing_slash ?? "never");
       if (normalized !== url.pathname && !((_d = state.prerendering) == null ? void 0 : _d.fallback)) {
         return new Response(void 0, {
-          status: 301,
+          status: 308,
           headers: {
             "x-sveltekit-normalize": "1",
             location: (
@@ -61874,10 +62048,10 @@ init_shims();
 var manifest = {
   appDir: "_app",
   appPath: "_app",
-  assets: /* @__PURE__ */ new Set(["atg/t01q01.png", "atg/t01q02.png", "atg/t01q03.png", "atg/t01q04.png", "atg/t01q05.png", "atg/t01q06.png", "atg/t01q07.png", "atg/t01q08.png", "atg/t01q09.png", "atg/t01q10.png", "atg/t01q11.png", "atg/t01q12.png", "atg/t01q13.png", "atg/t01q14.png", "atg.png", "capsule.png", "eapap.png", "logo.png", "piks.png", "zet/t01q01.png", "zet/t01q02.png", "zet/t01q03.png", "zet/t01q04.png", "zet/t01q05.png", "zet/t01q06.png", "zet/t01q07.png", "zet/t01q08.png", "zet/t01q09.png", "zet/t01q10.png", "zet/t01q11.png", "zet/t01q12.png", "zet/t01q13.png", "zet/t01q14.png", "zet/t07q19.png", "zet/t08q15.png", "zet/t10q17.png", "zet/t10q18.png", "zet/t10q19.png", "zet/t10q20.png", "zet/t11q11.png", "zet/t11q17.png", "zet.png"]),
+  assets: /* @__PURE__ */ new Set(["atg/t01q01.png", "atg/t01q02.png", "atg/t01q03.png", "atg/t01q04.png", "atg/t01q05.png", "atg/t01q06.png", "atg/t01q07.png", "atg/t01q08.png", "atg/t01q09.png", "atg/t01q10.png", "atg/t01q11.png", "atg/t01q12.png", "atg/t01q13.png", "atg/t01q14.png", "atg.png", "capsule.png", "eapap/t04q01.png", "eapap/t04q02.png", "eapap/t05q01.png", "eapap/t05q02.png", "eapap/t05q02R.png", "eapap/t07q01.png", "eapap/t07q02.png", "eapap.png", "logo.png", "piks/t01q01.png", "piks/t01q02.3.png", "piks/t01q02.png", "piks/t01q03.4.png", "piks/t01q03.png", "piks/t01q04.png", "piks/t01q05.png", "piks/t01q06.png", "piks/t01q07.png", "piks/t01q08.png", "piks/t01q09.png", "piks/t01q10.png", "piks/t01q11.png", "piks/t01q12.png", "piks/t01q13.14.png", "piks/t01q13.png", "piks/t01q14.png", "piks/t01q15.png", "piks/t01q16.png", "piks/t01q17.png", "piks/t01q18.png", "piks/t01q19.png", "piks/t01q20.png", "piks/t01q21.png", "piks/t01q22.23.png", "piks/t01q22.png", "piks/t01q23.png", "piks/t01q24.png", "piks/t01q25.png", "piks/t01q26.png", "piks/t01q27.png", "piks/t01q28.png", "piks/t01q29.png", "piks/t01q30.png", "piks/t02q01.png", "piks/t02q02.png", "piks/t02q03.png", "piks/t02q04.png", "piks/t02q05.png", "piks/t02q06.png", "piks/t02q07.png", "piks/t02q08.png", "piks/t02q09.png", "piks/t02q10.png", "piks/t02q11.png", "piks/t02q12.png", "piks/t02q13.png", "piks/t02q14.png", "piks/t02q15.png", "piks/t02q16.png", "piks/t02q17-18.png", "piks/t02q17.png", "piks/t02q18.png", "piks/t02q19.png", "piks/t02q20.png", "piks/t02q21.png", "piks/t02q22.png", "piks.png", "zet/t01q01.png", "zet/t01q02.png", "zet/t01q03.png", "zet/t01q04.png", "zet/t01q05.png", "zet/t01q06.png", "zet/t01q07.png", "zet/t01q08.png", "zet/t01q09.png", "zet/t01q10.png", "zet/t01q11.png", "zet/t01q12.png", "zet/t01q13.png", "zet/t01q14.png", "zet/t07q19.png", "zet/t08q15.png", "zet/t10q17.png", "zet/t10q18.png", "zet/t10q19.png", "zet/t10q20.png", "zet/t11q11.png", "zet/t11q17.png", "zet.png"]),
   mimeTypes: { ".png": "image/png" },
   _: {
-    client: { "start": { "file": "_app/immutable/entry/start.0141be92.js", "imports": ["_app/immutable/entry/start.0141be92.js", "_app/immutable/chunks/index.e0a09590.js", "_app/immutable/chunks/singletons.536303db.js"], "stylesheets": [], "fonts": [] }, "app": { "file": "_app/immutable/entry/app.eccbc143.js", "imports": ["_app/immutable/entry/app.eccbc143.js", "_app/immutable/chunks/index.e0a09590.js"], "stylesheets": [], "fonts": [] } },
+    client: { "start": { "file": "_app/immutable/entry/start.f8cc2e1e.js", "imports": ["_app/immutable/entry/start.f8cc2e1e.js", "_app/immutable/chunks/index.213a7fe9.js", "_app/immutable/chunks/singletons.b9b2a3a7.js"], "stylesheets": [], "fonts": [] }, "app": { "file": "_app/immutable/entry/app.2eeaf1e1.js", "imports": ["_app/immutable/entry/app.2eeaf1e1.js", "_app/immutable/chunks/index.213a7fe9.js"], "stylesheets": [], "fonts": [] } },
     nodes: [
       () => Promise.resolve().then(() => (init__(), __exports)),
       () => Promise.resolve().then(() => (init__2(), __exports2)),
@@ -61951,8 +62125,6 @@ async function svelteKit(request, response) {
   const body = await rendered.text();
   return rendered ? response.writeHead(rendered.status, Object.fromEntries(rendered.headers)).end(body) : response.writeHead(404, "Not Found").end();
 }
-// Annotate the CommonJS export names for ESM import in node:
-0 && (module.exports = {});
 /*! Bundled license information:
 
 undici/lib/fetch/body.js:
@@ -62382,22 +62554,6 @@ firebase/app/dist/index.mjs:
    *)
   (**
    * @license
-   * Copyright 2021 Google LLC
-   *
-   * Licensed under the Apache License, Version 2.0 (the "License");
-   * you may not use this file except in compliance with the License.
-   * You may obtain a copy of the License at
-   *
-   *   http://www.apache.org/licenses/LICENSE-2.0
-   *
-   * Unless required by applicable law | agreed to in writing, software
-   * distributed under the License is distributed on an "AS IS" BASIS,
-   * WITHOUT WARRANTIES | CONDITIONS OF ANY KIND, either express | implied.
-   * See the License for the specific language governing permissions and
-   * limitations under the License.
-   *)
-  (**
-   * @license
    * Copyright 2023 Google LLC
    *
    * Licensed under the Apache License, Version 2.0 (the "License");
@@ -62409,6 +62565,22 @@ firebase/app/dist/index.mjs:
    * Unless required by applicable law or agreed to in writing, software
    * distributed under the License is distributed on an "AS IS" BASIS,
    * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   * See the License for the specific language governing permissions and
+   * limitations under the License.
+   *)
+  (**
+   * @license
+   * Copyright 2021 Google LLC
+   *
+   * Licensed under the Apache License, Version 2.0 (the "License");
+   * you may not use this file except in compliance with the License.
+   * You may obtain a copy of the License at
+   *
+   *   http://www.apache.org/licenses/LICENSE-2.0
+   *
+   * Unless required by applicable law | agreed to in writing, software
+   * distributed under the License is distributed on an "AS IS" BASIS,
+   * WITHOUT WARRANTIES | CONDITIONS OF ANY KIND, either express | implied.
    * See the License for the specific language governing permissions and
    * limitations under the License.
    *)

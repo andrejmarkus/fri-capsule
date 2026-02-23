@@ -2,6 +2,7 @@
     import IoIosArrowDown from 'svelte-icons/io/IoIosArrowDown.svelte';
     import IoIosArrowUp from 'svelte-icons/io/IoIosArrowUp.svelte';
     import TesterQuestion from './TesterQuestion.svelte';
+    import IoIosCheckboxOutline from 'svelte-icons/io/IoIosCheckboxOutline.svelte'
 
     export let name = "";
     export let questions;
@@ -39,6 +40,9 @@
         <p class="font-bold text-base sm:text-lg">{name}</p>
         <div class="flex items-center">
             <p class="text-md mx-4 font-bold bg-slate-300 px-2 py-1 rounded-md">{questionsGuessed}/{questionsCount}</p>
+            <!-- <button class="w-6" on:click={showAnswers}>
+                <IoIosCheckboxOutline />
+            </button> -->
             <button class="w-6" on:click={onClick}>
                 {#if !isClicked}
                     <IoIosArrowDown />
