@@ -1,18 +1,20 @@
 const functions = require("firebase-functions");
+const { defineString } = require("firebase-functions/params");
 const admin = require("firebase-admin");
 const nodemailer = require("nodemailer");
 
 admin.initializeApp();
 
-// Configuration documentation: 
-// Set variables via terminal: 
-// firebase functions:config:set email.user="your@email.com" email.pass="your-app-password" email.service="gmail"
+// Parameters replace the legacy functions.config()
+const emailService = defineString("EMAIL_SERVICE", { default: "gmail" });
+const emailUser = defineString("EMAIL_USER");
+const emailPass = defineString("EMAIL_PASS");
 
 const transporter = nodemailer.createTransport({
-  service: functions.config().email?.service || "gmail",
+  service: emailService.value(),
   auth: {
-    user: functions.config().email?.user,
-    pass: functions.config().email?.pass,
+    user: emailUser.value(),
+    pass: emailPass.value(),
   },
 });
 
@@ -25,8 +27,8 @@ exports.onReportCreated = functions.region("europe-west1").firestore
 
         // Admin Notification
         const adminMailOptions = {
-            from: `"FRI CAPSULE System" <${functions.config().email?.user}>`,
-            to: functions.config().email?.user,
+            from: `"FRI CAPSULE System" <${emailUser.value()}>`,
+            to: emailUser.value(),
             subject: `[FRI CAPSULE] Nový report: ${(report.type || "feedback").toUpperCase()}`,
             html: `
                 <div style="font-family: sans-serif; padding: 20px; color: #1e293b; background-color: #f1f5f9; border-radius: 12px;">
@@ -47,7 +49,7 @@ exports.onReportCreated = functions.region("europe-west1").firestore
 
             if (report.email) {
                 const userMailOptions = {
-                    from: `"FRI CAPSULE Support" <${functions.config().email?.user}>`,
+                    from: `"FRI CAPSULE Support" <${emailUser.value()}>`,
                     to: report.email,
                     subject: "Potvrdenie prijatia reportu - FRI CAPSULE",
                     html: `

@@ -1,0 +1,21 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Allow public read access to subjects
+    match /subjects/{subjectId} {
+      allow read: if true;
+      allow write: if false;
+    }
+    
+    // Allow public creation of reports
+    match /reports/{reportId} {
+      allow create: if true;
+      allow read, update, delete: if false;
+    }
+    
+    // Default: Deny all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
