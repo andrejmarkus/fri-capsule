@@ -1,29 +1,38 @@
-const functions = require("firebase-functions");
+const { onDocumentCreated } = require("firebase-functions/v2/firestore");
+const { setGlobalOptions } = require("firebase-functions/v2");
+const logger = require("firebase-functions/logger");
 const { defineString } = require("firebase-functions/params");
 const admin = require("firebase-admin");
 const nodemailer = require("nodemailer");
 
 admin.initializeApp();
 
-// Parameters replace the legacy functions.config()
+// Set global options, including region for all v2 functions
+setGlobalOptions({ region: "europe-west1" });
+
+// Parameters
 const emailService = defineString("EMAIL_SERVICE", { default: "gmail" });
 const emailUser = defineString("EMAIL_USER");
 const emailPass = defineString("EMAIL_PASS");
 
-const transporter = nodemailer.createTransport({
-  service: emailService.value(),
-  auth: {
-    user: emailUser.value(),
-    pass: emailPass.value(),
-  },
-});
+// Trigger email when a new report is created in Firestore (v2)
+exports.onReportCreated = onDocumentCreated("reports/{reportId}", async (event) => {
+    const transporter = nodemailer.createTransport({
+        service: emailService.value(),
+        auth: {
+            user: emailUser.value(),
+            pass: emailPass.value(),
+        },
+    });
 
-// Trigger email when a new report is created in Firestore
-exports.onReportCreated = functions.region("europe-west1").firestore
-    .document("reports/{reportId}")
-    .onCreate(async (snap, context) => {
-        const report = snap.data();
-        functions.logger.info(`Processing new report: ${context.params.reportId}`);
+    const snap = event.data;
+    if (!snap) {
+        logger.error("No data associated with the event");
+        return;
+    }
+    const report = snap.data();
+    const reportId = event.params.reportId;
+    logger.info(`Processing new report: ${reportId}`);
 
         // Admin Notification
         const adminMailOptions = {
@@ -45,7 +54,7 @@ exports.onReportCreated = functions.region("europe-west1").firestore
 
         try {
             await transporter.sendMail(adminMailOptions);
-            functions.logger.info(`Admin notification sent for report: ${context.params.reportId}`);
+            logger.info(`Admin notification sent for report: ${reportId}`);
 
             if (report.email) {
                 const userMailOptions = {
@@ -60,9 +69,9 @@ exports.onReportCreated = functions.region("europe-west1").firestore
                     `,
                 };
                 await transporter.sendMail(userMailOptions);
-                functions.logger.info(`User confirmation sent to: ${report.email}`);
+                logger.info(`User confirmation sent to: ${report.email}`);
             }
         } catch (error) {
-            functions.logger.error("Error sending email:", error);
+            logger.error("Error sending email:", error);
         }
     });
