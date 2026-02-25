@@ -18,7 +18,7 @@
       description: "Sieťové technológie, protokoly a systémová architektúra.",
     },
     {
-      name: "Podnikanie",
+      name: "Ekonomické a právne aspekty podnikania",
       slug: "eapap",
       color: "from-emerald-500 to-emerald-700",
       description: "Ekonomické a právne základy podnikateľského prostredia.",

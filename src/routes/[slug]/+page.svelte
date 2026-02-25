@@ -53,7 +53,7 @@
 
   const subjectNames: Record<string, string> = {
     piks: "Princípy IKS",
-    eapap: "Podnikanie",
+    eapap: "Ekonomické a právne aspekty podnikania",
     zet: "Základy Ekonómie",
     atg: "Algoritmická Teória Grafov",
   };
