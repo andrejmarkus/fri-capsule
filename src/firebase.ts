@@ -1,12 +1,11 @@
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics, type Analytics } from "firebase/analytics";
-import { getFirestore } from "firebase/firestore";
+import "reflect-metadata";
+import firebase from "firebase/compat/app";
+import "firebase/compat/firestore";
+import "firebase/compat/analytics";
+import * as fireorm from "fireorm";
 import { browser } from "$app/environment";
-// https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
   authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
@@ -17,7 +16,11 @@ const firebaseConfig = {
   measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
 };
 
-// Initialize Firebase
-export const app = initializeApp(firebaseConfig);
-export const analytics: Analytics | undefined = browser ? getAnalytics(app) : undefined;
-export const db = getFirestore(app);
+// Initialize Firebase using the Compat SDK (required for FireORM)
+const app = firebase.initializeApp(firebaseConfig);
+export const db = firebase.firestore();
+export const analytics = browser ? firebase.analytics() : undefined;
+
+// Initialize FireORM with the compatible Firestore instance
+fireorm.initialize(db as any);
+

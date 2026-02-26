@@ -11,7 +11,7 @@
   export let data: PageData;
 
   async function getData() {
-    const subject = await dbSubjects.getBySlug(data.slug);
+    const subject = await dbSubjects.findById(data.slug);
     return subject?.themes || [];
   }
 

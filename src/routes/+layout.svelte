@@ -1,4 +1,7 @@
 <script>
+  /** @type {import('./$types').LayoutData} */
+  export let data;
+  data; // mark as used
   import "../app.css";
   import Navigation from "../components/Navigation.svelte";
   import Footer from "../components/Footer.svelte";

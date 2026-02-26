@@ -13,15 +13,14 @@
   async function handleSubmit() {
     loading = true;
     try {
-      await dbReports.create(
-        new Report({
-          name,
-          email,
-          message,
-          type,
-          createdAt: new Date(),
-        }),
-      );
+      const report = new Report();
+      report.name = name;
+      report.email = email;
+      report.message = message;
+      report.type = type;
+      report.createdAt = new Date();
+
+      await dbReports.create(report);
 
       submitted = true;
       name = "";

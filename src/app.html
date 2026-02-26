@@ -7,6 +7,14 @@
 		
 		<!-- SEO Meta Tags -->
 		<meta name="viewport" content="width=device-width" />
+		<script>
+			if (typeof global === 'undefined') {
+				var global = window;
+			}
+			if (typeof process === 'undefined') {
+				var process = { env: {} };
+			}
+		</script>
 		<meta name="description" content="Digitálna študovňa pre študentov FRI UNIZA. Interaktívne testy z predmetov PIKS, EAPAP, ZET a ATG pre efektívnu prípravu na skúšky." />
 		<meta name="keywords" content="FRI, UNIZA, štúdium, testy, PIKS, EAPAP, ZET, ATG, digitálna študovňa, FRI Capsule" />
 		<meta name="author" content="FRI Capsule Team" />
