@@ -4,9 +4,10 @@
   import { goto } from "$app/navigation";
   import { page } from "$app/stores";
   import { browser } from "$app/environment";
+  import firebase from "firebase/compat/app";
 
   let loading = true;
-  let user: any = null;
+  let user: firebase.User | null = null;
 
   $: isLoginPage = $page.url.pathname.replace(/\/$/, "") === "/admin/login";
 

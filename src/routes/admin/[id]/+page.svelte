@@ -49,7 +49,7 @@
 
         plainSubject.id = newId;
         await dbSubjects.create(plainSubject);
-        await dbSubjects.delete(currentId);
+        if (currentId) await dbSubjects.delete(currentId);
 
         alert("ID predmetu zmenené!");
         // Navigation to the new URL
@@ -62,6 +62,17 @@
     } catch (e: any) {
       console.error(e);
       alert("Chyba pri ukladaní: " + (e.message || "Unknown error"));
+    }
+  }
+
+  async function deleteSubject() {
+    if (!currentId || !confirm("Naozaj chceš zmazať celý predmet?")) return;
+    try {
+      await dbSubjects.delete(currentId);
+      goto("/admin");
+    } catch (e: any) {
+      console.error(e);
+      alert("Chyba pri mazaní: " + (e.message || "Unknown error"));
     }
   }
 
@@ -79,7 +90,7 @@
       // Stripping custom class instances to satisfy Firestore plain object requirement
       const plainSubject = JSON.parse(JSON.stringify(subject));
       await dbSubjects.update(plainSubject);
-      await loadSubject();
+      if (currentId) await loadSubject(currentId);
     } catch (e: any) {
       console.error(e);
       alert("Chyba: " + e.message);
@@ -98,7 +109,7 @@
       // Stripping custom class instances to satisfy Firestore plain object requirement
       const plainSubject = JSON.parse(JSON.stringify(subject));
       await dbSubjects.update(plainSubject);
-      await loadSubject();
+      if (currentId) await loadSubject(currentId);
     } catch (e: any) {
       console.error(e);
       alert("Chyba: " + e.message);
@@ -224,6 +235,15 @@
               placeholder="from-emerald-500 to-emerald-700"
             />
           </div>
+
+          <div class="h-px bg-white/5 my-8"></div>
+
+          <button
+            on:click={deleteSubject}
+            class="bg-rose-900/10 hover:bg-rose-600/20 text-rose-500 border border-rose-500/20 px-8 py-5 rounded-2xl font-black uppercase tracking-widest text-xs transition-all w-full mb-4"
+          >
+            ZMAZAŤ CELÝ PREDMET
+          </button>
 
           <button
             on:click={saveSubject}

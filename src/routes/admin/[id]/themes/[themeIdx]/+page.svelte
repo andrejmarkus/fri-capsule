@@ -4,9 +4,10 @@
   import { onMount } from "svelte";
   import { page } from "$app/stores";
   import { goto } from "$app/navigation";
+  import { storage } from "../../../../../firebase";
 
   const { id, themeIdx } = $page.params;
-  const themeIndex = parseInt(themeIdx);
+  const themeIndex = parseInt(themeIdx || "0");
 
   let subject: Subject | null = null;
   let loading = true;
@@ -18,7 +19,9 @@
   async function loadSubject() {
     loading = true;
     try {
-      subject = await dbSubjects.findById(id);
+      if (id) {
+        subject = await dbSubjects.findById(id);
+      }
     } catch (e) {
       console.error(e);
     } finally {
@@ -81,6 +84,32 @@
     subject.themes[themeIndex].questions[qIdx].answers = [
       ...subject.themes[themeIndex].questions[qIdx].answers,
     ];
+    subject = subject;
+  }
+
+  async function handleFileUpload(event: Event, qIdx: number) {
+    const target = event.target as HTMLInputElement;
+    const file = target.files?.[0];
+    if (!file || !subject) return;
+
+    const subjectId = subject.id;
+    const fileName = `${Date.now()}_${file.name}`;
+    const storageRef = storage.ref(`questions/${subjectId}/${fileName}`);
+
+    try {
+      const snapshot = await storageRef.put(file);
+      const url = await snapshot.ref.getDownloadURL();
+      subject.themes[themeIndex].questions[qIdx].img = url;
+      subject = subject;
+    } catch (e: any) {
+      console.error(e);
+      alert("Chyba pri nahrávaní: " + e.message);
+    }
+  }
+
+  function removeImage(qIdx: number) {
+    if (!subject) return;
+    subject.themes[themeIndex].questions[qIdx].img = "";
     subject = subject;
   }
 </script>
@@ -175,7 +204,8 @@
           >
             <div class="flex-grow w-full">
               <label
-                class="block text-slate-500 text-[10px] font-black uppercase tracking-[0.2em] mb-4 flex items-center gap-4"
+                for="question-{qIdx}"
+                class="text-slate-500 text-[10px] font-black uppercase tracking-[0.2em] mb-4 flex items-center gap-4"
               >
                 <span
                   class="w-8 h-8 rounded-lg bg-emerald-500 text-white flex items-center justify-center font-oswald text-lg italic tracking-tight"
@@ -184,11 +214,76 @@
                 TEXT OTÁZKY
               </label>
               <textarea
+                id="question-{qIdx}"
                 bind:value={q.question}
                 class="w-full bg-slate-950/50 border border-white/5 rounded-2xl p-6 text-white font-bold text-lg focus:border-emerald-500/40 outline-none transition-all placeholder:text-slate-800"
                 rows="2"
                 placeholder="Sem napíš znenie otázky..."
               />
+
+              <!-- Image Upload Section -->
+              <div class="mt-6">
+                <span
+                  class="block text-slate-500 text-[9px] font-black uppercase tracking-[0.2em] mb-3"
+                  >Obrázok Otázky (Nepovinné)</span
+                >
+                <div class="flex flex-wrap items-center gap-4">
+                  {#if q.img}
+                    <div class="relative group/img">
+                      <img
+                        src={q.img}
+                        alt="Question preview"
+                        class="h-24 w-32 object-cover rounded-xl border border-white/10"
+                      />
+                      <button
+                        on:click={() => removeImage(qIdx)}
+                        class="absolute -top-2 -right-2 bg-rose-600 text-white p-1 rounded-full opacity-0 group-hover/img:opacity-100 transition-opacity shadow-lg"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          class="w-4 h-4"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="3"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          ><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg
+                        >
+                      </button>
+                    </div>
+                  {/if}
+                  <label
+                    class="cursor-pointer bg-white/5 hover:bg-emerald-500/10 border border-white/5 hover:border-emerald-500/20 px-6 py-3 rounded-xl transition-all flex items-center gap-3 text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-emerald-500"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="w-4 h-4"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      ><path
+                        d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"
+                      /><polyline points="17 8 12 3 7 8" /><line
+                        x1="12"
+                        x2="12"
+                        y1="3"
+                        y2="15"
+                      /></svg
+                    >
+                    <span>{q.img ? "ZMENIŤ OBRÁZOK" : "NAHRAŤ OBRÁZOK"}</span>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      class="hidden"
+                      on:change={(e) => handleFileUpload(e, qIdx)}
+                    />
+                  </label>
+                </div>
+              </div>
             </div>
             <button
               on:click={() => removeQuestion(qIdx)}
@@ -206,6 +301,7 @@
               >
                 <div class="flex justify-between items-center px-1">
                   <label
+                    for="answer-{qIdx}-{aIdx}"
                     class="text-[9px] text-slate-500 font-black uppercase tracking-widest"
                     >Odpoveď {aIdx + 1}</label
                   >
@@ -224,6 +320,7 @@
                 </div>
                 <div class="flex gap-2">
                   <textarea
+                    id="answer-{qIdx}-{aIdx}"
                     bind:value={a.answer}
                     class="flex-grow bg-slate-950/80 border border-white/5 rounded-xl p-4 text-white text-sm focus:border-emerald-500/40 outline-none transition-all placeholder:text-slate-800"
                     rows="2"

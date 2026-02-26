@@ -11,36 +11,43 @@
 
 ## ✨ Features
 
-- **🎯 Subject Selection:** Navigation through various academic modules including Graph Theory, Economics, and Law.
-- **🧪 Interactive Tester:** Real-time testing environment with instant feedback on answers.
-- **🔄 Adaptive Shuffling:** Questions and answers are automatically shuffled upon each reset to ensure a fresh experience.
-- **📊 Progress Tracking:** State-based tracking that saves your progress across sessions using LocalStorage.
-- **📱 Responsive Design:** Fully optimized for mobile, tablet, and desktop viewing using **Tailwind CSS**.
-- **🔥 Serverless Backend:** Integrated with **Firebase Firestore** via a custom **FireORM/Repository Pattern** for type-safe data access.
-- **📧 Automated Notifications:** **Cloud Functions** (v2) handle background tasks, such as sending emails for user reports.
-
----
-
-## 📚 Included Subjects
-
-Current modules supported in the capsule:
-
-- **Princípy IKS** (`piks`) - Information and Communication Systems principles.
-- **Ekonomické a právne aspekty podnikania** (`eapap`) - Business Law & Economics.
-- **Základy ekonomickej teórie** (`zet`) - Foundations of Economic Theory.
-- **Algoritmická teória grafov** (`atg`) - Algorithmic Graph Theory.
+- **🎯 Dynamic Subject Selection:** Fully dynamic navigation through various academic modules loaded directly from Firestore.
+- **🧪 Interactive Tester:** Real-time testing environment with instant feedback, image support, and keyboard-friendly navigation.
+- **🔐 CMS / Admin Dashboard:** Private control panel for managing subjects, themes, and questions without touching the code.
+- **🔄 Adaptive Shuffling:** Intelligent shuffling of questions and answers on each reset for optimal learning.
+- **📊 Progress Persistence:** State-based tracking that preserves your progress across sessions using LocalStorage.
+- **📧 Reporting System:** Direct user feedback loop with automated email notifications powered by Firebase Cloud Functions.
+- **📱 Responsive UI:** Fully mobile-first design built with **Tailwind CSS** and smooth **Svelte** transitions.
+- **🔥 Serverless Infrastructure:** Integrated with **Firebase Firestore** and **Hosting** for maximum reliability and zero-maintenance.
 
 ---
 
 ## 🛠️ Tech Stack
 
-- **Framework:** [SvelteKit](https://kit.svelte.dev) (v2.x)
+- **Framework:** [SvelteKit](https://kit.svelte.dev) (v2.x) with [Static Adapter](https://kit.svelte.dev/docs/adapter-static)
 - **Styling:** [Tailwind CSS](https://tailwindcss.com)
-- **ORM:** [FireORM](https://fireorm.js.org/) for type-safe database interactions
+- **Data Layer:** [FireORM](https://fireorm.js.org/) for type-safe, repository-based Firestore interactions
 - **Database:** [Firebase Firestore](https://firebase.google.com/products/firestore)
-- **Hosting:** [Firebase Hosting](https://firebase.google.com/products/hosting)
-- **Functions:** [Firebase Cloud Functions](https://firebase.google.com/products/functions)
-- **Language:** TypeScript
+- **Backend:** [Firebase Cloud Functions](https://firebase.google.com/products/functions) (Node.js 20+)
+- **Storage:** [Firebase Storage](https://firebase.google.com/products/storage) for subject-related images
+- **Language:** TypeScript 5+
+
+---
+
+## 📂 Project Structure
+
+```text
+├── build/                 # Static export directory
+├── functions/             # Firebase Cloud Functions (v2) source code
+├── src/
+│   ├── components/        # Svelte UI components (Tester, Layout, Navigation)
+│   ├── lib/
+│   │   ├── db/            # Data layer: Models & FireORM Repositories
+│   │   └── stores/        # Svelte Stores for global state (e.g., Progress)
+│   └── routes/            # Application pages (Subject slugs, Admin, Reports)
+├── static/                # Static assets (Favicons, Robots.txt)
+└── firebase.json          # Deployment & Hosting configuration
+```
 
 ---
 
@@ -48,39 +55,19 @@ Current modules supported in the capsule:
 
 ### 1. Prerequisites
 
-Ensure you have [Node.js](https://nodejs.org/) and a package manager like `pnpm` (recommended) or `npm` installed.
+Ensure you have [Node.js](https://nodejs.org/) (v18+) and `pnpm` (highly recommended) installed.
 
 ### 2. Installation
 
-Clone the repository and install dependencies:
-
 ```bash
-git clone https://github.com/your-repo/fri-capsule.git
-cd fri-capsule
 pnpm install
 ```
 
 ### 3. Setup Firebase
 
-Create a `.env` file or update `src/firebase.ts` with your Firebase configuration keys:
+Update `src/firebase.ts` with your Firebase project credentials. You'll need to enable **Firestore**, **Hosting**, and **Auth** in the Firebase Console.
 
-```typescript
-// src/firebase.ts
-import { initializeApp } from "firebase/app";
-
-const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_AUTH_DOMAIN",
-  projectId: "YOUR_PROJECT_ID",
-  // ...
-};
-
-const app = initializeApp(firebaseConfig);
-```
-
-### 4. Development
-
-Start the development server:
+### 4. Local Development
 
 ```bash
 pnpm dev
@@ -88,34 +75,11 @@ pnpm dev
 
 ---
 
-## 🏗️ Architecture & Data Layer
-
-The project uses a clean **Repository Pattern** powered by **FireORM** logic to interact with Firestore, providing a type-safe, ORM-based experience.
-
-- **Models:** Defined in [src/lib/db/models.ts](src/lib/db/models.ts) using classes and interfaces.
-- **Repository:** Centralized data access in [src/lib/db/repository.ts](src/lib/db/repository.ts) using `BaseRepository` abstractions.
-- **Benefits:** No more manual Firestore parsing. Everything is automatically converted between documents and typed objects.
-
-### CRUD Example:
-
-```typescript
-import { dbSubjects, dbReports } from "$lib/db/repository";
-import { Report } from "$lib/db/models";
-
-// Create a report
-await dbReports.create(new Report({ name: "User", message: "Question fix" }));
-
-// Fetch subject data (piks, zet, eapap, atg)
-const subject = await dbSubjects.getBySlug("piks");
-```
-
----
-
 ## 🏗️ Building and Deployment
 
-The project is configured to be deployed as a static site to **Firebase Hosting**.
+The project is configured for **Static Site Generation (SSG)** to ensure blazing fast load times on Firebase Hosting.
 
-### Build the project:
+### Build and Export:
 
 ```bash
 pnpm build
@@ -123,11 +87,20 @@ pnpm build
 
 ### Deploy to Firebase:
 
-Make sure you have the [Firebase CLI](https://firebase.google.com/docs/cli) installed.
-
 ```bash
+# This will deploy Hosting, Firestore rules/indexes and Functions
 firebase deploy
 ```
+
+---
+
+## 🔐 Content Management (Admin)
+
+To manage the subjects and questions:
+
+1. Navigate to `/admin/login` (Configure authorized domains in Firebase Auth).
+2. Use the dashboard to create new subjects (e.g., `atg`, `piks`).
+3. Within each subject, you can organize questions into **Themes** for granular study sections.
 
 ---
 
@@ -148,11 +121,5 @@ Contributions are welcome! If you'd like to improve the tester or add new subjec
 This project is an independent learning platform created by students for students to facilitate exam preparation.
 
 - **Purpose**: The materials provided are intended solely for educational purposes and study support.
-- **Content**: All content in this application is the result of community effort and is not an official document of the faculty or university.
-- **Copyright**: If you are the owner of the copyright for any part of the content and have objections to its publication, we kindly ask you to **contact us directly before taking any reporting action** via the in-app reporting form or email. We will gladly review your request and, if justified, promptly remove or modify the content.
-
----
-
-## 📄 License
-
-_This project is intended for personal educational use._
+- **Content**: All content is community-contributed and is not an official document of any faculty or university.
+- **Copyright**: If you own the copyright for any content and object to its publication, please use the **Report** form in the app. We respect copyrights and will promptly address your concerns.

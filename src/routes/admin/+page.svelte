@@ -43,9 +43,10 @@
 
       // "Pro" UX: Auto-navigate to the new subject detail page
       goto(`/admin/${slug}`);
-    } catch (e: any) {
+    } catch (e: unknown) {
       console.error(e);
-      alert("Chyba pri vytváraní: " + (e.message || "Unknown error"));
+      const message = e instanceof Error ? e.message : "Unknown error";
+      alert("Chyba pri vytváraní: " + message);
     }
   }
 
@@ -125,7 +126,7 @@
               </div>
             </div>
             <h2
-              class="text-2xl font-black font-oswald text-white uppercase tracking-tight mb-2 group-hover:text-emerald-500 transition-colors uppercase leading-[0.9]"
+              class="text-2xl font-black font-oswald text-white uppercase tracking-tight mb-2 group-hover:text-emerald-500 transition-colors leading-[0.9]"
             >
               {subject.name || subject.id}
             </h2>

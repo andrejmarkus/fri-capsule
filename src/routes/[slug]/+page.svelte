@@ -6,11 +6,16 @@
   import { fly } from "svelte/transition";
   import { progressStore } from "../../lib/stores/progress";
   import type { ProgressState, ThemeProgress } from "../../lib/stores/progress";
+  import type { Theme } from "../../lib/db/models";
   import IoMdRefresh from "svelte-icons/io/IoMdRefresh.svelte";
 
   export let data: PageData;
 
-  let subjectData: any = null;
+  let subjectData: {
+    themes: Theme[];
+    name: string;
+    description: string;
+  } | null = null;
   const promise = (async () => {
     subjectData = await getData();
     return subjectData;
@@ -35,7 +40,7 @@
     }
   }
 
-  function calculateOverallProgress(themes: any[], _progress: any) {
+  function calculateOverallProgress(themes: Theme[], _progress: ProgressState) {
     if (!themes || themes.length === 0) return 0;
     const totalQuestions = themes.reduce(
       (acc, theme) => acc + (theme.questions?.length || 0),
@@ -44,8 +49,8 @@
 
     // Count questions across all themes that are marked as isCorrect: true
     let finishedCount = 0;
-    const subjectData = (_progress as ProgressState)[data.slug] || {};
-    Object.values(subjectData).forEach((themeData: ThemeProgress) => {
+    const currentSubjectData = (_progress as ProgressState)[data.slug] || {};
+    Object.values(currentSubjectData).forEach((themeData: ThemeProgress) => {
       Object.values(themeData.questions).forEach((questionState) => {
         if (questionState.isCorrect) finishedCount++;
       });

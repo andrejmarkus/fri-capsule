@@ -32,41 +32,6 @@
             totalQuestions,
           };
         });
-      } else {
-        // Default fallback if DB is empty - now with estimated question counts for progress display
-        subjects = [
-          {
-            name: "Princípy IKS",
-            slug: "piks",
-            color: "from-blue-500 to-blue-700",
-            description:
-              "Sieťové technológie, protokoly a systémová architektúra.",
-            totalQuestions: 156,
-          },
-          {
-            name: "Ekonomické a právne aspekty podnikania",
-            slug: "eapap",
-            color: "from-emerald-500 to-emerald-700",
-            description:
-              "Ekonomické a právne základy podnikateľského prostredia.",
-            totalQuestions: 121,
-          },
-          {
-            name: "Základy Ekonómie",
-            slug: "zet",
-            color: "from-indigo-500 to-indigo-700",
-            description:
-              "Analýza trhu, spotrebiteľského správania a makroekonómie.",
-            totalQuestions: 88,
-          },
-          {
-            name: "Algoritmická Teória Grafov",
-            slug: "atg",
-            color: "from-rose-500 to-rose-700",
-            description: "Štruktúry grafov, algoritmy a ich aplikácie v praxi.",
-            totalQuestions: 94,
-          },
-        ];
       }
     } catch (e) {
       console.error("Failed to fetch subjects:", e);

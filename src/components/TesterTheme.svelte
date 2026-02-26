@@ -5,10 +5,11 @@
   import { slide } from "svelte/transition";
   import { progressStore } from "../lib/stores/progress";
   import type { ProgressState, ThemeProgress } from "../lib/stores/progress";
+  import type { Question } from "../lib/db/models";
 
   export let subjectSlug = "";
   export let name = "";
-  export let questions: any[] = [];
+  export let questions: Question[] = [];
 
   let isClicked = false;
   $: questionsCount = questions.length;
@@ -61,14 +62,14 @@
     isClicked = !isClicked;
   }
 
-  function resetThemeProgress(e: any) {
+  function resetThemeProgress(e: MouseEvent) {
     if (e && e.stopPropagation) e.stopPropagation();
     if (confirm(`Naozaj chceš resetovať progres pre okruh "${name}"?`)) {
       progressStore.resetTheme(subjectSlug, name);
     }
   }
 
-  function fisherYates(myArray: any[]) {
+  function fisherYates<T>(myArray: T[]) {
     let i = myArray.length;
     if (i == 0) return;
     while (--i) {
@@ -161,7 +162,7 @@
           number={i + 1}
           name={q.question}
           answers={q.answers}
-          img={q.picture}
+          img={q.img}
           {subjectSlug}
           themeName={name}
         />

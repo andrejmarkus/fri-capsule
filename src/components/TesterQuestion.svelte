@@ -3,10 +3,11 @@
   import { fly } from "svelte/transition";
   import { progressStore } from "../lib/stores/progress";
   import type { ProgressState } from "../lib/stores/progress";
+  import type { Answer } from "../lib/db/models";
 
   export let number: number;
   export let name = "";
-  export let answers: any[] = [];
+  export let answers: Answer[] = [];
   export let img: string | undefined;
   export let subjectSlug = "";
   export let themeName = "";
@@ -59,7 +60,7 @@
     }
   }
 
-  function fisherYates(myArray: any[]) {
+  function fisherYates<T>(myArray: T[]) {
     let i = myArray.length;
     if (i == 0) return;
     while (--i) {
