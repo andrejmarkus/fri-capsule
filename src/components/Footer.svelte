@@ -71,4 +71,15 @@
   >
     &copy; {new Date().getFullYear()} FRI CAPSULE. VŠETKY PRÁVA VYHRADENÉ.
   </div>
+
+  <div
+    class="max-w-4xl mx-auto mt-8 px-6 text-center text-[9px] text-slate-700 font-bold uppercase tracking-widest leading-relaxed opacity-60"
+  >
+    <p>
+      Obsah tejto aplikácie je určený výhradne na študijné účely a podporu
+      prípravy na skúšky. Všetky materiály sú výsledkom komunitného snaženia. V
+      prípade akýchkoľvek výhrad k obsahu nás prosím kontaktujte priamo
+      prostredníctvom reportu na stránke.
+    </p>
+  </div>
 </footer>

@@ -1,7 +1,7 @@
 <script lang="ts">
   import { fly } from "svelte/transition";
-  import { db } from "../../firebase";
-  import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+  import { dbReports } from "../../lib/db/repository";
+  import { Report } from "../../lib/db/models";
 
   let name = "";
   let email = "";
@@ -13,13 +13,15 @@
   async function handleSubmit() {
     loading = true;
     try {
-      await addDoc(collection(db, "reports"), {
-        name,
-        email,
-        message,
-        type,
-        createdAt: serverTimestamp(),
-      });
+      await dbReports.create(
+        new Report({
+          name,
+          email,
+          message,
+          type,
+          createdAt: new Date(),
+        }),
+      );
 
       submitted = true;
       name = "";

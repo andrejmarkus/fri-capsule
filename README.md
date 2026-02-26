@@ -16,7 +16,8 @@
 - **🔄 Adaptive Shuffling:** Questions and answers are automatically shuffled upon each reset to ensure a fresh experience.
 - **📊 Progress Tracking:** State-based tracking that saves your progress across sessions using LocalStorage.
 - **📱 Responsive Design:** Fully optimized for mobile, tablet, and desktop viewing using **Tailwind CSS**.
-- **🔥 Serverless Backend:** Integrated with **Firebase Firestore** for data storage and **Cloud Functions** for background tasks (like email reports).
+- **🔥 Serverless Backend:** Integrated with **Firebase Firestore** via a custom **FireORM/Repository Pattern** for type-safe data access.
+- **📧 Automated Notifications:** **Cloud Functions** (v2) handle background tasks, such as sending emails for user reports.
 
 ---
 
@@ -35,6 +36,7 @@ Current modules supported in the capsule:
 
 - **Framework:** [SvelteKit](https://kit.svelte.dev) (v2.x)
 - **Styling:** [Tailwind CSS](https://tailwindcss.com)
+- **ORM:** [FireORM](https://fireorm.js.org/) for type-safe database interactions
 - **Database:** [Firebase Firestore](https://firebase.google.com/products/firestore)
 - **Hosting:** [Firebase Hosting](https://firebase.google.com/products/hosting)
 - **Functions:** [Firebase Cloud Functions](https://firebase.google.com/products/functions)
@@ -86,6 +88,29 @@ pnpm dev
 
 ---
 
+## 🏗️ Architecture & Data Layer
+
+The project uses a clean **Repository Pattern** powered by **FireORM** logic to interact with Firestore, providing a type-safe, ORM-based experience.
+
+- **Models:** Defined in [src/lib/db/models.ts](src/lib/db/models.ts) using classes and interfaces.
+- **Repository:** Centralized data access in [src/lib/db/repository.ts](src/lib/db/repository.ts) using `BaseRepository` abstractions.
+- **Benefits:** No more manual Firestore parsing. Everything is automatically converted between documents and typed objects.
+
+### CRUD Example:
+
+```typescript
+import { dbSubjects, dbReports } from "$lib/db/repository";
+import { Report } from "$lib/db/models";
+
+// Create a report
+await dbReports.create(new Report({ name: "User", message: "Question fix" }));
+
+// Fetch subject data (piks, zet, eapap, atg)
+const subject = await dbSubjects.getBySlug("piks");
+```
+
+---
+
 ## 🏗️ Building and Deployment
 
 The project is configured to be deployed as a static site to **Firebase Hosting**.
@@ -118,6 +143,16 @@ Contributions are welcome! If you'd like to improve the tester or add new subjec
 
 ---
 
+## ⚖️ Disclaimer & Legal Notice
+
+This project is an independent learning platform created by students for students to facilitate exam preparation.
+
+- **Purpose**: The materials provided are intended solely for educational purposes and study support.
+- **Content**: All content in this application is the result of community effort and is not an official document of the faculty or university.
+- **Copyright**: If you are the owner of the copyright for any part of the content and have objections to its publication, we kindly ask you to **contact us directly before taking any reporting action** via the in-app reporting form or email. We will gladly review your request and, if justified, promptly remove or modify the content.
+
+---
+
 ## 📄 License
 
-_This project is intended for academic use._
+_This project is intended for personal educational use._

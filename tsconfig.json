@@ -11,6 +11,8 @@
 		"strict": true,
 		"moduleResolution": "bundler",
 		"module": "esnext",
-		"target": "esnext"
+		"target": "esnext",
+		"experimentalDecorators": true,
+		"emitDecoratorMetadata": true
 	}
 }

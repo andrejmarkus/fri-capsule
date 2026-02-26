@@ -1,6 +1,5 @@
 <script lang="ts">
-  import { db } from "../../firebase";
-  import { collection, getDocs, query, limit } from "firebase/firestore";
+  import { dbSubjects } from "../../lib/db/repository";
   import TesterBox from "../../components/TesterBox.svelte";
   import TesterTheme from "../../components/TesterTheme.svelte";
   import type { PageData } from "./$types";
@@ -12,14 +11,8 @@
   export let data: PageData;
 
   async function getData() {
-    const subjectsCol = collection(db, "subjects");
-    const q = query(subjectsCol, limit(1));
-    const querySnapshot = await getDocs(q);
-
-    if (querySnapshot.empty) return null;
-
-    const subjectsDoc = querySnapshot.docs[0].data();
-    return subjectsDoc[data.slug] || [];
+    const subject = await dbSubjects.getBySlug(data.slug);
+    return subject?.themes || [];
   }
 
   function resetAll() {
