@@ -10,9 +10,19 @@
 
   export let data: PageData;
 
+  let subjectData: any = null;
+  const promise = (async () => {
+    subjectData = await getData();
+    return subjectData;
+  })();
+
   async function getData() {
     const subject = await dbSubjects.findById(data.slug);
-    return subject?.themes || [];
+    return {
+      themes: subject?.themes || [],
+      name: subject?.name || data.slug.toUpperCase(),
+      description: subject?.description || "",
+    };
   }
 
   function resetAll() {
@@ -43,28 +53,22 @@
 
     return totalQuestions > 0 ? (finishedCount / totalQuestions) * 100 : 0;
   }
-
-  const subjectNames: Record<string, string> = {
-    piks: "Princípy IKS",
-    eapap: "Ekonomické a právne aspekty podnikania",
-    zet: "Základy Ekonómie",
-    atg: "Algoritmická Teória Grafov",
-  };
 </script>
 
 <svelte:head>
-  <title
-    >{subjectNames[data.slug] || data.slug.toUpperCase()} | Kapitoly | FRI CAPSULE</title
-  >
-  <meta
-    name="description"
-    content={`Priprav sa na skúšku z predmetu ${subjectNames[data.slug] || data.slug.toUpperCase()} na FRI UNIZA. Interaktívne okruhy a testovacie otázky.`}
-  />
-  <meta
-    property="og:title"
-    content={`${subjectNames[data.slug] || data.slug.toUpperCase()} | FRI CAPSULE`}
-  />
-  <meta property="og:image" content={`/${data.slug}.png`} />
+  <title>
+    {subjectData
+      ? `${subjectData.name} (${data.slug.toUpperCase()})`
+      : data.slug.toUpperCase()} | Kapitoly | FRI CAPSULE
+  </title>
+  {#if subjectData}
+    <meta
+      name="description"
+      content={`Priprav sa na skúšku z predmetu ${subjectData.name} na FRI UNIZA. Interaktívne okruhy a testovacie otázky.`}
+    />
+    <meta property="og:title" content={`${subjectData.name} | FRI CAPSULE`} />
+    <meta property="og:image" content={`/${data.slug}.png`} />
+  {/if}
 </svelte:head>
 
 <section
@@ -93,17 +97,28 @@
       <h1
         class="text-4xl md:text-6xl font-black font-oswald text-white uppercase tracking-tighter"
       >
-        Študijná <span class="text-emerald-500">Kapsula</span>
+        {#await promise}
+          Študijná <span class="text-emerald-500">Kapsula</span>
+        {:then result}
+          {result.name.split(" ")[0]}
+          <span class="text-emerald-500"
+            >{result.name.split(" ").slice(1).join(" ")}</span
+          >
+        {/await}
       </h1>
       <p
-        class="mt-4 text-slate-500 font-bold text-sm tracking-widest uppercase"
+        class="mt-4 text-slate-500 font-bold text-sm tracking-widest uppercase px-6"
       >
-        Vyber si okruh a začni testovanie
+        {#await promise}
+          Vyber si okruh a začni testovanie
+        {:then result}
+          {result.description || "Vyber si okruh a začni testovanie"}
+        {/await}
       </p>
     </div>
 
     <div class="w-full">
-      {#await getData()}
+      {#await promise}
         <div class="flex flex-col items-center justify-center py-20 gap-4">
           <div
             class="w-12 h-12 border-4 border-slate-800 border-t-emerald-500 rounded-full animate-spin"
@@ -114,8 +129,8 @@
             Pripravujem dáta...
           </p>
         </div>
-      {:then themes}
-        {#if themes && themes.length > 0}
+      {:then result}
+        {#if result.themes && result.themes.length > 0}
           <!-- Overall Progress -->
           <div
             class="mb-12 glass-dark p-8 rounded-[2.5rem] border border-white/5 flex flex-col md:flex-row items-center gap-8 shadow-2xl overflow-hidden relative"
@@ -130,10 +145,12 @@
             >
               <div
                 class="absolute bottom-0 left-0 w-full bg-emerald-500/20 transition-all duration-1000"
-                style={`height: ${calculateOverallProgress(themes, $progressStore)}%`}
+                style={`height: ${calculateOverallProgress(result.themes, $progressStore)}%`}
               ></div>
               <span class="text-white font-oswald text-2xl font-black"
-                >{Math.round(calculateOverallProgress(themes, $progressStore))}
+                >{Math.round(
+                  calculateOverallProgress(result.themes, $progressStore),
+                )}
                 <span class="text-[10px] text-emerald-500 ml-0.5">%</span></span
               >
             </div>
@@ -168,7 +185,7 @@
           </div>
 
           <TesterBox>
-            {#each themes as theme, i}
+            {#each result.themes as theme, i}
               <div in:fly={{ y: 20, duration: 600, delay: 100 * i }}>
                 <TesterTheme
                   subjectSlug={data.slug}

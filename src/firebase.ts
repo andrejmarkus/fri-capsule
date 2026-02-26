@@ -2,6 +2,7 @@ import "reflect-metadata";
 import firebase from "firebase/compat/app";
 import "firebase/compat/firestore";
 import "firebase/compat/analytics";
+import "firebase/compat/auth";
 import * as fireorm from "fireorm";
 import { browser } from "$app/environment";
 
@@ -19,6 +20,7 @@ const firebaseConfig = {
 // Initialize Firebase using the Compat SDK (required for FireORM)
 const app = firebase.initializeApp(firebaseConfig);
 export const db = firebase.firestore();
+export const auth = firebase.auth();
 export const analytics = browser ? firebase.analytics() : undefined;
 
 // Initialize FireORM with the compatible Firestore instance

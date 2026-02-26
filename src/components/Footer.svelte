@@ -42,15 +42,22 @@
         <p
           class="text-slate-400 font-black text-[10px] uppercase tracking-[0.2em] mb-4"
         >
-          Zdrojové kódy
+          Odkazy
         </p>
-        <a
-          href="https://github.com/andrejmarkus/fri-capsule"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="text-emerald-500/80 hover:text-emerald-400 transition-colors uppercase text-xs font-black tracking-widest"
-          >GitHub Repo</a
-        >
+        <div class="flex flex-col gap-2">
+          <a
+            href="https://github.com/andrejmarkus/fri-capsule"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-emerald-500/80 hover:text-emerald-400 transition-colors uppercase text-xs font-black tracking-widest"
+            >GitHub Repo</a
+          >
+          <a
+            href="/admin"
+            class="text-amber-500/80 hover:text-amber-400 transition-colors uppercase text-xs font-black tracking-widest"
+            >Admin Panel</a
+          >
+        </div>
       </div>
       <div class="text-center md:text-left">
         <p

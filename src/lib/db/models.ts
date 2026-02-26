@@ -29,8 +29,10 @@ export class Theme {
 
 @Collection('subjects')
 export class Subject {
-    id: string = "";      // The slug (e.g., 'piks', 'atg')
-    name?: string;   // Display name
+    id: string = "";          // The identifier/slug (e.g., 'piks', 'atg') - ALWAYS LOWERCASE
+    name: string = "";        // Full name (e.g., 'Algoritmická Teória Grafov')
+    description: string = ""; // Long description
+    color: string = "";       // Tailwind gradient classes
     @Type(() => Theme)
     themes: Theme[] = [];
     updatedAt?: Timestamp | Date;

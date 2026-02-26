@@ -1,5 +1,13 @@
+import { dbSubjects } from "$lib/db/repository";
+
 export async function GET() {
-  const subjects = ["piks", "eapap", "zet", "atg"];
+  const dbSubjectsList = await dbSubjects.find();
+  const subjects = dbSubjectsList.map(s => s.id);
+  
+  if (subjects.length === 0) {
+      subjects.push("piks", "eapap", "zet", "atg");
+  }
+
   const pages = ["", "report"];
 
   const sitemap = `<?xml version="1.0" encoding="UTF-8" ?>
