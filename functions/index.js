@@ -13,11 +13,13 @@ const emailService = defineString("EMAIL_SERVICE", { default: "gmail" });
 const emailUser = defineString("EMAIL_USER");
 const emailPass = defineString("EMAIL_PASS");
 const recaptchaSecret = defineString("RECAPTCHA_SECRET");
+const recaptchaMinScore = defineString("RECAPTCHA_MIN_SCORE", { default: "0.5" });
 
 const MAX_NAME = 80;
 const MAX_EMAIL = 120;
 const MAX_MESSAGE = 3000;
 const REPORT_TYPES = new Set(["bug", "feedback"]);
+const RECAPTCHA_EXPECTED_ACTION = "submit_report";
 
 function escapeHtml(value) {
   return String(value)
@@ -87,6 +89,9 @@ async function verifyRecaptchaToken(captchaToken, req) {
   if (!secret) {
     throw new Error("Missing reCAPTCHA secret.");
   }
+  const minScore = Number.parseFloat(recaptchaMinScore.value() || "0.5");
+  const safeMinScore =
+    Number.isFinite(minScore) && minScore >= 0 && minScore <= 1 ? minScore : 0.5;
 
   const params = new URLSearchParams();
   params.append("secret", secret);
@@ -113,6 +118,12 @@ async function verifyRecaptchaToken(captchaToken, req) {
 
   const verifyJson = await verifyResponse.json();
   if (!verifyJson.success) {
+    throw new Error("CAPTCHA verification failed.");
+  }
+  if (verifyJson.action !== RECAPTCHA_EXPECTED_ACTION) {
+    throw new Error("CAPTCHA verification failed.");
+  }
+  if (typeof verifyJson.score !== "number" || verifyJson.score < safeMinScore) {
     throw new Error("CAPTCHA verification failed.");
   }
 }

@@ -1,5 +1,6 @@
 <script lang="ts">
-  import { onMount } from "svelte";
+  import { browser } from "$app/environment";
+  import { onDestroy, onMount } from "svelte";
   import { fly } from "svelte/transition";
 
   let name = "";
@@ -13,17 +14,19 @@
   const recaptchaSiteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY as
     | string
     | undefined;
-  let recaptchaWidgetId: number | null = null;
   let recaptchaReady = false;
+  const recaptchaAction = "submit_report";
+  const recaptchaScriptId = "recaptcha-v3-script";
+  const hasDOM = browser && typeof window !== "undefined" && typeof document !== "undefined";
 
   async function loadRecaptchaScript() {
-    if (!recaptchaSiteKey) return;
+    if (!recaptchaSiteKey || !hasDOM) return;
     const w = window as Window & { grecaptcha?: any };
-    if (w.grecaptcha?.render) return;
+    if (w.grecaptcha?.execute) return;
 
     await new Promise<void>((resolve, reject) => {
       const existing = document.querySelector(
-        'script[src*="recaptcha/api.js"]',
+        `script#${recaptchaScriptId}`,
       ) as HTMLScriptElement | null;
       if (existing) {
         existing.addEventListener("load", () => resolve(), { once: true });
@@ -36,7 +39,10 @@
       }
 
       const script = document.createElement("script");
-      script.src = "https://www.google.com/recaptcha/api.js?render=explicit";
+      script.id = recaptchaScriptId;
+      script.src = `https://www.google.com/recaptcha/api.js?render=${encodeURIComponent(
+        recaptchaSiteKey,
+      )}`;
       script.async = true;
       script.defer = true;
       script.onload = () => resolve();
@@ -47,27 +53,26 @@
   }
 
   onMount(async () => {
+    if (hasDOM) {
+      document.body.classList.add("show-recaptcha-badge");
+    }
     if (!recaptchaSiteKey) return;
     try {
       await loadRecaptchaScript();
       const w = window as Window & { grecaptcha?: any };
       w.grecaptcha.ready(() => {
-        recaptchaWidgetId = w.grecaptcha.render("recaptcha-container", {
-          sitekey: recaptchaSiteKey,
-          theme: "dark",
-          callback: () => {
-            captchaError = "";
-          },
-          "expired-callback": () => {
-            captchaError = "Platnosť CAPTCHA vypršala. Potvrďte ju znova.";
-          },
-        });
         recaptchaReady = true;
       });
     } catch (error) {
       console.error("CAPTCHA initialization failed:", error);
       captchaError =
         "Nepodarilo sa načítať CAPTCHA. Obnovte stránku a skúste znova.";
+    }
+  });
+
+  onDestroy(() => {
+    if (hasDOM) {
+      document.body.classList.remove("show-recaptcha-badge");
     }
   });
 
@@ -88,17 +93,30 @@
 
   async function handleSubmit() {
     captchaError = "";
-    const w = window as Window & { grecaptcha?: any };
-    const captchaToken =
-      recaptchaWidgetId !== null ? w.grecaptcha?.getResponse(recaptchaWidgetId) : "";
-
-    if (recaptchaSiteKey && !captchaToken) {
-      captchaError = "Prosím potvrďte, že nie ste robot.";
-      return;
-    }
 
     loading = true;
     try {
+      if (!hasDOM) {
+        captchaError = "Overenie CAPTCHA nie je dostupné v tomto prostredí.";
+        return;
+      }
+      const w = window as Window & { grecaptcha?: any };
+      let captchaToken = "";
+
+      if (recaptchaSiteKey) {
+        if (!recaptchaReady || !w.grecaptcha?.execute) {
+          captchaError = "Overenie CAPTCHA ešte nie je pripravené. Skúste o chvíľu.";
+          return;
+        }
+        captchaToken = await w.grecaptcha.execute(recaptchaSiteKey, {
+          action: recaptchaAction,
+        });
+        if (!captchaToken) {
+          captchaError = "Nepodarilo sa overiť CAPTCHA. Skúste to znova.";
+          return;
+        }
+      }
+
       const response = await fetch(getSubmitReportUrl(), {
         method: "POST",
         headers: {
@@ -126,9 +144,6 @@
       email = "";
       message = "";
       website = "";
-      if (recaptchaWidgetId !== null) {
-        w.grecaptcha?.reset(recaptchaWidgetId);
-      }
     } catch (error) {
       console.error("Chyba pri odosielaní reportu:", error);
       if (!captchaError) {
@@ -346,7 +361,9 @@
 
         {#if recaptchaSiteKey}
           <div class="mb-8">
-            <div id="recaptcha-container" class="min-h-[78px]"></div>
+            <p class="text-[10px] text-slate-500 font-bold uppercase tracking-widest">
+              Chránené pomocou reCAPTCHA v3.
+            </p>
             {#if captchaError}
               <p class="mt-3 text-xs text-rose-400 font-bold uppercase tracking-widest">
                 {captchaError}

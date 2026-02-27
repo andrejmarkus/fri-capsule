@@ -70,8 +70,9 @@ For report e-mails, deploy the `submitReport` Cloud Function and set function pa
 
 Configure reCAPTCHA for the report form:
 
-- Frontend env: `VITE_RECAPTCHA_SITE_KEY`
-- Cloud Function param: `RECAPTCHA_SECRET`
+- Frontend env (reCAPTCHA v3 site key): `VITE_RECAPTCHA_SITE_KEY`
+- Cloud Function param (reCAPTCHA v3 secret): `RECAPTCHA_SECRET`
+- Optional Cloud Function param: `RECAPTCHA_MIN_SCORE` (default `0.5`)
 
 ### 4. Local Development
 

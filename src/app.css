@@ -47,3 +47,17 @@
 ::-webkit-scrollbar-thumb {
     @apply bg-slate-800 rounded-full hover:bg-slate-700 transition-colors;
 }
+
+/* Keep reCAPTCHA v3 badge visible only on /report route */
+.grecaptcha-badge {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 180ms ease;
+}
+
+body.show-recaptcha-badge .grecaptcha-badge {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
