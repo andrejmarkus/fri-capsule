@@ -9,8 +9,9 @@
 
   let subject: Subject | null = null;
   let loading = true;
+  let loadedId = "";
 
-  $: if (currentId) {
+  $: if (currentId && currentId !== loadedId) {
     loadSubject(currentId);
   }
 
@@ -18,6 +19,7 @@
     loading = true;
     try {
       subject = await dbSubjects.findById(targetId);
+      loadedId = targetId;
     } catch (e) {
       console.error(e);
     } finally {
@@ -90,7 +92,6 @@
       // Stripping custom class instances to satisfy Firestore plain object requirement
       const plainSubject = JSON.parse(JSON.stringify(subject));
       await dbSubjects.update(plainSubject);
-      if (currentId) await loadSubject(currentId);
     } catch (e: any) {
       console.error(e);
       alert("Chyba: " + e.message);
@@ -109,7 +110,6 @@
       // Stripping custom class instances to satisfy Firestore plain object requirement
       const plainSubject = JSON.parse(JSON.stringify(subject));
       await dbSubjects.update(plainSubject);
-      if (currentId) await loadSubject(currentId);
     } catch (e: any) {
       console.error(e);
       alert("Chyba: " + e.message);

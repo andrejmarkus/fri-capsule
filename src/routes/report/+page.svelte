@@ -1,31 +1,55 @@
 <script lang="ts">
   import { fly } from "svelte/transition";
-  import { dbReports } from "../../lib/db/repository";
-  import { Report } from "../../lib/db/models";
 
   let name = "";
   let email = "";
   let message = "";
   let type = "feedback";
+  let website = ""; // honeypot
   let submitted = false;
   let loading = false;
+
+  function getSubmitReportUrl() {
+    const custom = import.meta.env.VITE_SUBMIT_REPORT_URL as string | undefined;
+    if (custom && custom.trim().length > 0) return custom;
+
+    const projectId = import.meta.env.VITE_FIREBASE_PROJECT_ID as
+      | string
+      | undefined;
+
+    if (!projectId) {
+      throw new Error("Missing Firebase project ID.");
+    }
+
+    return `https://europe-west1-${projectId}.cloudfunctions.net/submitReport`;
+  }
 
   async function handleSubmit() {
     loading = true;
     try {
-      const report = new Report();
-      report.name = name;
-      report.email = email;
-      report.message = message;
-      report.type = type;
-      report.createdAt = new Date();
+      const response = await fetch(getSubmitReportUrl(), {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          message,
+          type,
+          website,
+        }),
+      });
 
-      await dbReports.create(report);
+      if (!response.ok) {
+        throw new Error("Report submit failed.");
+      }
 
       submitted = true;
       name = "";
       email = "";
       message = "";
+      website = "";
     } catch (error) {
       console.error("Chyba pri odosielaní reportu:", error);
       alert("Nepodarilo sa odoslať report. Skúste to prosím neskôr.");
@@ -213,6 +237,17 @@
         </div>
 
         <div class="flex flex-col gap-2 mb-10">
+          <label class="sr-only" for="website">Website</label>
+          <input
+            id="website"
+            bind:value={website}
+            type="text"
+            tabindex="-1"
+            autocomplete="off"
+            class="hidden"
+            aria-hidden="true"
+          />
+
           <label
             for="message"
             class="text-[10px] font-black tracking-[0.2em] text-slate-500 uppercase ml-4"

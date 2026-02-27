@@ -6,6 +6,7 @@
   import type { Answer } from "../lib/db/models";
 
   export let number: number;
+  export let id = "";
   export let name = "";
   export let answers: Answer[] = [];
   export let img: string | undefined;
@@ -13,12 +14,14 @@
   export let themeName = "";
 
   $: themeData = ($progressStore as ProgressState)[subjectSlug]?.[themeName];
-  $: storedState = themeData?.questions?.[name];
+  $: questionKey = id || name;
+  $: storedState = themeData?.questions?.[questionKey];
 
   let answersCorrect = 0;
   let isUsed = false;
   let answersSelected = 0;
   let selectedHistory: string[] = []; // Store names of selected answers
+  let displayAnswers: Answer[] = [];
 
   $: if (storedState && !isUsed) {
     isUsed = storedState.isUsed;
@@ -26,7 +29,7 @@
     // Recalculate counts based on stored history
     const correctAnswers = answers
       .filter((a) => a.isCorrect)
-      .map((a) => a.answer);
+      .map((a) => a.id || a.answer);
     answersSelected = selectedHistory.length;
     answersCorrect = selectedHistory.filter((sh) =>
       correctAnswers.includes(sh),
@@ -52,7 +55,7 @@
 
     if (answersSelected >= correctCount) {
       isUsed = true;
-      progressStore.saveQuestionState(subjectSlug, themeName, name, {
+      progressStore.saveQuestionState(subjectSlug, themeName, questionKey, {
         selected: selectedHistory,
         isUsed: true,
         isCorrect: answersCorrect === correctCount,
@@ -79,7 +82,11 @@
     !storedState &&
     answersSelected === 0
   ) {
-    fisherYates(answers);
+    const cloned = [...answers];
+    fisherYates(cloned);
+    displayAnswers = cloned;
+  } else {
+    displayAnswers = answers;
   }
 </script>
 
@@ -142,14 +149,15 @@
     {/if}
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      {#each answers as a (a.answer)}
-        {@const isSelected = selectedHistory.includes(a.answer)}
+      {#each displayAnswers as a, idx (a.id || `${idx}:${a.answer}`)}
+        {@const answerValue = a.id || a.answer}
+        {@const isSelected = selectedHistory.includes(answerValue)}
         <TesterAnswer
           name={a.answer}
           isCorrect={a.isCorrect}
           {isUsed}
           isClicked={isSelected}
-          on:clicked={(e) => onAnswerClicked(a.answer, a.isCorrect)}
+          on:clicked={() => onAnswerClicked(answerValue, a.isCorrect)}
         />
       {/each}
     </div>

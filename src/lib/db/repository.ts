@@ -1,9 +1,8 @@
 import "../../firebase"; // Ensure FireORM is initialized and reflect-metadata is loaded
 import { getRepository } from 'fireorm';
-import { Report, Subject } from './models';
+import { Subject } from './models';
 
 // Simply export the FireORM repositories
-export const dbReports = getRepository(Report);
 export const dbSubjects = getRepository(Subject);
 
 /**

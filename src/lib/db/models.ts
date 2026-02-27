@@ -6,11 +6,13 @@ import type { Timestamp } from 'firebase/firestore';
  * Common data interfaces
  */
 export class Answer {
+    id: string = "";
     answer: string = "";
     isCorrect: boolean = false;
 }
 
 export class Question {
+    id: string = "";
     question: string = "";
     @Type(() => Answer)
     answers: Answer[] = [];

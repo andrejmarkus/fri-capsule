@@ -10,8 +10,10 @@
   export let subjectSlug = "";
   export let name = "";
   export let questions: Question[] = [];
+  const questionKey = (q: Question) => q.id?.trim() || `legacy:${q.question}`;
 
   let isClicked = false;
+  let openQuestions: Question[] = [];
   $: questionsCount = questions.length;
 
   // Subscribe to progress store for this specific subject and theme
@@ -23,12 +25,11 @@
   // Stable sort of questions based on stored order
   $: sortedQuestions = (() => {
     if (!themeProgress?.order?.length) return questions;
+    const indexedQuestions = questions.map((q) => ({ q, key: questionKey(q) }));
     const orderMap = new Map((themeProgress.order || []).map((q, i) => [q, i]));
-    return [...questions].sort((a, b) => {
-      const indexA = orderMap.get(a.question) ?? 999;
-      const indexB = orderMap.get(b.question) ?? 999;
-      return indexA - indexB;
-    });
+    return [...indexedQuestions]
+      .sort((a, b) => (orderMap.get(a.key) ?? 999) - (orderMap.get(b.key) ?? 999))
+      .map((entry) => entry.q);
   })();
 
   $: progress =
@@ -47,15 +48,21 @@
       themeProgress && Object.keys(themeProgress.questions).length > 0;
 
     if (!hasProgress) {
-      fisherYates(questions);
+      const shuffled = [...questions];
+      fisherYates(shuffled);
+      openQuestions = shuffled;
+    } else {
+      openQuestions = sortedQuestions;
     }
 
     // Save the current (shuffled or original) order for stability
     progressStore.saveOrder(
       subjectSlug,
       name,
-      questions.map((q) => q.question),
+      openQuestions.map((q) => questionKey(q)),
     );
+  } else {
+    openQuestions = sortedQuestions;
   }
 
   function onClick() {
@@ -157,9 +164,10 @@
       class="mt-6 space-y-4 px-2 sm:px-4"
       transition:slide|local={{ duration: 400 }}
     >
-      {#each sortedQuestions as q, i}
+      {#each openQuestions as q, i}
         <TesterQuestion
           number={i + 1}
+          id={questionKey(q)}
           name={q.question}
           answers={q.answers}
           img={q.img}

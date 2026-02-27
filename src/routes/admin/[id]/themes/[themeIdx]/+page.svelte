@@ -12,6 +12,21 @@
   let subject: Subject | null = null;
   let loading = true;
 
+  const createId = () =>
+    `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
+
+  function ensureStableIds() {
+    if (!subject) return;
+    for (const theme of subject.themes || []) {
+      for (const question of theme.questions || []) {
+        if (!question.id) question.id = createId();
+        for (const answer of question.answers || []) {
+          if (!answer.id) answer.id = createId();
+        }
+      }
+    }
+  }
+
   onMount(async () => {
     await loadSubject();
   });
@@ -32,6 +47,7 @@
   async function save() {
     if (!subject) return;
     try {
+      ensureStableIds();
       // Stripping custom class instances to satisfy Firestore plain object requirement
       const plainSubject = JSON.parse(JSON.stringify(subject));
       await dbSubjects.update(plainSubject);
@@ -45,10 +61,11 @@
   function addQuestion() {
     if (!subject || !subject.themes[themeIndex]) return;
     const newQuestion = new Question();
+    newQuestion.id = createId();
     newQuestion.question = "Nová otázka";
     newQuestion.answers = [
-      { answer: "Správna odpoveď", isCorrect: true },
-      { answer: "Nesprávna odpoveď", isCorrect: false },
+      { id: createId(), answer: "Správna odpoveď", isCorrect: true },
+      { id: createId(), answer: "Nesprávna odpoveď", isCorrect: false },
     ];
     subject.themes[themeIndex].questions = [
       ...(subject.themes[themeIndex].questions || []),
@@ -60,6 +77,7 @@
   function addAnswer(qIdx: number) {
     if (!subject) return;
     const newAnswer = new Answer();
+    newAnswer.id = createId();
     newAnswer.answer = "";
     newAnswer.isCorrect = false;
     subject.themes[themeIndex].questions[qIdx].answers = [

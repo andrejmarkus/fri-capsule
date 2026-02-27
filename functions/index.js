@@ -1,4 +1,4 @@
-const { onDocumentCreated } = require("firebase-functions/v2/firestore");
+const { onRequest } = require("firebase-functions/v2/https");
 const { setGlobalOptions } = require("firebase-functions/v2");
 const logger = require("firebase-functions/logger");
 const { defineString } = require("firebase-functions/params");
@@ -7,71 +7,152 @@ const nodemailer = require("nodemailer");
 
 admin.initializeApp();
 
-// Set global options, including region for all v2 functions
 setGlobalOptions({ region: "europe-west1" });
 
-// Parameters
 const emailService = defineString("EMAIL_SERVICE", { default: "gmail" });
 const emailUser = defineString("EMAIL_USER");
 const emailPass = defineString("EMAIL_PASS");
 
-// Trigger email when a new report is created in Firestore (v2)
-exports.onReportCreated = onDocumentCreated("reports/{reportId}", async (event) => {
-    const transporter = nodemailer.createTransport({
-        service: emailService.value(),
-        auth: {
-            user: emailUser.value(),
-            pass: emailPass.value(),
-        },
+const MAX_NAME = 80;
+const MAX_EMAIL = 120;
+const MAX_MESSAGE = 3000;
+const REPORT_TYPES = new Set(["bug", "feedback"]);
+
+function escapeHtml(value) {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#39;");
+}
+
+function setCors(_req, res) {
+  res.set("Access-Control-Allow-Origin", "*");
+  res.set("Access-Control-Allow-Methods", "POST, OPTIONS");
+  res.set("Access-Control-Allow-Headers", "Content-Type");
+}
+
+function validatePayload(raw) {
+  const payload = raw && typeof raw === "object" ? raw : {};
+
+  const name = String(payload.name || "").trim();
+  const email = String(payload.email || "").trim().toLowerCase();
+  const message = String(payload.message || "").trim();
+  const type = String(payload.type || "feedback").trim().toLowerCase();
+  const website = String(payload.website || "").trim();
+
+  if (website.length > 0) {
+    throw new Error("Spam detected.");
+  }
+  if (!name || name.length > MAX_NAME) {
+    throw new Error("Invalid name.");
+  }
+  if (!email || email.length > MAX_EMAIL) {
+    throw new Error("Invalid email.");
+  }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    throw new Error("Invalid email format.");
+  }
+  if (!message || message.length > MAX_MESSAGE) {
+    throw new Error("Invalid message.");
+  }
+  if (!REPORT_TYPES.has(type)) {
+    throw new Error("Invalid report type.");
+  }
+
+  return { name, email, message, type };
+}
+
+function isValidationError(message) {
+  return (
+    message === "Spam detected." ||
+    message === "Invalid name." ||
+    message === "Invalid email." ||
+    message === "Invalid email format." ||
+    message === "Invalid message." ||
+    message === "Invalid report type."
+  );
+}
+
+async function sendReportEmails(report) {
+  const transporter = nodemailer.createTransport({
+    service: emailService.value(),
+    auth: {
+      user: emailUser.value(),
+      pass: emailPass.value(),
+    },
+  });
+
+  const safeName = escapeHtml(report.name);
+  const safeEmail = escapeHtml(report.email);
+  const safeType = escapeHtml(report.type);
+  const safeMessage = escapeHtml(report.message);
+
+  const adminMailOptions = {
+    from: `"FRI CAPSULE System" <${emailUser.value()}>`,
+    to: emailUser.value(),
+    subject: `[FRI CAPSULE] Novy report: ${safeType.toUpperCase()}`,
+    html: `
+      <div style="font-family: sans-serif; padding: 20px; color: #1e293b; background-color: #f1f5f9; border-radius: 12px;">
+        <h1 style="color: #10b981; margin-bottom: 20px; font-size: 24px;">Novy report - ${safeType}</h1>
+        <div style="background-color: white; padding: 20px; border-radius: 8px; border: 1px solid #e2e8f0;">
+          <p><strong>Od:</strong> ${safeName} (${safeEmail})</p>
+          <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 15px 0;">
+          <p><strong>Sprava:</strong></p>
+          <p style="white-space: pre-wrap; line-height: 1.6;">${safeMessage}</p>
+        </div>
+      </div>
+    `,
+  };
+
+  await transporter.sendMail(adminMailOptions);
+
+  const userMailOptions = {
+    from: `"FRI CAPSULE Support" <${emailUser.value()}>`,
+    to: report.email,
+    subject: "Potvrdenie prijatia reportu - FRI CAPSULE",
+    html: `
+      <div style="font-family: sans-serif; padding: 20px; max-width: 600px; margin: auto; border: 1px solid #e2e8f0; border-radius: 12px;">
+        <h2 style="color: #10b981;">Ahoj ${safeName},</h2>
+        <p>Tvoj report \"<strong>${safeType}</strong>\" bol uspesne doruceny.</p>
+      </div>
+    `,
+  };
+
+  await transporter.sendMail(userMailOptions);
+}
+
+exports.submitReport = onRequest({ memory: "128MiB", timeoutSeconds: 15 }, async (req, res) => {
+  setCors(req, res);
+
+  if (req.method === "OPTIONS") {
+    res.status(204).send("");
+    return;
+  }
+
+  if (req.method !== "POST") {
+    res.status(405).json({ ok: false, error: "Method not allowed." });
+    return;
+  }
+
+  try {
+    const report = validatePayload(req.body);
+
+    await sendReportEmails(report);
+
+    await admin.firestore().collection("reports").add({
+      ...report,
+      createdAt: admin.firestore.FieldValue.serverTimestamp(),
+      source: "submitReport",
     });
 
-    const snap = event.data;
-    if (!snap) {
-        logger.error("No data associated with the event");
-        return;
-    }
-    const report = snap.data();
-    const reportId = event.params.reportId;
-    logger.info(`Processing new report: ${reportId}`);
-
-        // Admin Notification
-        const adminMailOptions = {
-            from: `"FRI CAPSULE System" <${emailUser.value()}>`,
-            to: emailUser.value(),
-            subject: `[FRI CAPSULE] Nový report: ${(report.type || "feedback").toUpperCase()}`,
-            html: `
-                <div style="font-family: sans-serif; padding: 20px; color: #1e293b; background-color: #f1f5f9; border-radius: 12px;">
-                    <h1 style="color: #10b981; margin-bottom: 20px; font-size: 24px;">Nový report - ${report.type}</h1>
-                    <div style="background-color: white; padding: 20px; border-radius: 8px; border: 1px solid #e2e8f0;">
-                        <p><strong>Od:</strong> ${report.name} (${report.email || "bez emailu"})</p>
-                        <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 15px 0;">
-                        <p><strong>Správa:</strong></p>
-                        <p style="white-space: pre-wrap; line-height: 1.6;">${report.message}</p>
-                    </div>
-                </div>
-            `,
-        };
-
-        try {
-            await transporter.sendMail(adminMailOptions);
-            logger.info(`Admin notification sent for report: ${reportId}`);
-
-            if (report.email) {
-                const userMailOptions = {
-                    from: `"FRI CAPSULE Support" <${emailUser.value()}>`,
-                    to: report.email,
-                    subject: "Potvrdenie prijatia reportu - FRI CAPSULE",
-                    html: `
-                        <div style="font-family: sans-serif; padding: 20px; max-width: 600px; margin: auto; border: 1px solid #e2e8f0; border-radius: 12px;">
-                            <h2 style="color: #10b981;">Ahoj ${report.name || "užívateľ"},</h2>
-                            <p>Tvoj report "<strong>${report.type}</strong>" bol úspešne doručený.</p>
-                        </div>
-                    `,
-                };
-                await transporter.sendMail(userMailOptions);
-                logger.info(`User confirmation sent to: ${report.email}`);
-            }
-        } catch (error) {
-            logger.error("Error sending email:", error);
-        }
-    });
+    logger.info("Report processed successfully", { type: report.type });
+    res.status(200).json({ ok: true });
+  } catch (error) {
+    logger.error("Report submit failed", error);
+    const message = error instanceof Error ? error.message : "Unknown error";
+    const status = isValidationError(message) ? 400 : 500;
+    res.status(status).json({ ok: false, error: "Invalid request." });
+  }
+});

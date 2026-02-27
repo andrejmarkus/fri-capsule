@@ -66,6 +66,7 @@ pnpm install
 ### 3. Setup Firebase
 
 Update `src/firebase.ts` with your Firebase project credentials. You'll need to enable **Firestore**, **Hosting**, and **Auth** in the Firebase Console.
+For report e-mails, deploy the `submitReport` Cloud Function and set function params `EMAIL_USER` and `EMAIL_PASS`.
 
 ### 4. Local Development
 
@@ -101,6 +102,7 @@ To manage the subjects and questions:
 1. Navigate to `/admin/login` (Configure authorized domains in Firebase Auth).
 2. Use the dashboard to create new subjects (e.g., `atg`, `piks`).
 3. Within each subject, you can organize questions into **Themes** for granular study sections.
+4. Firestore writes are restricted to users with Firebase Auth custom claim `admin: true`.
 
 ---
 
