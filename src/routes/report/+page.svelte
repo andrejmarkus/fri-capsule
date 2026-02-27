@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { onMount } from "svelte";
   import { fly } from "svelte/transition";
 
   let name = "";
@@ -8,6 +9,67 @@
   let website = ""; // honeypot
   let submitted = false;
   let loading = false;
+  let captchaError = "";
+  const recaptchaSiteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY as
+    | string
+    | undefined;
+  let recaptchaWidgetId: number | null = null;
+  let recaptchaReady = false;
+
+  async function loadRecaptchaScript() {
+    if (!recaptchaSiteKey) return;
+    const w = window as Window & { grecaptcha?: any };
+    if (w.grecaptcha?.render) return;
+
+    await new Promise<void>((resolve, reject) => {
+      const existing = document.querySelector(
+        'script[src*="recaptcha/api.js"]',
+      ) as HTMLScriptElement | null;
+      if (existing) {
+        existing.addEventListener("load", () => resolve(), { once: true });
+        existing.addEventListener(
+          "error",
+          () => reject(new Error("Failed to load reCAPTCHA script.")),
+          { once: true },
+        );
+        return;
+      }
+
+      const script = document.createElement("script");
+      script.src = "https://www.google.com/recaptcha/api.js?render=explicit";
+      script.async = true;
+      script.defer = true;
+      script.onload = () => resolve();
+      script.onerror = () =>
+        reject(new Error("Failed to load reCAPTCHA script."));
+      document.head.appendChild(script);
+    });
+  }
+
+  onMount(async () => {
+    if (!recaptchaSiteKey) return;
+    try {
+      await loadRecaptchaScript();
+      const w = window as Window & { grecaptcha?: any };
+      w.grecaptcha.ready(() => {
+        recaptchaWidgetId = w.grecaptcha.render("recaptcha-container", {
+          sitekey: recaptchaSiteKey,
+          theme: "dark",
+          callback: () => {
+            captchaError = "";
+          },
+          "expired-callback": () => {
+            captchaError = "Platnosť CAPTCHA vypršala. Potvrďte ju znova.";
+          },
+        });
+        recaptchaReady = true;
+      });
+    } catch (error) {
+      console.error("CAPTCHA initialization failed:", error);
+      captchaError =
+        "Nepodarilo sa načítať CAPTCHA. Obnovte stránku a skúste znova.";
+    }
+  });
 
   function getSubmitReportUrl() {
     const custom = import.meta.env.VITE_SUBMIT_REPORT_URL as string | undefined;
@@ -25,6 +87,16 @@
   }
 
   async function handleSubmit() {
+    captchaError = "";
+    const w = window as Window & { grecaptcha?: any };
+    const captchaToken =
+      recaptchaWidgetId !== null ? w.grecaptcha?.getResponse(recaptchaWidgetId) : "";
+
+    if (recaptchaSiteKey && !captchaToken) {
+      captchaError = "Prosím potvrďte, že nie ste robot.";
+      return;
+    }
+
     loading = true;
     try {
       const response = await fetch(getSubmitReportUrl(), {
@@ -38,10 +110,14 @@
           message,
           type,
           website,
+          captchaToken,
         }),
       });
 
       if (!response.ok) {
+        if (response.status === 400) {
+          captchaError = "Overenie CAPTCHA zlyhalo. Skúste to znova.";
+        }
         throw new Error("Report submit failed.");
       }
 
@@ -50,9 +126,14 @@
       email = "";
       message = "";
       website = "";
+      if (recaptchaWidgetId !== null) {
+        w.grecaptcha?.reset(recaptchaWidgetId);
+      }
     } catch (error) {
       console.error("Chyba pri odosielaní reportu:", error);
-      alert("Nepodarilo sa odoslať report. Skúste to prosím neskôr.");
+      if (!captchaError) {
+        alert("Nepodarilo sa odoslať report. Skúste to prosím neskôr.");
+      }
     } finally {
       loading = false;
     }
@@ -263,10 +344,21 @@
           ></textarea>
         </div>
 
+        {#if recaptchaSiteKey}
+          <div class="mb-8">
+            <div id="recaptcha-container" class="min-h-[78px]"></div>
+            {#if captchaError}
+              <p class="mt-3 text-xs text-rose-400 font-bold uppercase tracking-widest">
+                {captchaError}
+              </p>
+            {/if}
+          </div>
+        {/if}
+
         <button
           type="submit"
-          disabled={loading}
-          class={`w-full btn-primary flex items-center justify-center gap-4 group ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
+          disabled={loading || (!!recaptchaSiteKey && !recaptchaReady)}
+          class={`w-full btn-primary flex items-center justify-center gap-4 group ${loading || (!!recaptchaSiteKey && !recaptchaReady) ? "opacity-50 cursor-not-allowed" : ""}`}
         >
           {#if loading}
             <div

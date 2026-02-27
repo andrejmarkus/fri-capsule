@@ -8,22 +8,38 @@
 
   let loading = true;
   let user: firebase.User | null = null;
+  let isAdmin = false;
 
   $: isLoginPage = $page.url.pathname.replace(/\/$/, "") === "/admin/login";
 
   onMount(() => {
-    const unsubscribe = auth.onAuthStateChanged((u) => {
+    const unsubscribe = auth.onAuthStateChanged(async (u) => {
       user = u;
+      isAdmin = false;
+
+      if (u) {
+        try {
+          const token = await u.getIdTokenResult(true);
+          isAdmin = token.claims.admin === true;
+        } catch (error) {
+          console.error("Failed to verify admin claim:", error);
+        }
+      }
+
       loading = false;
 
-      if (browser) {
-        if (!u && !isLoginPage) {
-          console.log("Not logged in, redirecting to login...");
-          goto("/admin/login");
-        } else if (u && isLoginPage) {
-          console.log("Logged in, redirecting to admin panel...");
-          goto("/admin");
-        }
+      if (!browser) return;
+      if (!u && !isLoginPage) {
+        goto("/admin/login");
+        return;
+      }
+      if (u && !isAdmin && !isLoginPage) {
+        await auth.signOut();
+        goto("/admin/login?reason=admin");
+        return;
+      }
+      if (u && isAdmin && isLoginPage) {
+        goto("/admin");
       }
     });
 
@@ -40,7 +56,7 @@
   <div class="min-h-screen flex items-center justify-center text-white">
     <p class="text-xl font-bold animate-pulse">Overujem prístup...</p>
   </div>
-{:else if user || isLoginPage}
+{:else if (user && isAdmin) || isLoginPage}
   <div
     class="min-h-screen bg-slate-950 text-white relative fill-available overflow-x-hidden"
   >
@@ -50,7 +66,7 @@
     ></div>
 
     <div class="relative z-10 flex flex-col min-h-screen">
-      {#if user}
+      {#if user && isAdmin}
         <nav
           class="bg-slate-950/80 border-b border-white/5 py-4 px-4 md:px-8 flex justify-between items-center sticky top-0 z-50 backdrop-blur-xl"
         >

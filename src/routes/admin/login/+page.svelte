@@ -1,12 +1,13 @@
 <script lang="ts">
   import { auth } from "../../../firebase";
   import { goto } from "$app/navigation";
-  import { onMount } from "svelte";
+  import { page } from "$app/stores";
 
   let email = "";
   let password = "";
   let error = "";
   let loading = false;
+  $: deniedByClaim = $page.url.searchParams.get("reason") === "admin";
 
   async function login() {
     loading = true;
@@ -48,11 +49,11 @@
       </p>
     </div>
 
-    {#if error}
+    {#if deniedByClaim || error}
       <div
         class="bg-rose-900/50 border border-rose-500/20 text-rose-300 p-4 rounded-xl text-xs font-bold mb-8 animate-shake"
       >
-        {error}
+        {error || "Tento účet nemá administrátorské oprávnenie."}
       </div>
     {/if}
 

@@ -4,9 +4,13 @@ rules_version = '2';
 // allow write: if request.auth != null; // Authenticated users only
 service firebase.storage {
   match /b/{bucket}/o {
+    function isAdmin() {
+      return request.auth != null && request.auth.token.admin == true;
+    }
+
     match /{allPaths=**} {
       allow read: if true; // Or restrict to certain users
-      allow write: if request.auth != null; // Authenticated users (admin) only
+      allow write: if isAdmin();
     }
   }
 }

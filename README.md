@@ -68,6 +68,11 @@ pnpm install
 Update `src/firebase.ts` with your Firebase project credentials. You'll need to enable **Firestore**, **Hosting**, and **Auth** in the Firebase Console.
 For report e-mails, deploy the `submitReport` Cloud Function and set function params `EMAIL_USER` and `EMAIL_PASS`.
 
+Configure reCAPTCHA for the report form:
+
+- Frontend env: `VITE_RECAPTCHA_SITE_KEY`
+- Cloud Function param: `RECAPTCHA_SECRET`
+
 ### 4. Local Development
 
 ```bash

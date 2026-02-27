@@ -12,6 +12,7 @@ setGlobalOptions({ region: "europe-west1" });
 const emailService = defineString("EMAIL_SERVICE", { default: "gmail" });
 const emailUser = defineString("EMAIL_USER");
 const emailPass = defineString("EMAIL_PASS");
+const recaptchaSecret = defineString("RECAPTCHA_SECRET");
 
 const MAX_NAME = 80;
 const MAX_EMAIL = 120;
@@ -41,6 +42,7 @@ function validatePayload(raw) {
   const message = String(payload.message || "").trim();
   const type = String(payload.type || "feedback").trim().toLowerCase();
   const website = String(payload.website || "").trim();
+  const captchaToken = String(payload.captchaToken || "").trim();
 
   if (website.length > 0) {
     throw new Error("Spam detected.");
@@ -60,8 +62,11 @@ function validatePayload(raw) {
   if (!REPORT_TYPES.has(type)) {
     throw new Error("Invalid report type.");
   }
+  if (!captchaToken) {
+    throw new Error("Missing CAPTCHA token.");
+  }
 
-  return { name, email, message, type };
+  return { name, email, message, type, captchaToken };
 }
 
 function isValidationError(message) {
@@ -71,8 +76,45 @@ function isValidationError(message) {
     message === "Invalid email." ||
     message === "Invalid email format." ||
     message === "Invalid message." ||
-    message === "Invalid report type."
+    message === "Invalid report type." ||
+    message === "Missing CAPTCHA token." ||
+    message === "CAPTCHA verification failed."
   );
+}
+
+async function verifyRecaptchaToken(captchaToken, req) {
+  const secret = recaptchaSecret.value();
+  if (!secret) {
+    throw new Error("Missing reCAPTCHA secret.");
+  }
+
+  const params = new URLSearchParams();
+  params.append("secret", secret);
+  params.append("response", captchaToken);
+
+  const forwardedFor = req.get("x-forwarded-for");
+  const remoteIp = forwardedFor ? forwardedFor.split(",")[0].trim() : "";
+  if (remoteIp) {
+    params.append("remoteip", remoteIp);
+  }
+
+  const verifyResponse = await fetch(
+    "https://www.google.com/recaptcha/api/siteverify",
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: params.toString(),
+    },
+  );
+
+  if (!verifyResponse.ok) {
+    throw new Error("CAPTCHA verification failed.");
+  }
+
+  const verifyJson = await verifyResponse.json();
+  if (!verifyJson.success) {
+    throw new Error("CAPTCHA verification failed.");
+  }
 }
 
 async function sendReportEmails(report) {
@@ -138,11 +180,15 @@ exports.submitReport = onRequest({ memory: "128MiB", timeoutSeconds: 15 }, async
 
   try {
     const report = validatePayload(req.body);
+    await verifyRecaptchaToken(report.captchaToken, req);
 
     await sendReportEmails(report);
 
     await admin.firestore().collection("reports").add({
-      ...report,
+      name: report.name,
+      email: report.email,
+      message: report.message,
+      type: report.type,
       createdAt: admin.firestore.FieldValue.serverTimestamp(),
       source: "submitReport",
     });
