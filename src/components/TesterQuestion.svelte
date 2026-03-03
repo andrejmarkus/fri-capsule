@@ -5,6 +5,9 @@
   import type { ProgressState } from "../lib/stores/progress";
   import type { Answer } from "../lib/db/models";
 
+  import { createEventDispatcher } from "svelte";
+  const dispatch = createEventDispatcher();
+
   export let number: number;
   export let id = "";
   export let name = "";
@@ -40,6 +43,7 @@
     answersCorrect = 0;
     answersSelected = 0;
     selectedHistory = [];
+    displayAnswers = []; // Reset shuffled answers
   }
 
   $: correctCount = answers.filter((a) => a.isCorrect).length;
@@ -51,10 +55,25 @@
       selectedHistory = [...selectedHistory, answerName];
       answersSelected++;
       if (isCorrect) answersCorrect++;
+
+      // Save partial state for multiselect questions
+      if (correctCount > 1 && answersSelected < correctCount) {
+        progressStore.saveQuestionState(subjectSlug, themeName, questionKey, {
+          selected: selectedHistory,
+          isUsed: false,
+          isCorrect: false,
+        });
+        // Dispatch event even for partial progress
+        dispatch("progress", { questionKey });
+      }
     }
 
     if (answersSelected >= correctCount) {
       isUsed = true;
+
+      // Dispatch event to parent that progress has started
+      dispatch("progress", { questionKey });
+
       progressStore.saveQuestionState(subjectSlug, themeName, questionKey, {
         selected: selectedHistory,
         isUsed: true,
@@ -75,18 +94,10 @@
     }
   }
 
-  $: if (
-    answers &&
-    answers.length > 0 &&
-    !isUsed &&
-    !storedState &&
-    answersSelected === 0
-  ) {
+  $: if (answers && answers.length > 0 && displayAnswers.length === 0) {
     const cloned = [...answers];
     fisherYates(cloned);
     displayAnswers = cloned;
-  } else {
-    displayAnswers = answers;
   }
 </script>
 
@@ -149,8 +160,8 @@
     {/if}
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      {#each displayAnswers as a, idx (a.id || `${idx}:${a.answer}`)}
-        {@const answerValue = a.id || a.answer}
+      {#each displayAnswers as a, idx (`${idx}-${a.id || a.answer}`)}
+        {@const answerValue = a.id && a.id !== "" ? a.id : a.answer}
         {@const isSelected = selectedHistory.includes(answerValue)}
         <TesterAnswer
           name={a.answer}

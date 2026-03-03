@@ -28,7 +28,9 @@
     const indexedQuestions = questions.map((q) => ({ q, key: questionKey(q) }));
     const orderMap = new Map((themeProgress.order || []).map((q, i) => [q, i]));
     return [...indexedQuestions]
-      .sort((a, b) => (orderMap.get(a.key) ?? 999) - (orderMap.get(b.key) ?? 999))
+      .sort(
+        (a, b) => (orderMap.get(a.key) ?? 999) - (orderMap.get(b.key) ?? 999),
+      )
       .map((entry) => entry.q);
   })();
 
@@ -36,33 +38,28 @@
     questionsCount > 0 ? (questionsGuessed / questionsCount) * 100 : 0;
 
   $: hasAnyProgress =
-    themeProgress &&
-    (Object.keys(themeProgress.questions).length > 0 ||
-      themeProgress.order.length > 0);
+    themeProgress && Object.keys(themeProgress.questions).length > 0;
 
   // Manage question order and shuffling reactively
   // This ensures that when a theme is opened or reset, questions are shuffled if no order exists
   $: if (isClicked && !themeProgress?.order?.length) {
-    // If there is any progress (questions answered), don't shuffle - preserve current order
-    const hasProgress =
-      themeProgress && Object.keys(themeProgress.questions).length > 0;
-
-    if (!hasProgress) {
-      const shuffled = [...questions];
-      fisherYates(shuffled);
-      openQuestions = shuffled;
-    } else {
-      openQuestions = sortedQuestions;
-    }
-
-    // Save the current (shuffled or original) order for stability
-    progressStore.saveOrder(
-      subjectSlug,
-      name,
-      openQuestions.map((q) => questionKey(q)),
-    );
+    const shuffled = [...questions];
+    fisherYates(shuffled);
+    openQuestions = shuffled;
   } else {
     openQuestions = sortedQuestions;
+  }
+
+  function onQuestionProgress() {
+    // When a question is answered, we save the current order if it's not already saved
+    // This makes the theme "persistent" and "resettable" only once work has started
+    if (!themeProgress?.order?.length) {
+      progressStore.saveOrder(
+        subjectSlug,
+        name,
+        openQuestions.map((q) => questionKey(q)),
+      );
+    }
   }
 
   function onClick() {
@@ -95,7 +92,7 @@
     tabindex="0"
     class={`group relative overflow-hidden flex flex-col w-full p-6 text-left rounded-[2rem] border transition-all duration-500 shadow-2xl cursor-pointer ${
       isClicked
-        ? "bg-slate-900 border-white/20 ring-1 ring-white/10 sticky top-20 z-20"
+        ? "bg-slate-900 border-white/20 ring-1 ring-white/10 z-20"
         : "bg-slate-900/50 hover:bg-slate-900 border-white/5 hover:border-white/10"
     }`}
     on:click={onClick}
@@ -173,6 +170,7 @@
           img={q.img}
           {subjectSlug}
           themeName={name}
+          on:progress={onQuestionProgress}
         />
       {/each}
 
